@@ -1,10 +1,5 @@
 TODO
-
 Quit
-Generate Deck
-Shuffle Deck
-	- with random seed
-	- without random seed
 Human Player
 	- Print hand
 		> Who's the player
@@ -18,5 +13,12 @@ Computer Player
 	- Play 
 	- Discard
 Ragequit
-
 Fix include structure with makefile
+
+
+COMPLETED
+Generate Deck
+Shuffle Deck
+	- with random seed
+	- without random seed
+Inviting Players
