@@ -21,31 +21,39 @@ void Straights::invitePlayers() {
 }
 
 void Straights::playGame() {
+	//game over cases here
+	//reshuffle deck cases here as well
 	while(true) {
 		for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
 			int currentPlayerIndex = gameOrder[i];
+			if(i==0) {
+				std::cout << "A new round begins. It's player " << (currentPlayerIndex+1) << "'s turn to play." << std::endl; 
+			}
 			if(players_[currentPlayerIndex]->isHuman()) {
 				humanTurn(currentPlayerIndex);
+			} else {
+				robotTurn(currentPlayerIndex);
 			}
 		}
-		break;
 	}
 }
 
+//WHAT IF THEY HAVE NO CARDS LEFT???
+//FIX removing cards!
 void Straights::humanTurn(int playerIndex) {
 	std::cout << "Cards on the table:" << std::endl;
 
 	std::cout << "Clubs: ";
-	printCardVector(tableClubs_);
+	printCardVectorRanks(tableClubs_);
 
 	std::cout << "Diamonds: ";
-	printCardVector(tableDiamonds_);
+	printCardVectorRanks(tableDiamonds_);
 
 	std::cout << "Hearts: ";
-	printCardVector(tableHearts_);
+	printCardVectorRanks(tableHearts_);
 
 	std::cout << "Spades: ";
-	printCardVector(tableSpades_);
+	printCardVectorRanks(tableSpades_);
 
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
 	std::cout << "Your hand: ";
@@ -54,6 +62,111 @@ void Straights::humanTurn(int playerIndex) {
 	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
 	std::cout << "Legal plays: ";
 	printCardVector(legalPlaysInHand);
+
+	bool turnComplete = false;
+	while(!turnComplete) {
+		std::string command = humanInput();
+		if(command == "play") {
+			Card card = *new Card(SUIT_COUNT, RANK_COUNT);
+			cin >> card;
+
+			bool validCard = false;
+			for(std::vector<Card>::iterator it = legalPlaysInHand.begin(); it != legalPlaysInHand.end(); ++it) {
+				if(*it == card) {
+					validCard = true;
+				}
+			}
+			if(validCard) {
+				playCard(playerIndex, card);
+				turnComplete = true;
+			} else {
+				std::cout << "This is not a legal play." << std::endl;
+			}
+
+		} else if(command == "discard") {
+			Card card = *new Card(SUIT_COUNT, RANK_COUNT);
+			cin >> card;
+
+			if(legalPlaysInHand.size() > 0) {
+				std::cout << "You have a legal play. You may not discard." << std::endl;
+				turnComplete = false;
+			} else {
+				bool validCard = false;
+				for(std::vector<Card>::iterator it = currentHand.begin(); it != currentHand.end(); ++it) {
+					if(*it == card) {
+						validCard = true;
+					}
+				}
+				assert(validCard);
+
+				discardCard(playerIndex, card);
+				turnComplete = true;
+			}
+
+		} else if(command == "deck") {
+			for(int i=0; i<CARD_COUNT;i++) {
+				if((i%DECK_CARDS_PER_LINE) == 0 && i>0) {
+					std::cout << std::endl;
+				}
+				std::cout << *cards_[i] << " ";
+			}
+			std::cout << std::endl;
+
+		} else if(command == "quit") {
+			exit(0);
+
+		} else if(command == "ragequit") {
+			std::cout << "Player " << playerIndex << "ragequits. A computer will now take over.";
+			players_[playerIndex]->setHuman(false);
+			turnComplete = true;
+			robotTurn(playerIndex);
+		}
+	}
+}
+
+std::string Straights::humanInput() {
+	std::cout << ">";
+	std::string command = "";
+	cin >> command;
+	assert(command == "play"|| command == "discard"|| command == "deck"|| command == "quit"|| command == "ragequit");
+	return command;
+}
+
+void Straights::robotTurn(int playerIndex) {
+	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
+	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
+	if(legalPlaysInHand.size() > 0) {
+		playCard(playerIndex, legalPlaysInHand.at(0));
+	} else {
+		playCard(playerIndex, currentHand.at(0));
+	}
+}
+
+void Straights::playCard(int playerIndex, Card card) {
+	players_[playerIndex]->removeCardFromHand(&card);
+
+	Suit suit = card.getSuit();
+	std::vector<Card> suitVector;
+	if(suit == CLUB) {
+		tableClubs_.push_back(card);
+	} else if(suit == DIAMOND) {
+		tableDiamonds_.push_back(card);
+	} else if(suit == HEART) {
+		tableHearts_.push_back(card);
+	} else if(suit == SPADE) {
+		tableSpades_.push_back(card);
+	}
+
+	std::cout << "Player " << playerIndex << " plays " << card << ".";
+}
+
+void Straights::discardCard(int playerIndex, Card card) {
+	players_[playerIndex]->removeCardFromHand(&card);
+
+	int rankInt = card.getRank();
+	players_[playerIndex]->addToScore(rankInt);
+
+	std::cout << "Player " << playerIndex << " discards " << card << ".";
 }
 
 std::vector<Card> Straights::getLegalPlays(std::vector<Card> vector) {
@@ -73,8 +186,9 @@ bool Straights::isLegalCard(Card card) {
 		return true;
 	}
 	int rankInt = rank;
-	Rank left = static_cast<Rank>(rankInt--);
-	Rank right = static_cast<Rank>(rankInt++);
+	//TODO - find out why using -- and ++ was behaving incorrectly
+	int left = rankInt - 1;
+	int right = rankInt + 1;
 
 	std::vector<Card> suitVector;
 	if(suit == CLUB) {
@@ -88,11 +202,19 @@ bool Straights::isLegalCard(Card card) {
 	}
 	for(std::vector<Card>::iterator it = suitVector.begin(); it != suitVector.end(); ++it) {
 		Rank cardRank = it->getRank();
+		int cardRankInt = cardRank;
 		if(cardRank == left || cardRank == right) {
 			return true;
 		}
 	}
 	return false;
+}
+
+void Straights::printCardVectorRanks(std::vector<Card> vector) {
+	for(std::vector<Card>::iterator it = vector.begin(); it != vector.end(); ++it) {
+	    std::cout << it->getRank() << " ";
+	}
+	std::cout << std::endl;
 }
 
 void Straights::printCardVector(std::vector<Card> vector) {

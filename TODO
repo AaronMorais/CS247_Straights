@@ -5,15 +5,8 @@ Gameloop
 	- when they run out of cards and nobody has lost they need more cards!
 Quit
 Human Player
-	- Play - Submit Move
-		> Is move legal
-	- Discard 
-		> is move legal
 	- Socring
-Computer Player
-	- Play 
-	- Discard
-Ragequit
+Fix removing card from hand for player class
 Fix include structure with makefile
 
 
@@ -27,3 +20,11 @@ Human Player
 	- Print hand
 		> Who's the player
 		> What are the legal moves
+	- Play - Submit Move
+		> Is move legal
+	- Discard 
+		> is move legal
+Computer Player
+	- Play 
+	- Discard
+Ragequit

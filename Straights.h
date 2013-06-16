@@ -4,6 +4,7 @@
 
 const int NUMBER_OF_PLAYERS = 4;
 const int CARD_COUNT = 52;
+const int DECK_CARDS_PER_LINE = 13;
 
 class Straights {
 public:
@@ -14,6 +15,10 @@ private:
 
 	void playGame();
 	void humanTurn(int playerIndex);
+	std::string humanInput();
+	void robotTurn(int playerIndex);
+	void playCard(int, Card);
+	void discardCard(int, Card);
 	std::vector<Card> getLegalPlays(std::vector<Card>);
 	bool isLegalCard(Card card);
 
@@ -31,4 +36,5 @@ private:
 	std::vector<Card> tableHearts_;
 	std::vector<Card> tableSpades_;
 	void printCardVector(std::vector<Card>);
+	void printCardVectorRanks(std::vector<Card>);
 };
