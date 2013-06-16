@@ -1,5 +1,4 @@
 #include "Player.cpp"
-#include "Card.cpp"
 #include <vector>
 
 const int NUMBER_OF_PLAYERS = 4;

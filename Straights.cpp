@@ -6,6 +6,7 @@
 
 Straights::Straights() {
 	invitePlayers();
+	generateDeck();
 	createInitialHands();
 	playGame();
 }
@@ -25,12 +26,11 @@ void Straights::playGame() {
 	bool gameOver = false;
 	while(!gameOver) {
 		int cardsRemaining = CARD_COUNT/NUMBER_OF_PLAYERS; //Assuming hands will be evenly divisible
+		std::cout << "A new round begins. It's player " << (gameOrder[0]+1) << "'s turn to play." << std::endl; 
 		while(cardsRemaining != 0) {
 			for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
 				int currentPlayerIndex = gameOrder[i];
-				if(i==0) {
-					std::cout << "A new round begins. It's player " << (currentPlayerIndex+1) << "'s turn to play." << std::endl; 
-				}
+
 				if(players_[currentPlayerIndex]->isHuman()) {
 					humanTurn(currentPlayerIndex);
 				} else {
@@ -55,15 +55,20 @@ void Straights::playGame() {
 				minimumScore = score;
 			}
 		}
+
 		if(gameOver) {
 			for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
 				int score = players_[i]->totalScore();
 				if(score == minimumScore) {
-					std::cout << "Player " << i << " wins!" << std::endl;
+					std::cout << "Player " << (i+1) << " wins!" << std::endl;
 				}
 			}
 		} else {
 			createInitialHands();
+			tableClubs_.clear();
+			tableDiamonds_.clear();
+			tableHearts_.clear();
+			tableSpades_.clear();
 		}
 	}
 }
@@ -71,14 +76,15 @@ void Straights::playGame() {
 void Straights::printRoundEnd(int playerIndex) {
 	Player *player = players_[playerIndex];
 
-	std::cout << "Player " << playerIndex << "'s discards: ";
+	std::cout << "Player " << (playerIndex+1) << "'s discards: ";
 	printCardVector(player->discards());
 
-	std::cout << "Player " << playerIndex << "'s score: " << player->totalScore() << " + " << player->roundScore();
-	std::cout << " = " << (player->totalScore() + player->roundScore());
+	std::cout << "Player " << (playerIndex+1) << "'s score: " << player->totalScore() << " + " << player->roundScore();
+	std::cout << " = " << (player->totalScore() + player->roundScore()) << std::endl;
 
 	player->addToTotalScore(player->roundScore());
 	player->resetRoundScore();
+	player->clearDiscards();
 }
 
 //FIX removing cards!
@@ -158,7 +164,7 @@ void Straights::humanTurn(int playerIndex) {
 			exit(0);
 
 		} else if(command == "ragequit") {
-			std::cout << "Player " << playerIndex << "ragequits. A computer will now take over.";
+			std::cout << "Player " << playerIndex << " ragequits. A computer will now take over." << std::endl;
 			players_[playerIndex]->setHuman(false);
 			turnComplete = true;
 			robotTurn(playerIndex);
@@ -178,14 +184,28 @@ void Straights::robotTurn(int playerIndex) {
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
 	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
 	if(legalPlaysInHand.size() > 0) {
-		playCard(playerIndex, legalPlaysInHand.at(0));
+
+		bool firstPlay = false;
+		Card card = *new Card(SUIT_COUNT, RANK_COUNT);
+		for(std::vector<Card>::iterator it = legalPlaysInHand.begin(); it != legalPlaysInHand.end(); ++it) {
+			if((it->getSuit() == SPADE) && (it->getRank() == SEVEN)) {		
+				card = *it;
+				firstPlay = true;
+			}
+		}
+
+		if(firstPlay) {
+			playCard(playerIndex, card);
+		} else {
+			playCard(playerIndex, legalPlaysInHand.at(0));
+		}
 	} else {
-		playCard(playerIndex, currentHand.at(0));
+		discardCard(playerIndex, currentHand.at(0));
 	}
 }
 
 void Straights::playCard(int playerIndex, Card card) {
-	players_[playerIndex]->removeCardFromHand(&card);
+	players_[playerIndex]->removeCardFromHand(card);
 
 	Suit suit = card.getSuit();
 	std::vector<Card> suitVector;
@@ -199,17 +219,17 @@ void Straights::playCard(int playerIndex, Card card) {
 		tableSpades_.push_back(card);
 	}
 
-	std::cout << "Player " << playerIndex << " plays " << card << ".";
+	std::cout << "Player " << playerIndex+1 << " plays " << card << "." << std::endl;
 }
 
 void Straights::discardCard(int playerIndex, Card card) {
-	players_[playerIndex]->removeCardFromHand(&card);
+	players_[playerIndex]->removeCardFromHand(card);
 	players_[playerIndex]->addCardToDiscards(card);
 
-	int rankInt = card.getRank();
+	int rankInt = card.getRank() + 1;
 	players_[playerIndex]->addToRoundScore(rankInt);
 
-	std::cout << "Player " << playerIndex << " discards " << card << ".";
+	std::cout << "Player " << playerIndex+1 << " discards " << card << "." <<std::endl;
 }
 
 std::vector<Card> Straights::getLegalPlays(std::vector<Card> vector) {
@@ -280,7 +300,6 @@ void Straights::generateGameOrder(int startingPlayer) {
 }
 
 void Straights::createInitialHands() {
-	generateDeck();
 	shuffleDeck();
 
 	int handSize = CARD_COUNT/NUMBER_OF_PLAYERS; //Assuming hands will be evenly divisible

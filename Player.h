@@ -1,4 +1,4 @@
-#include "Card.h"
+#include "Card.cpp"
 #include <vector>
 
 class Player {
@@ -18,7 +18,8 @@ public:
 	std::vector<Card> discards();
 	void addCardToHand(Card);
 	void addCardToDiscards(Card);
-	void removeCardFromHand(Card *);
+	void clearDiscards();
+	void removeCardFromHand(Card);
 	void updateHand(std::vector<Card>);
 private:
 	bool isHuman_;

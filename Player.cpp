@@ -3,6 +3,8 @@
 
 Player::Player(std::string input) {
 	isHuman_ = (input == "h" || input == "H") ? true : false;
+	roundScore_ = 0;
+	totalScore_ = 0;
 }
 
 int Player::roundScore() const{
@@ -33,6 +35,10 @@ std::vector<Card> Player::discards() {
 	return discards_;
 }
 
+void Player::clearDiscards() {
+	discards_.clear();
+}
+
 void Player::addCardToHand(Card card) {
 	cards_.push_back(card);
 }
@@ -42,16 +48,15 @@ void Player::addCardToDiscards(Card card) {
 }
 
 
-void Player::removeCardFromHand(Card *card) {
+void Player::removeCardFromHand(Card card) {
 	int index = 0;
 	for(std::vector<Card>::iterator it = cards_.begin(); it != cards_.end(); ++it) {
-		if(&it && &card) {
+		if(*it == card) {
 			break;
 		} else {
 			index ++;
 		}
 	}
-	std::cout << "Erasing :" << &card << std::endl;
 	cards_.erase(cards_.begin() + index);
 }
 

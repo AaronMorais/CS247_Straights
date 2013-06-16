@@ -1,6 +1,5 @@
 TODO
 
-Fix removing card from hand for player class
 Fix include structure with makefile
 
 COMPLETED
@@ -27,3 +26,4 @@ Gameloop
 Quit
 Human Player
 	- Socring
+Fix removing card from hand for player class
