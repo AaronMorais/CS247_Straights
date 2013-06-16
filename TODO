@@ -1,9 +1,10 @@
 TODO
+
+Gameloop 
+	- break out of gameloop
+	- when they run out of cards and nobody has lost they need more cards!
 Quit
 Human Player
-	- Print hand
-		> Who's the player
-		> What are the legal moves
 	- Play - Submit Move
 		> Is move legal
 	- Discard 
@@ -22,3 +23,7 @@ Shuffle Deck
 	- with random seed
 	- without random seed
 Inviting Players
+Human Player
+	- Print hand
+		> Who's the player
+		> What are the legal moves
