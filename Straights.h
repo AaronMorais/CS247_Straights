@@ -5,6 +5,7 @@
 const int NUMBER_OF_PLAYERS = 4;
 const int CARD_COUNT = 52;
 const int DECK_CARDS_PER_LINE = 13;
+const int GAME_OVER_SCORE = 80;
 
 class Straights {
 public:
@@ -37,4 +38,6 @@ private:
 	std::vector<Card> tableSpades_;
 	void printCardVector(std::vector<Card>);
 	void printCardVectorRanks(std::vector<Card>);
+
+	void printRoundEnd(int);
 };

@@ -4,16 +4,26 @@
 class Player {
 public:
 	Player(std::string);
-	int currentScore() const;
+	int totalScore() const;
+	int roundScore() const;
+
 	bool isHuman() const;
 	void setHuman(bool isHuman);
-	void addToScore(int);
+
+	void addToRoundScore(int);
+	void resetRoundScore();
+	void addToTotalScore(int);
+
 	std::vector<Card> currentHand();
+	std::vector<Card> discards();
 	void addCardToHand(Card);
+	void addCardToDiscards(Card);
 	void removeCardFromHand(Card *);
 	void updateHand(std::vector<Card>);
 private:
 	bool isHuman_;
-	int score_;
+	int totalScore_;
+	int roundScore_;
 	std::vector<Card> cards_;
+	std::vector<Card> discards_;
 };

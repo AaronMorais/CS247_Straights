@@ -5,21 +5,42 @@ Player::Player(std::string input) {
 	isHuman_ = (input == "h" || input == "H") ? true : false;
 }
 
-int Player::currentScore() const{
-	return score_;
+int Player::roundScore() const{
+	return roundScore_;
 }
 
-void Player::addToScore(int addition) {
-	score_ += addition;
+int Player::totalScore() const {
+	return totalScore_;
+}
+
+void Player::addToRoundScore(int addition) {
+	roundScore_ += addition;
+}
+
+void Player::resetRoundScore() {
+	roundScore_ = 0;
+}
+
+void Player::addToTotalScore(int addition) {
+	totalScore_ +=addition;
 }
 
 std::vector<Card> Player::currentHand() {
 	return cards_;
 }
 
+std::vector<Card> Player::discards() {
+	return discards_;
+}
+
 void Player::addCardToHand(Card card) {
 	cards_.push_back(card);
 }
+
+void Player::addCardToDiscards(Card card) {
+	discards_.push_back(card);
+}
+
 
 void Player::removeCardFromHand(Card *card) {
 	int index = 0;

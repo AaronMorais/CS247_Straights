@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include "limits.h"
 
 Straights::Straights() {
 	invitePlayers();
@@ -21,24 +22,65 @@ void Straights::invitePlayers() {
 }
 
 void Straights::playGame() {
-	//game over cases here
-	//reshuffle deck cases here as well
-	while(true) {
+	bool gameOver = false;
+	while(!gameOver) {
+		int cardsRemaining = CARD_COUNT/NUMBER_OF_PLAYERS; //Assuming hands will be evenly divisible
+		while(cardsRemaining != 0) {
+			for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+				int currentPlayerIndex = gameOrder[i];
+				if(i==0) {
+					std::cout << "A new round begins. It's player " << (currentPlayerIndex+1) << "'s turn to play." << std::endl; 
+				}
+				if(players_[currentPlayerIndex]->isHuman()) {
+					humanTurn(currentPlayerIndex);
+				} else {
+					robotTurn(currentPlayerIndex);
+				}
+			}
+			cardsRemaining--;
+		}
+
+		int minimumPlayer = 0;
+		int minimumScore = INT_MAX;
+
 		for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
-			int currentPlayerIndex = gameOrder[i];
-			if(i==0) {
-				std::cout << "A new round begins. It's player " << (currentPlayerIndex+1) << "'s turn to play." << std::endl; 
+			printRoundEnd(i);
+
+			int score = players_[i]->totalScore();
+			if(score >= GAME_OVER_SCORE) {
+				gameOver = true;
 			}
-			if(players_[currentPlayerIndex]->isHuman()) {
-				humanTurn(currentPlayerIndex);
-			} else {
-				robotTurn(currentPlayerIndex);
+			if(score < minimumScore) {
+				minimumPlayer = i;
+				minimumScore = score;
 			}
+		}
+		if(gameOver) {
+			for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+				int score = players_[i]->totalScore();
+				if(score == minimumScore) {
+					std::cout << "Player " << i << " wins!" << std::endl;
+				}
+			}
+		} else {
+			createInitialHands();
 		}
 	}
 }
 
-//WHAT IF THEY HAVE NO CARDS LEFT???
+void Straights::printRoundEnd(int playerIndex) {
+	Player *player = players_[playerIndex];
+
+	std::cout << "Player " << playerIndex << "'s discards: ";
+	printCardVector(player->discards());
+
+	std::cout << "Player " << playerIndex << "'s score: " << player->totalScore() << " + " << player->roundScore();
+	std::cout << " = " << (player->totalScore() + player->roundScore());
+
+	player->addToTotalScore(player->roundScore());
+	player->resetRoundScore();
+}
+
 //FIX removing cards!
 void Straights::humanTurn(int playerIndex) {
 	std::cout << "Cards on the table:" << std::endl;
@@ -162,9 +204,10 @@ void Straights::playCard(int playerIndex, Card card) {
 
 void Straights::discardCard(int playerIndex, Card card) {
 	players_[playerIndex]->removeCardFromHand(&card);
+	players_[playerIndex]->addCardToDiscards(card);
 
 	int rankInt = card.getRank();
-	players_[playerIndex]->addToScore(rankInt);
+	players_[playerIndex]->addToRoundScore(rankInt);
 
 	std::cout << "Player " << playerIndex << " discards " << card << ".";
 }

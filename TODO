@@ -1,14 +1,7 @@
 TODO
 
-Gameloop 
-	- break out of gameloop
-	- when they run out of cards and nobody has lost they need more cards!
-Quit
-Human Player
-	- Socring
 Fix removing card from hand for player class
 Fix include structure with makefile
-
 
 COMPLETED
 Generate Deck
@@ -28,3 +21,9 @@ Computer Player
 	- Play 
 	- Discard
 Ragequit
+Gameloop 
+	- break out of gameloop
+	- when they run out of cards and nobody has lost they need more cards!
+Quit
+Human Player
+	- Socring
