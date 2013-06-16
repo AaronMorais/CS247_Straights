@@ -87,7 +87,6 @@ void Straights::printRoundEnd(int playerIndex) {
 	player->clearDiscards();
 }
 
-//FIX removing cards!
 void Straights::humanTurn(int playerIndex) {
 	std::cout << "Cards on the table:" << std::endl;
 
@@ -156,7 +155,10 @@ void Straights::humanTurn(int playerIndex) {
 				if((i%DECK_CARDS_PER_LINE) == 0 && i>0) {
 					std::cout << std::endl;
 				}
-				std::cout << *cards_[i] << " ";
+				std::cout << *cards_[i];
+				if(((i+1)%DECK_CARDS_PER_LINE) != 0) {
+					std::cout << " ";
+				}
 			}
 			std::cout << std::endl;
 
@@ -274,15 +276,23 @@ bool Straights::isLegalCard(Card card) {
 }
 
 void Straights::printCardVectorRanks(std::vector<Card> vector) {
-	for(std::vector<Card>::iterator it = vector.begin(); it != vector.end(); ++it) {
-	    std::cout << it->getRank() << " ";
+	int size = vector.size();
+	for(std::vector<Card>::size_type i = 0; i != size; i++) {
+	    std::cout << vector[i].getRank();
+		if(i != (size-1)) {
+		    std::cout << " ";
+		}
 	}
 	std::cout << std::endl;
 }
 
 void Straights::printCardVector(std::vector<Card> vector) {
-	for(std::vector<Card>::iterator it = vector.begin(); it != vector.end(); ++it) {
-	    std::cout << *it << " ";
+	int size = vector.size();
+	for(std::vector<Card>::size_type i = 0; i != size; i++) {
+	    std::cout << vector[i];
+		if(i != (size-1)) {
+		    std::cout << " ";
+		}
 	}
 	std::cout << std::endl;
 }
