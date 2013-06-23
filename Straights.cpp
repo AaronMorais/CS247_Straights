@@ -166,7 +166,7 @@ void Straights::humanTurn(int playerIndex) {
 			exit(0);
 
 		} else if(command == "ragequit") {
-			std::cout << "Player " << playerIndex << " ragequits. A computer will now take over." << std::endl;
+			std::cout << "Player " << playerIndex+1 << " ragequits. A computer will now take over." << std::endl;
 			players_[playerIndex]->setHuman(false);
 			turnComplete = true;
 			robotTurn(playerIndex);
