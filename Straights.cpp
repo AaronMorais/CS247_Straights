@@ -278,11 +278,11 @@ bool Straights::isLegalCard(Card card) {
 
 void Straights::printCardVectorRanks(std::vector<Card> vector) {
 	int size = vector.size();
+	string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
+		"7", "8", "9", "10", "J", "Q", "K"};
 	for(std::vector<Card>::size_type i = 0; i != size; i++) {
-	    std::cout << vector[i].getRank();
-		if(i != (size-1)) {
-		    std::cout << " ";
-		}
+	    std::cout << " ";
+	    std::cout << (ranks[vector[i].getRank()]);
 	}
 	std::cout << std::endl;
 }
