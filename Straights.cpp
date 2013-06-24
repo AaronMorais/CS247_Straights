@@ -22,6 +22,60 @@ void Straights::invitePlayers() {
 	}
 }
 
+void Straights::generateDeck() {
+	int cardIndex = 0;
+	for(int suitInt=CLUB; suitInt != SUIT_COUNT; suitInt++) {
+		for(int rankInt=ACE; rankInt != RANK_COUNT; rankInt++) {
+			cards_[cardIndex] = new Card(static_cast<Suit>(suitInt), static_cast<Rank>(rankInt));
+			cardIndex++;
+		}
+	}
+}
+
+void Straights::createInitialHands() {
+	shuffleDeck();
+
+	int handSize = CARD_COUNT/NUMBER_OF_PLAYERS; //Assuming hands will be evenly divisible
+	int cardIndex = 0;
+	int startingPlayer = 0;
+
+	for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+		for(int j=cardIndex; j<(cardIndex+handSize);j++) {
+			players_[i]->addCardToHand(*cards_[j]);
+
+			if((cards_[j]->getSuit() == SPADE) && (cards_[j]->getRank() == SEVEN)) {
+				startingPlayer = i;
+			}
+		}
+		cardIndex +=handSize;
+	}
+	generateGameOrder(startingPlayer);
+}
+
+void Straights::shuffleDeck() {
+	int n = CARD_COUNT;
+
+	while ( n > 1 ) {
+		int k = (int) (lrand48() % n);
+		--n;
+		Card *c = cards_[n];
+		cards_[n] = cards_[k];
+		cards_[k] = c;
+	}
+}
+
+void Straights::generateGameOrder(int startingPlayer) {
+	int index = 0;
+	for(int i = startingPlayer; i<NUMBER_OF_PLAYERS; i++) {
+		gameOrder[index] = i;
+		index++;
+	}
+	for(int j=0; j<startingPlayer; j++) {
+		gameOrder[index] = j;
+		index++;
+	}
+}
+
 void Straights::playGame() {
 	bool gameOver = false;
 	while(!gameOver) {
@@ -71,23 +125,6 @@ void Straights::playGame() {
 			tableSpades_.clear();
 		}
 	}
-}
-
-void Straights::printRoundEnd(int playerIndex) {
-	Player *player = players_[playerIndex];
-
-	std::cout << "Player " << (playerIndex+1) << "'s discards:";
-	if(player->discards().size() == 0) {
-		std::cout << " ";
-	}
-	printCardVector(player->discards());
-
-	std::cout << "Player " << (playerIndex+1) << "'s score: " << player->totalScore() << " + " << player->roundScore();
-	std::cout << " = " << (player->totalScore() + player->roundScore()) << std::endl;
-
-	player->addToTotalScore(player->roundScore());
-	player->resetRoundScore();
-	player->clearDiscards();
 }
 
 void Straights::humanTurn(int playerIndex) {
@@ -276,6 +313,23 @@ bool Straights::isLegalCard(Card card) {
 	return false;
 }
 
+void Straights::printRoundEnd(int playerIndex) {
+	Player *player = players_[playerIndex];
+
+	std::cout << "Player " << (playerIndex+1) << "'s discards:";
+	if(player->discards().size() == 0) {
+		std::cout << " ";
+	}
+	printCardVector(player->discards());
+
+	std::cout << "Player " << (playerIndex+1) << "'s score: " << player->totalScore() << " + " << player->roundScore();
+	std::cout << " = " << (player->totalScore() + player->roundScore()) << std::endl;
+
+	player->addToTotalScore(player->roundScore());
+	player->resetRoundScore();
+	player->clearDiscards();
+}
+
 void Straights::printCardVectorRanks(std::vector<Card> vector) {
 	int size = vector.size();
 	string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
@@ -294,60 +348,6 @@ void Straights::printCardVector(std::vector<Card> vector) {
 	    std::cout << vector[i];
 	}
 	std::cout << std::endl;
-}
-
-void Straights::generateGameOrder(int startingPlayer) {
-	int index = 0;
-	for(int i = startingPlayer; i<NUMBER_OF_PLAYERS; i++) {
-		gameOrder[index] = i;
-		index++;
-	}
-	for(int j=0; j<startingPlayer; j++) {
-		gameOrder[index] = j;
-		index++;
-	}
-}
-
-void Straights::createInitialHands() {
-	shuffleDeck();
-
-	int handSize = CARD_COUNT/NUMBER_OF_PLAYERS; //Assuming hands will be evenly divisible
-	int cardIndex = 0;
-	int startingPlayer = 0;
-
-	for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
-		for(int j=cardIndex; j<(cardIndex+handSize);j++) {
-			players_[i]->addCardToHand(*cards_[j]);
-
-			if((cards_[j]->getSuit() == SPADE) && (cards_[j]->getRank() == SEVEN)) {
-				startingPlayer = i;
-			}
-		}
-		cardIndex +=handSize;
-	}
-	generateGameOrder(startingPlayer);
-}
-
-void Straights::generateDeck() {
-	int cardIndex = 0;
-	for(int suitInt=CLUB; suitInt != SUIT_COUNT; suitInt++) {
-		for(int rankInt=ACE; rankInt != RANK_COUNT; rankInt++) {
-			cards_[cardIndex] = new Card(static_cast<Suit>(suitInt), static_cast<Rank>(rankInt));
-			cardIndex++;
-		}
-	}
-}
-
-void Straights::shuffleDeck() {
-	int n = CARD_COUNT;
-
-	while ( n > 1 ) {
-		int k = (int) (lrand48() % n);
-		--n;
-		Card *c = cards_[n];
-		cards_[n] = cards_[k];
-		cards_[k] = c;
-	}
 }
 
 int main(int argc, char *argv[]) {
