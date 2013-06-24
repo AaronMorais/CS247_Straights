@@ -76,7 +76,10 @@ void Straights::playGame() {
 void Straights::printRoundEnd(int playerIndex) {
 	Player *player = players_[playerIndex];
 
-	std::cout << "Player " << (playerIndex+1) << "'s discards: ";
+	std::cout << "Player " << (playerIndex+1) << "'s discards:";
+	if(player->discards().size() == 0) {
+		std::cout << " ";
+	}
 	printCardVector(player->discards());
 
 	std::cout << "Player " << (playerIndex+1) << "'s score: " << player->totalScore() << " + " << player->roundScore();
@@ -90,24 +93,24 @@ void Straights::printRoundEnd(int playerIndex) {
 void Straights::humanTurn(int playerIndex) {
 	std::cout << "Cards on the table:" << std::endl;
 
-	std::cout << "Clubs: ";
+	std::cout << "Clubs:";
 	printCardVectorRanks(tableClubs_);
 
-	std::cout << "Diamonds: ";
+	std::cout << "Diamonds:";
 	printCardVectorRanks(tableDiamonds_);
 
-	std::cout << "Hearts: ";
+	std::cout << "Hearts:";
 	printCardVectorRanks(tableHearts_);
 
-	std::cout << "Spades: ";
+	std::cout << "Spades:";
 	printCardVectorRanks(tableSpades_);
 
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
-	std::cout << "Your hand: ";
+	std::cout << "Your hand:";
 	printCardVector(currentHand);
 
 	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
-	std::cout << "Legal plays: ";
+	std::cout << "Legal Plays:";
 	printCardVector(legalPlaysInHand);
 
 	bool turnComplete = false;
@@ -156,9 +159,7 @@ void Straights::humanTurn(int playerIndex) {
 					std::cout << std::endl;
 				}
 				std::cout << *cards_[i];
-				if(((i+1)%DECK_CARDS_PER_LINE) != 0) {
-					std::cout << " ";
-				}
+				std::cout << " ";
 			}
 			std::cout << std::endl;
 
@@ -289,10 +290,8 @@ void Straights::printCardVectorRanks(std::vector<Card> vector) {
 void Straights::printCardVector(std::vector<Card> vector) {
 	int size = vector.size();
 	for(std::vector<Card>::size_type i = 0; i != size; i++) {
+	    std::cout << " ";
 	    std::cout << vector[i];
-		if(i != (size-1)) {
-		    std::cout << " ";
-		}
 	}
 	std::cout << std::endl;
 }
