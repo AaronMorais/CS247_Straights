@@ -187,21 +187,7 @@ void Straights::robotTurn(int playerIndex) {
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
 	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
 	if(legalPlaysInHand.size() > 0) {
-
-		bool firstPlay = false;
-		Card card = *new Card(SUIT_COUNT, RANK_COUNT);
-		for(std::vector<Card>::iterator it = legalPlaysInHand.begin(); it != legalPlaysInHand.end(); ++it) {
-			if((it->getSuit() == SPADE) && (it->getRank() == SEVEN)) {		
-				card = *it;
-				firstPlay = true;
-			}
-		}
-
-		if(firstPlay) {
-			playCard(playerIndex, card);
-		} else {
-			playCard(playerIndex, legalPlaysInHand.at(0));
-		}
+		playCard(playerIndex, legalPlaysInHand.at(0));
 	} else {
 		discardCard(playerIndex, currentHand.at(0));
 	}
@@ -237,7 +223,13 @@ void Straights::discardCard(int playerIndex, Card card) {
 
 std::vector<Card> Straights::getLegalPlays(std::vector<Card> vector) {
 	std::vector<Card> legalPlaysInHand;
+
 	for(std::vector<Card>::iterator it = vector.begin(); it != vector.end(); ++it) {
+		if((it->getSuit() == SPADE) && (it->getRank() == SEVEN)) {		
+			std::vector<Card> firstMoveHand;
+			firstMoveHand.push_back(*it);
+			return firstMoveHand;
+		}
 		if(isLegalCard(*it)) {
 			legalPlaysInHand.push_back(*it);
 		}
