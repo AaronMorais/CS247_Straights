@@ -343,10 +343,11 @@ void Straights::printCardVector(std::vector<Card> vector) {
 }
 
 int main(int argc, char *argv[]) {
+	int seed = 0;
 	if(argc > 1) {
-		int seed = atoi(argv[1]);
-		srand48(seed);
+		seed = atoi(argv[1]);
 	}  
+    srand48(seed);
 
 	Straights *straightsGame = new Straights();
 }
