@@ -1,4 +1,4 @@
-#include "Player.cpp"
+#include "Player.h"
 #include <vector>
 
 const int NUMBER_OF_PLAYERS = 4;

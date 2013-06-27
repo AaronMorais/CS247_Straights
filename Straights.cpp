@@ -155,7 +155,7 @@ void Straights::humanTurn(int playerIndex) {
 		std::string command = humanInput();
 		if(command == "play") {
 			Card card = *new Card(SUIT_COUNT, RANK_COUNT);
-			cin >> card;
+			std::cin >> card;
 
 			bool validCard = false;
 			for(std::vector<Card>::iterator it = legalPlaysInHand.begin(); it != legalPlaysInHand.end(); ++it) {
@@ -172,7 +172,7 @@ void Straights::humanTurn(int playerIndex) {
 
 		} else if(command == "discard") {
 			Card card = *new Card(SUIT_COUNT, RANK_COUNT);
-			cin >> card;
+			std::cin >> card;
 
 			if(legalPlaysInHand.size() > 0) {
 				std::cout << "You have a legal play. You may not discard." << std::endl;
@@ -215,7 +215,7 @@ void Straights::humanTurn(int playerIndex) {
 std::string Straights::humanInput() {
 	std::cout << ">";
 	std::string command = "";
-	cin >> command;
+	std::cin >> command;
 	assert(command == "play"|| command == "discard"|| command == "deck"|| command == "quit"|| command == "ragequit");
 	return command;
 }
@@ -324,7 +324,7 @@ void Straights::printRoundEnd(int playerIndex) {
 
 void Straights::printCardVectorRanks(std::vector<Card> vector) {
 	int size = vector.size();
-	string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
+	std::string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
 		"7", "8", "9", "10", "J", "Q", "K"};
 	for(std::vector<Card>::size_type i = 0; i != size; i++) {
 	    std::cout << " ";
