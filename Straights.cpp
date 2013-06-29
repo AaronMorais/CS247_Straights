@@ -95,7 +95,6 @@ void Straights::playGame() {
 			cardsRemaining--;
 		}
 
-		int minimumPlayer = 0;
 		int minimumScore = INT_MAX;
 
 		for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
@@ -106,7 +105,6 @@ void Straights::playGame() {
 				gameOver = true;
 			}
 			if(score < minimumScore) {
-				minimumPlayer = i;
 				minimumScore = score;
 			}
 		}
