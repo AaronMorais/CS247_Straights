@@ -124,7 +124,7 @@ void Straights::playGame() {
 }
 
 void Straights::humanTurn(int playerIndex) {
-	std::cout << "Cards on the table:" << std::endl;
+	std::cout << "Cards on the table: " << std::endl;
 
 	std::cout << "Clubs:";
 	printCardVectorRanks(table_.getClubs());
@@ -143,8 +143,12 @@ void Straights::humanTurn(int playerIndex) {
 	printCardVector(currentHand);
 
 	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
-	std::cout << "Legal Plays:";
-	printCardVector(legalPlaysInHand);
+	std::cout << "Legal plays:";
+	if(legalPlaysInHand.size() == 0) {
+		std::cout << " " << std::endl;
+	} else {
+		printCardVector(legalPlaysInHand);
+	}
 
 	bool turnComplete = false;
 	while(!turnComplete) {
@@ -321,9 +325,21 @@ void Straights::printCardVectorRanks(std::vector<Card> vector) {
 	int size = vector.size();
 	std::string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
 		"7", "8", "9", "10", "J", "Q", "K"};
-	for(std::vector<Card>::size_type i = 0; i != size; i++) {
-	    std::cout << " ";
-	    std::cout << (ranks[vector[i].getRank()]);
+	for(int j=0; j < RANK_COUNT; j++) {
+		bool rankFound = false;
+		for(std::vector<Card>::size_type i = 0; i != size; i++) {
+			if(vector[i].getRank() == j) {
+				rankFound = true;
+				break;
+			}
+		}
+		if(rankFound) {
+		    std::cout << " ";
+		    std::cout << ranks[j];
+		}
+	}
+	if(size == 0) {
+		std::cout << " ";
 	}
 	std::cout << std::endl;
 }
@@ -331,7 +347,7 @@ void Straights::printCardVectorRanks(std::vector<Card> vector) {
 void Straights::printCardVector(std::vector<Card> vector) {
 	int size = vector.size();
 	for(std::vector<Card>::size_type i = 0; i != size; i++) {
-	    std::cout << " ";
+		std::cout << " ";
 	    std::cout << vector[i];
 	}
 	std::cout << std::endl;
