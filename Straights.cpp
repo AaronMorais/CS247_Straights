@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <cassert>
+#include <cstdlib>
 #include "limits.h"
 
 Straights::Straights() {
