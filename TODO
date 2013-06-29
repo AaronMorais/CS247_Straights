@@ -1,7 +1,9 @@
 TODO
 
-Fix include structure with makefile
-Refactor the code? 
+UML
+Code remarks and abstraction 
+Fix memory leaks with valgrind
+'hhhh' is a valid input according to stephen. Investigate and potentially fix.
 
 COMPLETED
 Generate Deck
@@ -28,3 +30,4 @@ Quit
 Human Player
 	- Socring
 Fix removing card from hand for player class
+Fix include structure with makefile
