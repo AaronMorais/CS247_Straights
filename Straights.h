@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Table.h"
 #include <vector>
 
 const int NUMBER_OF_PLAYERS = 4;
@@ -31,10 +32,7 @@ private:
 
 	Player *players_[NUMBER_OF_PLAYERS]; 
 
-	std::vector<Card> tableClubs_;
-	std::vector<Card> tableDiamonds_;
-	std::vector<Card> tableHearts_;
-	std::vector<Card> tableSpades_;
+	Table table_;
 	void printCardVector(std::vector<Card>);
 	void printCardVectorRanks(std::vector<Card>);
 

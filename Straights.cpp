@@ -118,10 +118,7 @@ void Straights::playGame() {
 			}
 		} else {
 			createInitialHands();
-			tableClubs_.clear();
-			tableDiamonds_.clear();
-			tableHearts_.clear();
-			tableSpades_.clear();
+			table_.empty();
 		}
 	}
 }
@@ -130,16 +127,16 @@ void Straights::humanTurn(int playerIndex) {
 	std::cout << "Cards on the table:" << std::endl;
 
 	std::cout << "Clubs:";
-	printCardVectorRanks(tableClubs_);
+	printCardVectorRanks(table_.getClubs());
 
 	std::cout << "Diamonds:";
-	printCardVectorRanks(tableDiamonds_);
+	printCardVectorRanks(table_.getDiamonds());
 
 	std::cout << "Hearts:";
-	printCardVectorRanks(tableHearts_);
+	printCardVectorRanks(table_.getHearts());
 
 	std::cout << "Spades:";
-	printCardVectorRanks(tableSpades_);
+	printCardVectorRanks(table_.getSpades());
 
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
 	std::cout << "Your hand:";
@@ -233,15 +230,14 @@ void Straights::playCard(int playerIndex, Card card) {
 	players_[playerIndex]->removeCardFromHand(card);
 
 	Suit suit = card.getSuit();
-	std::vector<Card> suitVector;
 	if(suit == CLUB) {
-		tableClubs_.push_back(card);
+		table_.addClubs(card);
 	} else if(suit == DIAMOND) {
-		tableDiamonds_.push_back(card);
+		table_.addDiamonds(card);
 	} else if(suit == HEART) {
-		tableHearts_.push_back(card);
+		table_.addHearts(card);
 	} else if(suit == SPADE) {
-		tableSpades_.push_back(card);
+		table_.addSpades(card);
 	}
 
 	std::cout << "Player " << playerIndex+1 << " plays " << card << "." << std::endl;
@@ -286,13 +282,13 @@ bool Straights::isLegalCard(Card card) {
 
 	std::vector<Card> suitVector;
 	if(suit == CLUB) {
-		suitVector = tableClubs_;
+		suitVector = table_.getClubs();
 	} else if(suit == DIAMOND) {
-		suitVector = tableDiamonds_;
+		suitVector = table_.getDiamonds();
 	} else if(suit == HEART) {
-		suitVector = tableHearts_;
+		suitVector = table_.getHearts();
 	} else if(suit == SPADE) {
-		suitVector = tableSpades_;
+		suitVector = table_.getSpades();
 	}
 	for(std::vector<Card>::iterator it = suitVector.begin(); it != suitVector.end(); ++it) {
 		Rank cardRank = it->getRank();
