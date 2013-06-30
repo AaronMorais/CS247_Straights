@@ -1,3 +1,6 @@
+#ifndef _STRAIGHTS_
+#define _STRAIGHTS_
+
 #include "Player.h"
 #include "Table.h"
 #include "Command.h"
@@ -37,3 +40,5 @@ private:
 
 	void printRoundEnd(int);
 };
+
+#endif

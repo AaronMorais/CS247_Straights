@@ -1,5 +1,4 @@
 #include "Straights.h"
-#include "Command.h"
 #include <iostream>
 #include <vector>
 #include <cassert>

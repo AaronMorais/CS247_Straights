@@ -1,3 +1,6 @@
+#ifndef _PLAYER_
+#define _PLAYER_
+
 #include "Card.h"
 #include <vector>
 
@@ -27,3 +30,5 @@ private:
 	std::vector<Card> cards_;
 	std::vector<Card> discards_;
 };
+
+#endif
