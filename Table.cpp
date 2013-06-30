@@ -16,7 +16,7 @@ void Table::addSpades(Card card){
 	spades_.push_back(card);
 }
 
-void Table::empty(){
+void Table::empty(){ //clears all card vectors
 	clubs_.clear();		
 	diamonds_.clear();
 	hearts_.clear();		
@@ -24,17 +24,16 @@ void Table::empty(){
 }
 
 bool Table::isLegalCard(Card card) const{
-	Suit suit = card.getSuit();
+	Suit suit = card.getSuit(); //gets detail of card
 	Rank rank = card.getRank();
-	if(rank == SEVEN) {
+	if(rank == SEVEN) { //7 of any suit is always a legal move
 		return true;
 	}
-	int rankInt = rank;
-	//TODO - find out why using -- and ++ was behaving incorrectly
-	int left = rankInt - 1;
+	int rankInt = rank; 
+	int left = rankInt - 1; //cards of adjacent rank are legal
 	int right = rankInt + 1;
 
-	std::vector<Card> suitVector;
+	std::vector<Card> suitVector; //get all cards on the table with the legal suit
 	if(suit == CLUB) {
 		suitVector = clubs_;
 	} else if(suit == DIAMOND) {
@@ -44,35 +43,38 @@ bool Table::isLegalCard(Card card) const{
 	} else if(suit == SPADE) {
 		suitVector = spades_;
 	}
+
+	//iterate through all previously played cards with the same suit and determine if it is of adjacent rank
 	for(std::vector<Card>::iterator it = suitVector.begin(); it != suitVector.end(); ++it) {
 		Rank cardRank = it->getRank();
 		int cardRankInt = cardRank;
 		if(cardRank == left || cardRank == right) {
-			return true;
+			return true; //card is legal
 		}
 	}
-	return false;
+	return false; //no match, card is not legal
 }
 
-void Table::printSuit(std::ostream &out, std::vector<Card> vector) const{
-	int size = vector.size();
+void Table::printSuit(std::ostream &out, std::vector<Card> vector) const{//helper function for << operator
+	int size = vector.size(); //number of cards of the suit that will be printed
 	std::string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
 		"7", "8", "9", "10", "J", "Q", "K"};
-	for(int j=0; j < RANK_COUNT; j++) {
-		bool rankFound = false;
-		for(std::vector<Card>::size_type i = 0; i != size; i++) {
-			if(vector[i].getRank() == j) {
-				rankFound = true;
-				break;
+	if(size == 0) { //no cards of this suit
+		out << " ";
+	} else {
+		for(int j=0; j < RANK_COUNT; j++) {//in order to print the cards in order
+			bool rankFound = false;
+			for(std::vector<Card>::size_type i = 0; i != size; i++) {
+				if(vector[i].getRank() == j) {//a card matching the rank was found
+					rankFound = true;
+					break;
+				}
+			}
+			if(rankFound) {
+			    out << " ";
+			    out << ranks[j];
 			}
 		}
-		if(rankFound) {
-		    out << " ";
-		    out << ranks[j];
-		}
-	}
-	if(size == 0) {
-		out << " ";
 	}
 	out << std::endl;
 }
@@ -80,7 +82,7 @@ void Table::printSuit(std::ostream &out, std::vector<Card> vector) const{
 std::ostream &operator<<(std::ostream &out, const Table &table){
 	out << "Cards on the table: " << std::endl;
 
-	out << "Clubs:";
+	out << "Clubs:"; //cards on the table are printed by suit in this order
 	table.printSuit(out, table.clubs_);
 
 	out << "Diamonds:";

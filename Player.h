@@ -20,7 +20,6 @@ public:
 	void addCardToDiscards(Card);
 	void clearDiscards();
 	void removeCardFromHand(Card);
-	void updateHand(std::vector<Card>);
 private:
 	bool isHuman_;
 	int totalScore_;

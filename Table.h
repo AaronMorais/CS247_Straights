@@ -5,18 +5,19 @@
 #include <vector>
 #include <ostream>
 
-class Table{
+class Table{ //handles the cards on the table
 	friend std::ostream &operator<<(std::ostream &, const Table &);
 public:
-	void addClubs(Card);
+	void addClubs(Card); //add club cards to the table
 	void addDiamonds(Card);
 	void addHearts(Card); 
 	void addSpades(Card);
-	void empty();
-	bool isLegalCard(Card card) const;
+	void empty(); //resets the table
+	bool isLegalCard(Card card) const; //checks the cards on the table to determine if a card is legal
 	
 private:
 	void printSuit(std::ostream &, std::vector<Card>) const;
+	//keeps tracks of cards on the table by suit
 	std::vector<Card> clubs_;
 	std::vector<Card> diamonds_;
 	std::vector<Card> hearts_;

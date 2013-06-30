@@ -60,10 +60,6 @@ void Player::removeCardFromHand(Card card) {
 	cards_.erase(cards_.begin() + index);
 }
 
-void Player::updateHand(std::vector<Card> cards) {
-	cards_ = cards;
-}
-
 void Player::setHuman(bool isHuman) {
 	isHuman_ = isHuman;
 }
