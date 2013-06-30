@@ -1,10 +1,11 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(char input) {
+Player::Player(char input, int index) {
 	isHuman_ = (input == 'h' || input == 'H') ? true : false;
 	roundScore_ = 0;
 	totalScore_ = 0;
+	playerIndex_ = index;
 }
 
 int Player::roundScore() const{
@@ -66,4 +67,14 @@ void Player::setHuman(bool isHuman) {
 
 bool Player::isHuman() const{
 	return isHuman_;
+}
+
+void Player::discardCard(Card card) {
+	removeCardFromHand(card);
+	addCardToDiscards(card);
+
+	int rankInt = card.getRank() + 1;
+	addToRoundScore(rankInt);
+
+	std::cout << "Player " << playerIndex_+1 << " discards " << card << "." <<std::endl;
 }

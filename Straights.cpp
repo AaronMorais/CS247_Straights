@@ -19,7 +19,7 @@ void Straights::invitePlayers() {
 		std::cin >> input;
 		assert(input == 'c' || input == 'C' || input == 'H' || input == 'h'); //will only accept human or computer options
 
-		players_[i] = new Player(input);
+		players_[i] = new Player(input, i);
 	}
 }
 
@@ -172,7 +172,7 @@ void Straights::humanTurn(int playerIndex) {
 				}
 				assert(validCard);
 
-				discardCard(playerIndex, command.card);
+				players_[playerIndex]->discardCard(command.card);
 				turnComplete = true;
 			}
 
@@ -205,7 +205,7 @@ void Straights::robotTurn(int playerIndex) {
 	if(legalPlaysInHand.size() > 0) {
 		playCard(playerIndex, legalPlaysInHand.at(0));
 	} else {
-		discardCard(playerIndex, currentHand.at(0));
+		players_[playerIndex]->discardCard(currentHand.at(0));
 	}
 }
 

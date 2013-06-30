@@ -6,9 +6,11 @@
 
 class Player {
 public:
-	Player(char);
+	Player(char, int);
 	int totalScore() const;
 	int roundScore() const;
+
+	void discardCard(Card);
 
 	bool isHuman() const;
 	void setHuman(bool isHuman);
@@ -24,6 +26,7 @@ public:
 	void clearDiscards();
 	void removeCardFromHand(Card);
 private:
+	int playerIndex_;
 	bool isHuman_;
 	int totalScore_;
 	int roundScore_;
