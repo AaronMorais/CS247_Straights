@@ -1,8 +1,8 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(std::string input) {
-	isHuman_ = (input == "h" || input == "H") ? true : false;
+Player::Player(char input) {
+	isHuman_ = (input == 'h' || input == 'H') ? true : false;
 	roundScore_ = 0;
 	totalScore_ = 0;
 }

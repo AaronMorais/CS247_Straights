@@ -3,7 +3,7 @@
 
 class Player {
 public:
-	Player(std::string);
+	Player(char);
 	int totalScore() const;
 	int roundScore() const;
 

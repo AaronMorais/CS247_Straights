@@ -15,9 +15,9 @@ Straights::Straights() {
 void Straights::invitePlayers() {
 	for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
 		std::cout << "Is player " << (i+1) << " a human(h) or a computer(c)?\n>";
-		std::string input = "";
+		char input;
 		std::cin >> input;
-		assert(input == "c" || input == "C" || input == "H" || input == "h");
+		assert(input == 'c' || input == 'C' || input == 'H' || input == 'h');
 
 		players_[i] = new Player(input);
 	}
@@ -124,19 +124,7 @@ void Straights::playGame() {
 }
 
 void Straights::humanTurn(int playerIndex) {
-	std::cout << "Cards on the table: " << std::endl;
-
-	std::cout << "Clubs:";
-	printCardVectorRanks(table_.getClubs());
-
-	std::cout << "Diamonds:";
-	printCardVectorRanks(table_.getDiamonds());
-
-	std::cout << "Hearts:";
-	printCardVectorRanks(table_.getHearts());
-
-	std::cout << "Spades:";
-	printCardVectorRanks(table_.getSpades());
+	std::cout << table_;
 
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
 	std::cout << "Your hand:";
@@ -319,29 +307,6 @@ void Straights::printRoundEnd(int playerIndex) {
 	player->addToTotalScore(player->roundScore());
 	player->resetRoundScore();
 	player->clearDiscards();
-}
-
-void Straights::printCardVectorRanks(std::vector<Card> vector) {
-	int size = vector.size();
-	std::string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
-		"7", "8", "9", "10", "J", "Q", "K"};
-	for(int j=0; j < RANK_COUNT; j++) {
-		bool rankFound = false;
-		for(std::vector<Card>::size_type i = 0; i != size; i++) {
-			if(vector[i].getRank() == j) {
-				rankFound = true;
-				break;
-			}
-		}
-		if(rankFound) {
-		    std::cout << " ";
-		    std::cout << ranks[j];
-		}
-	}
-	if(size == 0) {
-		std::cout << " ";
-	}
-	std::cout << std::endl;
 }
 
 void Straights::printCardVector(std::vector<Card> vector) {
