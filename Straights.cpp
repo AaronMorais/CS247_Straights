@@ -1,4 +1,5 @@
 #include "Straights.h"
+#include "Command.h"
 #include <iostream>
 #include <vector>
 #include <cassert>
@@ -6,18 +7,19 @@
 #include "limits.h"
 
 Straights::Straights() {
-	invitePlayers();
-	generateDeck();
+	invitePlayers(); //collects all the human and computer players
+	generateDeck(); //generates a deck
+	shuffleDeck(); //the deck has to be shuffled first
 	createInitialHands();
 	playGame();
 }
 
 void Straights::invitePlayers() {
-	for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+	for(int i=0; i<NUMBER_OF_PLAYERS;i++) { //assigns either human or computer for the number of players
 		std::cout << "Is player " << (i+1) << " a human(h) or a computer(c)?\n>";
 		char input;
 		std::cin >> input;
-		assert(input == 'c' || input == 'C' || input == 'H' || input == 'h');
+		assert(input == 'c' || input == 'C' || input == 'H' || input == 'h'); //will only accept human or computer options
 
 		players_[i] = new Player(input);
 	}
@@ -25,16 +27,15 @@ void Straights::invitePlayers() {
 
 void Straights::generateDeck() {
 	int cardIndex = 0;
-	for(int suitInt=CLUB; suitInt != SUIT_COUNT; suitInt++) {
-		for(int rankInt=ACE; rankInt != RANK_COUNT; rankInt++) {
-			cards_[cardIndex] = new Card(static_cast<Suit>(suitInt), static_cast<Rank>(rankInt));
+	for(int suitInt=CLUB; suitInt != SUIT_COUNT; suitInt++) { //goes through the 4 suits
+		for(int rankInt=ACE; rankInt != RANK_COUNT; rankInt++) { //goes through all ranks
+			cards_[cardIndex] = new Card(static_cast<Suit>(suitInt), static_cast<Rank>(rankInt)); //creates the cards based on the suit and ranks
 			cardIndex++;
 		}
 	}
 }
 
 void Straights::createInitialHands() {
-	shuffleDeck();
 
 	int handSize = CARD_COUNT/NUMBER_OF_PLAYERS; //Assuming hands will be evenly divisible
 	int cardIndex = 0;
@@ -140,27 +141,25 @@ void Straights::humanTurn(int playerIndex) {
 
 	bool turnComplete = false;
 	while(!turnComplete) {
-		std::string command = humanInput();
-		if(command == "play") {
-			Card card = *new Card(SUIT_COUNT, RANK_COUNT);
-			std::cin >> card;
+		std::cout << ">";
+		Command command;
+		std::cin >> command;
+		if(command.type == PLAY) {
 
 			bool validCard = false;
 			for(std::vector<Card>::iterator it = legalPlaysInHand.begin(); it != legalPlaysInHand.end(); ++it) {
-				if(*it == card) {
+				if(*it == command.card) {
 					validCard = true;
 				}
 			}
 			if(validCard) {
-				playCard(playerIndex, card);
+				playCard(playerIndex, command.card);
 				turnComplete = true;
 			} else {
 				std::cout << "This is not a legal play." << std::endl;
 			}
 
-		} else if(command == "discard") {
-			Card card = *new Card(SUIT_COUNT, RANK_COUNT);
-			std::cin >> card;
+		} else if(command.type == DISCARD) {
 
 			if(legalPlaysInHand.size() > 0) {
 				std::cout << "You have a legal play. You may not discard." << std::endl;
@@ -168,17 +167,17 @@ void Straights::humanTurn(int playerIndex) {
 			} else {
 				bool validCard = false;
 				for(std::vector<Card>::iterator it = currentHand.begin(); it != currentHand.end(); ++it) {
-					if(*it == card) {
+					if(*it == command.card) {
 						validCard = true;
 					}
 				}
 				assert(validCard);
 
-				discardCard(playerIndex, card);
+				discardCard(playerIndex, command.card);
 				turnComplete = true;
 			}
 
-		} else if(command == "deck") {
+		} else if(command.type == DECK) {
 			for(int i=0; i<CARD_COUNT;i++) {
 				if((i%DECK_CARDS_PER_LINE) == 0 && i>0) {
 					std::cout << std::endl;
@@ -188,10 +187,10 @@ void Straights::humanTurn(int playerIndex) {
 			}
 			std::cout << std::endl;
 
-		} else if(command == "quit") {
+		} else if(command.type == QUIT) {
 			exit(0);
 
-		} else if(command == "ragequit") {
+		} else if(command.type == RAGEQUIT) {
 			std::cout << "Player " << playerIndex+1 << " ragequits. A computer will now take over." << std::endl;
 			players_[playerIndex]->setHuman(false);
 			turnComplete = true;
@@ -200,13 +199,6 @@ void Straights::humanTurn(int playerIndex) {
 	}
 }
 
-std::string Straights::humanInput() {
-	std::cout << ">";
-	std::string command = "";
-	std::cin >> command;
-	assert(command == "play"|| command == "discard"|| command == "deck"|| command == "quit"|| command == "ragequit");
-	return command;
-}
 
 void Straights::robotTurn(int playerIndex) {
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();

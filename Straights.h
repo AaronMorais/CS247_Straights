@@ -1,5 +1,6 @@
 #include "Player.h"
 #include "Table.h"
+#include "Command.h"
 #include <vector>
 
 const int NUMBER_OF_PLAYERS = 4;

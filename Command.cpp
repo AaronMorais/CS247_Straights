@@ -1,6 +1,7 @@
 #include "Command.h"
 #include <cassert>
 #include <sstream>
+
 using namespace std;
 
 istream &operator>>(istream &in, Command &c){
