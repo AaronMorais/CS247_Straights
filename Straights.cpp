@@ -8,7 +8,6 @@
 Straights::Straights() {
 	invitePlayers(); //collects all the human and computer players
 	generateDeck(); //generates a deck
-	shuffleDeck(); //the deck has to be shuffled first
 	createInitialHands();
 	playGame();
 }
@@ -35,6 +34,7 @@ void Straights::generateDeck() {
 }
 
 void Straights::createInitialHands() {
+	shuffleDeck(); //the deck has to be shuffled first
 
 	int handSize = CARD_COUNT/NUMBER_OF_PLAYERS; //Assuming hands will be evenly divisible
 	int cardIndex = 0;
