@@ -12,11 +12,8 @@ public:
 	void addDiamonds(Card);
 	void addHearts(Card); 
 	void addSpades(Card);
-	std::vector<Card> getClubs();
-	std::vector<Card> getDiamonds();
-	std::vector<Card> getHearts();
-	std::vector<Card> getSpades();
 	void empty();
+	bool isLegalCard(Card card) const;
 	
 private:
 	void printSuit(std::ostream &, std::vector<Card>) const;

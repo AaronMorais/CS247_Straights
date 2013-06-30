@@ -21,7 +21,6 @@ private:
 	void playCard(int, Card);
 	void discardCard(int, Card);
 	std::vector<Card> getLegalPlays(std::vector<Card>);
-	bool isLegalCard(Card card);
 
 	int gameOrder [NUMBER_OF_PLAYERS];
 	void generateGameOrder(int);
@@ -34,7 +33,6 @@ private:
 
 	Table table_;
 	void printCardVector(std::vector<Card>);
-	void printCardVectorRanks(std::vector<Card>);
 
 	void printRoundEnd(int);
 };

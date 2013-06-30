@@ -16,27 +16,42 @@ void Table::addSpades(Card card){
 	spades_.push_back(card);
 }
 
-std::vector<Card> Table::getClubs(){
-	return clubs_;
-}
-
-std::vector<Card> Table::getDiamonds(){
-	return diamonds_;
-}
-
-std::vector<Card> Table::getHearts(){
-	return hearts_;
-}
-
-std::vector<Card> Table::getSpades(){
-	return spades_;
-}
-
 void Table::empty(){
 	clubs_.clear();		
 	diamonds_.clear();
 	hearts_.clear();		
 	spades_.clear();
+}
+
+bool Table::isLegalCard(Card card) const{
+	Suit suit = card.getSuit();
+	Rank rank = card.getRank();
+	if(rank == SEVEN) {
+		return true;
+	}
+	int rankInt = rank;
+	//TODO - find out why using -- and ++ was behaving incorrectly
+	int left = rankInt - 1;
+	int right = rankInt + 1;
+
+	std::vector<Card> suitVector;
+	if(suit == CLUB) {
+		suitVector = clubs_;
+	} else if(suit == DIAMOND) {
+		suitVector = diamonds_;
+	} else if(suit == HEART) {
+		suitVector = hearts_;
+	} else if(suit == SPADE) {
+		suitVector = spades_;
+	}
+	for(std::vector<Card>::iterator it = suitVector.begin(); it != suitVector.end(); ++it) {
+		Rank cardRank = it->getRank();
+		int cardRankInt = cardRank;
+		if(cardRank == left || cardRank == right) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void Table::printSuit(std::ostream &out, std::vector<Card> vector) const{
