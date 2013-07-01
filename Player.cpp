@@ -2,6 +2,12 @@
 #include <iostream>
 #include <cassert>
 
+Player::Player(){
+	roundScore_ = 0;
+	totalScore_ = 0;
+	playerIndex_ = 0;
+}
+
 Player::Player(char input, int index) {
 	isHuman_ = (input == 'h' || input == 'H') ? true : false;
 	roundScore_ = 0;
@@ -100,10 +106,6 @@ void Player::discardCard(Card card) {
 	addToRoundScore(rankInt);
 
 	std::cout << "Player " << playerIndex_ + 1<< " discards " << card << "." <<std::endl;
-}
-
-void Player::computerPlayCard(Table& table){
-	playCard(cards_.at(0), table);
 }
 
 bool Player::humanPlay(Card card, Table& table){

@@ -7,6 +7,7 @@
 
 class Player {
 public:
+	Player();
 	Player(char, int);
 	int totalScore() const;
 	int roundScore() const;
@@ -29,7 +30,7 @@ public:
 	void clearDiscards();
 	void removeCardFromHand(Card);
 
-	void computerPlayCard(Table&);
+	virtual void playCard(Table&){};
 
 	bool humanPlay(Card, Table&);
 	bool humanDiscard(Card);

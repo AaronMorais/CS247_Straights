@@ -1,7 +1,13 @@
 all: straights
 
-straights: Straights.cpp Straights.h Player.o Table.o Command.o Card.o
-	g++ Straights.cpp Player.o Table.o Command.o Card.o -o straights
+straights: Straights.cpp Straights.h Player.o Table.o Command.o Card.o ComputerPlayer.o HumanPlayer.o
+	g++ Straights.cpp Player.o Table.o Command.o Card.o ComputerPlayer.o HumanPlayer.o -o straights
+
+ComputerPlayer.o: ComputerPlayer.cpp ComputerPlayer.h Player.o
+	g++ -c ComputerPlayer.cpp
+
+HumanPlayer.o: HumanPlayer.cpp HumanPlayer.h Player.o
+	g++ -c HumanPlayer.cpp
 
 Player.o: Player.cpp Player.h Card.o Table.o
 	g++ -c Player.cpp

@@ -18,7 +18,9 @@ void Straights::invitePlayers() {
 		char input;
 		std::cin >> input;
 		assert(input == 'c' || input == 'C' || input == 'H' || input == 'h'); //will only accept human or computer options
-
+		if(input == 'c' || input == 'C'){
+			players_[i] = new ComputerPlayer(i);
+		}
 		players_[i] = new Player(input, i);
 	}
 }
@@ -161,6 +163,7 @@ void Straights::humanTurn(int playerIndex) {
 		} else if(command.type == RAGEQUIT) {
 			std::cout << "Player " << playerIndex+1 << " ragequits. A computer will now take over." << std::endl;
 			players_[playerIndex]->setHuman(false); //player is no longer human
+			players_[playerIndex] = new ComputerPlayer(players_[playerIndex]);
 			turnComplete = true;
 			robotTurn(playerIndex); //computer turn is executed;
 		}
@@ -171,7 +174,7 @@ void Straights::robotTurn(int playerIndex) {
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
 	players_[playerIndex]->setLegalPlays(table_);
 	if(players_[playerIndex]->legalPlays().size() > 0) {
-		players_[playerIndex]->computerPlayCard(table_);
+		players_[playerIndex]->playCard(table_);
 	} else {
 		players_[playerIndex]->discardCard(currentHand.at(0));
 	}
