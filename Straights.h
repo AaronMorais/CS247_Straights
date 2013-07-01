@@ -15,11 +15,11 @@ const int GAME_OVER_SCORE = 80;
 class Straights {
 public:
 	Straights();
+	void playGame();
 private:
 	void invitePlayers();
 	void createInitialHands();
 
-	void playGame();
 	void humanTurn(int playerIndex);
 	std::string humanInput();
 	void robotTurn(int playerIndex);

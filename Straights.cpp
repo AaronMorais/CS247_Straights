@@ -9,7 +9,6 @@ Straights::Straights() {
 	invitePlayers(); //collects all the human and computer players
 	generateDeck(); //generates a deck
 	createInitialHands();
-	playGame();
 }
 
 void Straights::invitePlayers() {
@@ -214,4 +213,5 @@ int main(int argc, char *argv[]) {
     srand48(seed);
 
 	Straights *straightsGame = new Straights();
+	straightsGame->playGame();
 }
