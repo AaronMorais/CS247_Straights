@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cassert>
 
-ComputerPlayer::ComputerPlayer(const Player& player){
+ComputerPlayer::ComputerPlayer(const Player player){
 	roundScore_ = player.roundScore();
 	totalScore_ = player.totalScore();
 	playerIndex_ = player.playerIndex();

@@ -7,7 +7,7 @@
 
 class ComputerPlayer: public Player {
 public:
-	ComputerPlayer(const Player&);
+	ComputerPlayer(const Player);
 	ComputerPlayer(int index);
 	void PlayCard(Table&);
 };
