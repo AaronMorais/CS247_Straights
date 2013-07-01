@@ -22,7 +22,7 @@ private:
 	void humanTurn(int playerIndex);
 	std::string humanInput();
 	void robotTurn(int playerIndex);
-	void playCard(int, Card);
+	
 	std::vector<Card> getLegalPlays(std::vector<Card>);
 
 	int gameOrder [NUMBER_OF_PLAYERS];

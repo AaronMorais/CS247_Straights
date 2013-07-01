@@ -146,18 +146,7 @@ void Straights::humanTurn(int playerIndex) {
 		std::cin >> command;
 		if(command.type == PLAY) {
 
-			bool validCard = false;
-			for(std::vector<Card>::iterator it = legalPlaysInHand.begin(); it != legalPlaysInHand.end(); ++it) {
-				if(*it == command.card) {
-					validCard = true;
-				}
-			}
-			if(validCard) {
-				playCard(playerIndex, command.card);
-				turnComplete = true;
-			} else {
-				std::cout << "This is not a legal play." << std::endl;
-			}
+			turnComplete = players_[playerIndex]->humanPlay(command.card, table_);
 
 		} else if(command.type == DISCARD) {
 
@@ -185,32 +174,14 @@ void Straights::humanTurn(int playerIndex) {
 	}
 }
 
-
 void Straights::robotTurn(int playerIndex) {
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
 	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
 	if(legalPlaysInHand.size() > 0) {
-		playCard(playerIndex, legalPlaysInHand.at(0));
+		players_[playerIndex]->playCard(legalPlaysInHand.at(0), table_);
 	} else {
 		players_[playerIndex]->discardCard(currentHand.at(0));
 	}
-}
-
-void Straights::playCard(int playerIndex, Card card) {
-	players_[playerIndex]->removeCardFromHand(card);
-
-	Suit suit = card.getSuit();
-	if(suit == CLUB) {
-		table_.addClubs(card);
-	} else if(suit == DIAMOND) {
-		table_.addDiamonds(card);
-	} else if(suit == HEART) {
-		table_.addHearts(card);
-	} else if(suit == SPADE) {
-		table_.addSpades(card);
-	}
-
-	std::cout << "Player " << playerIndex+1 << " plays " << card << "." << std::endl;
 }
 
 std::vector<Card> Straights::getLegalPlays(std::vector<Card> vector) {

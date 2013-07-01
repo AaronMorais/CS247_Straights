@@ -74,6 +74,24 @@ bool Player::isHuman() const{
 	return isHuman_;
 }
 
+void Player::playCard(Card card, Table &table){
+	removeCardFromHand(card);
+
+	Suit suit = card.getSuit();
+	if(suit == CLUB) {
+		table.addClubs(card);
+	} else if(suit == DIAMOND) {
+		table.addDiamonds(card);
+	} else if(suit == HEART) {
+		table.addHearts(card);
+	} else if(suit == SPADE) {
+		table.addSpades(card);
+	}
+
+	std::cout << "Player " << playerIndex_ << " plays " << card << "." << std::endl;
+}
+
+
 void Player::discardCard(Card card) {
 	removeCardFromHand(card);
 	addCardToDiscards(card);
@@ -82,6 +100,22 @@ void Player::discardCard(Card card) {
 	addToRoundScore(rankInt);
 
 	std::cout << "Player " << playerIndex_+1 << " discards " << card << "." <<std::endl;
+}
+
+bool Player::humanPlay(Card card, Table& table){
+	bool validCard = false;
+	for(std::vector<Card>::iterator it = legalPlaysInHand_.begin(); it != legalPlaysInHand_.end(); ++it) {
+		if(*it == card) {
+			validCard = true;
+		}
+	}
+	if(validCard) {
+		playCard(card, table);
+		return true;
+	} else {
+		std::cout << "This is not a legal play." << std::endl;
+		return false;
+	}
 }
 
 bool Player::humanDiscard(Card card){

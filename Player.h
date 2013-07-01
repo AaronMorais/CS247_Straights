@@ -1,6 +1,7 @@
 #ifndef _PLAYER_
 #define _PLAYER_
 
+#include "Table.h"
 #include "Card.h"
 #include <vector>
 
@@ -10,8 +11,9 @@ public:
 	int totalScore() const;
 	int roundScore() const;
 	int playerIndex() const;
-	
+
 	void discardCard(Card);
+	void playCard(Card, Table&);
 
 	bool isHuman() const;
 	void setHuman(bool isHuman);
@@ -27,6 +29,7 @@ public:
 	void clearDiscards();
 	void removeCardFromHand(Card);
 
+	bool humanPlay(Card, Table&);
 	bool humanDiscard(Card);
 	void setLegalPlaysInHand(std::vector<Card>);
 private:
