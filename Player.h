@@ -29,9 +29,12 @@ public:
 	void clearDiscards();
 	void removeCardFromHand(Card);
 
+	void computerPlayCard(Table&);
+
 	bool humanPlay(Card, Table&);
 	bool humanDiscard(Card);
-	void setLegalPlaysInHand(std::vector<Card>);
+	void setLegalPlays(Table&);
+	std::vector<Card> legalPlays();
 private:
 	std::vector<Card> legalPlaysInHand_;
 protected:	

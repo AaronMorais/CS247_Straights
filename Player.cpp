@@ -6,7 +6,7 @@ Player::Player(char input, int index) {
 	isHuman_ = (input == 'h' || input == 'H') ? true : false;
 	roundScore_ = 0;
 	totalScore_ = 0;
-	playerIndex_ = index + 1;
+	playerIndex_ = index;
 }
 
 int Player::roundScore() const{
@@ -88,7 +88,7 @@ void Player::playCard(Card card, Table &table){
 		table.addSpades(card);
 	}
 
-	std::cout << "Player " << playerIndex_ << " plays " << card << "." << std::endl;
+	std::cout << "Player " << playerIndex_ + 1 << " plays " << card << "." << std::endl;
 }
 
 
@@ -99,7 +99,11 @@ void Player::discardCard(Card card) {
 	int rankInt = card.getRank() + 1;
 	addToRoundScore(rankInt);
 
-	std::cout << "Player " << playerIndex_ << " discards " << card << "." <<std::endl;
+	std::cout << "Player " << playerIndex_ + 1<< " discards " << card << "." <<std::endl;
+}
+
+void Player::computerPlayCard(Table& table){
+	playCard(cards_.at(0), table);
 }
 
 bool Player::humanPlay(Card card, Table& table){
@@ -136,6 +140,20 @@ bool Player::humanDiscard(Card card){
 	}
 }
 
-void Player::setLegalPlaysInHand(std::vector<Card> legalPlays){
-	legalPlaysInHand_ = legalPlays;
+void Player::setLegalPlays(Table& table){
+	legalPlaysInHand_.clear();
+	for(std::vector<Card>::iterator it = cards_.begin(); it != cards_.end(); ++it) {
+		if((it->getSuit() == SPADE) && (it->getRank() == SEVEN)) {		
+			std::vector<Card> firstMoveHand;
+			firstMoveHand.push_back(*it);
+			legalPlaysInHand_ = firstMoveHand;
+			break;
+		}
+		if(table.isLegalCard(*it)) {
+			legalPlaysInHand_.push_back(*it);
+		}
+	}
+}
+std::vector<Card> Player::legalPlays(){
+	return legalPlaysInHand_;
 }

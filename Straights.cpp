@@ -40,20 +40,20 @@ void Straights::createInitialHands() {
 	int cardIndex = 0;
 	int startingPlayer = 0;
 
-	for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
-		for(int j=cardIndex; j<(cardIndex+handSize);j++) {
-			players_[i]->addCardToHand(*cards_[j]);
+	for(int i=0; i<NUMBER_OF_PLAYERS;i++) { //goes through each player
+		for(int j=cardIndex; j<(cardIndex+handSize);j++) { //only deals out handsize number of cards
+			players_[i]->addCardToHand(*cards_[j]); //takes the cards from the deck
 
 			if((cards_[j]->getSuit() == SPADE) && (cards_[j]->getRank() == SEVEN)) {
-				startingPlayer = i;
+				startingPlayer = i; //finds the starting player while dealing
 			}
 		}
-		cardIndex +=handSize;
+		cardIndex +=handSize; //move to the next card index for the next player
 	}
-	generateGameOrder(startingPlayer);
+	generateGameOrder(startingPlayer); //determines the order of the players
 }
 
-void Straights::shuffleDeck() {
+void Straights::shuffleDeck() { //given function
 	int n = CARD_COUNT;
 
 	while ( n > 1 ) {
@@ -67,11 +67,11 @@ void Straights::shuffleDeck() {
 
 void Straights::generateGameOrder(int startingPlayer) {
 	int index = 0;
-	for(int i = startingPlayer; i<NUMBER_OF_PLAYERS; i++) {
+	for(int i = startingPlayer; i<NUMBER_OF_PLAYERS; i++) { //game order starts with the startingPlayer
 		gameOrder[index] = i;
 		index++;
 	}
-	for(int j=0; j<startingPlayer; j++) {
+	for(int j=0; j<startingPlayer; j++) { //since the game ordering is circular, continue from where the other loop left off
 		gameOrder[index] = j;
 		index++;
 	}
@@ -82,8 +82,8 @@ void Straights::playGame() {
 	while(!gameOver) {
 		int cardsRemaining = CARD_COUNT/NUMBER_OF_PLAYERS; //Assuming hands will be evenly divisible
 		std::cout << "A new round begins. It's player " << (gameOrder[0]+1) << "'s turn to play." << std::endl; 
-		while(cardsRemaining != 0) {
-			for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+		while(cardsRemaining != 0) {//cards remaining in hand
+			for(int i=0; i<NUMBER_OF_PLAYERS;i++) { //goes through each players turn
 				int currentPlayerIndex = gameOrder[i];
 
 				if(players_[currentPlayerIndex]->isHuman()) {
@@ -92,19 +92,19 @@ void Straights::playGame() {
 					robotTurn(currentPlayerIndex);
 				}
 			}
-			cardsRemaining--;
+			cardsRemaining--; //every player has either played a card or discarded
 		}
 
 		int minimumScore = INT_MAX;
 
 		for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
-			printRoundEnd(i);
+			printRoundEnd(i); //print round stats for each player
 
 			int score = players_[i]->totalScore();
 			if(score >= GAME_OVER_SCORE) {
 				gameOver = true;
 			}
-			if(score < minimumScore) {
+			if(score < minimumScore) { //sets minimum score
 				minimumScore = score;
 			}
 		}
@@ -112,11 +112,11 @@ void Straights::playGame() {
 		if(gameOver) {
 			for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
 				int score = players_[i]->totalScore();
-				if(score == minimumScore) {
+				if(score == minimumScore) { //finds the winner by finding a match with the minimum score
 					std::cout << "Player " << (i+1) << " wins!" << std::endl;
 				}
 			}
-		} else {
+		} else { //new round need to create new hands and a new table
 			createInitialHands();
 			table_.empty();
 		}
@@ -124,80 +124,57 @@ void Straights::playGame() {
 }
 
 void Straights::humanTurn(int playerIndex) {
-	std::cout << table_;
-
+	std::cout << table_; //the table is first printed out
+	//next the player's hand
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
 	std::cout << "Your hand:";
 	printCardVector(currentHand);
 
-	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
-	players_[playerIndex]->setLegalPlaysInHand(legalPlaysInHand);
+	players_[playerIndex]->setLegalPlays(table_); //the player determines its legal plays based on the table
 	std::cout << "Legal plays:";
-	if(legalPlaysInHand.size() == 0) {
+	if(players_[playerIndex]->legalPlays().size() == 0) { //if there are no legal plays
 		std::cout << " " << std::endl;
 	} else {
-		printCardVector(legalPlaysInHand);
+		printCardVector(players_[playerIndex]->legalPlays()); //print the legal plays
 	}
 
-	bool turnComplete = false;
+	bool turnComplete = false; //invalid moves will result in false
 	while(!turnComplete) {
 		std::cout << ">";
 		Command command;
-		std::cin >> command;
-		if(command.type == PLAY) {
-
+		std::cin >> command; //reads command
+		if(command.type == PLAY) { //human plays a card on the table
 			turnComplete = players_[playerIndex]->humanPlay(command.card, table_);
-
-		} else if(command.type == DISCARD) {
-
+		} else if(command.type == DISCARD) { //human discards
 			turnComplete = players_[playerIndex]->humanDiscard(command.card);
-
 		} else if(command.type == DECK) {
 			for(int i=0; i<CARD_COUNT;i++) {
-				if((i%DECK_CARDS_PER_LINE) == 0 && i>0) {
+				if((i%DECK_CARDS_PER_LINE) == 0 && i>0) { //new line when the cards per line has been reached
 					std::cout << std::endl;
 				}
-				std::cout << *cards_[i];
-				std::cout << " ";
+				std::cout << *cards_[i]; //prints out each card
+				std::cout << " ";		 //with a space in between
 			}
 			std::cout << std::endl;
-
 		} else if(command.type == QUIT) {
 			exit(0);
-
 		} else if(command.type == RAGEQUIT) {
 			std::cout << "Player " << playerIndex+1 << " ragequits. A computer will now take over." << std::endl;
-			players_[playerIndex]->setHuman(false);
+			players_[playerIndex]->setHuman(false); //player is no longer human
 			turnComplete = true;
-			robotTurn(playerIndex);
+			robotTurn(playerIndex); //computer turn is executed;
 		}
 	}
 }
 
 void Straights::robotTurn(int playerIndex) {
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
-	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
-	if(legalPlaysInHand.size() > 0) {
-		players_[playerIndex]->playCard(legalPlaysInHand.at(0), table_);
+	players_[playerIndex]->setLegalPlays(table_);
+	if(players_[playerIndex]->legalPlays().size() > 0) {
+		players_[playerIndex]->computerPlayCard(table_);
 	} else {
 		players_[playerIndex]->discardCard(currentHand.at(0));
 	}
-}
-
-std::vector<Card> Straights::getLegalPlays(std::vector<Card> vector) {
-	std::vector<Card> legalPlaysInHand;
-
-	for(std::vector<Card>::iterator it = vector.begin(); it != vector.end(); ++it) {
-		if((it->getSuit() == SPADE) && (it->getRank() == SEVEN)) {		
-			std::vector<Card> firstMoveHand;
-			firstMoveHand.push_back(*it);
-			return firstMoveHand;
-		}
-		if(table_.isLegalCard(*it)) {
-			legalPlaysInHand.push_back(*it);
-		}
-	}
-	return legalPlaysInHand;
 }
 
 void Straights::printRoundEnd(int playerIndex) {
