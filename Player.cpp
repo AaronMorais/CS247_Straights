@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <iostream>
+#include <cassert>
 
 Player::Player(char input, int index) {
 	isHuman_ = (input == 'h' || input == 'H') ? true : false;
@@ -14,6 +15,10 @@ int Player::roundScore() const{
 
 int Player::totalScore() const {
 	return totalScore_;
+}
+
+int Player::playerIndex() const {
+	return playerIndex_;
 }
 
 void Player::addToRoundScore(int addition) {
@@ -77,4 +82,26 @@ void Player::discardCard(Card card) {
 	addToRoundScore(rankInt);
 
 	std::cout << "Player " << playerIndex_+1 << " discards " << card << "." <<std::endl;
+}
+
+bool Player::humanDiscard(Card card){
+	if(legalPlaysInHand_.size() > 0) {
+		std::cout << "You have a legal play. You may not discard." << std::endl;
+		return false;
+	} else {
+		bool validCard = false;
+		for(std::vector<Card>::iterator it = cards_.begin(); it != cards_.end(); ++it) {
+			if(*it == card) {
+				validCard = true;
+			}
+		}
+		assert(validCard);
+
+		discardCard(card);
+		return true;
+	}
+}
+
+void Player::setLegalPlaysInHand(std::vector<Card> legalPlays){
+	legalPlaysInHand_ = legalPlays;
 }

@@ -131,6 +131,7 @@ void Straights::humanTurn(int playerIndex) {
 	printCardVector(currentHand);
 
 	std::vector<Card> legalPlaysInHand = getLegalPlays(currentHand);
+	players_[playerIndex]->setLegalPlaysInHand(legalPlaysInHand);
 	std::cout << "Legal plays:";
 	if(legalPlaysInHand.size() == 0) {
 		std::cout << " " << std::endl;
@@ -160,21 +161,7 @@ void Straights::humanTurn(int playerIndex) {
 
 		} else if(command.type == DISCARD) {
 
-			if(legalPlaysInHand.size() > 0) {
-				std::cout << "You have a legal play. You may not discard." << std::endl;
-				turnComplete = false;
-			} else {
-				bool validCard = false;
-				for(std::vector<Card>::iterator it = currentHand.begin(); it != currentHand.end(); ++it) {
-					if(*it == command.card) {
-						validCard = true;
-					}
-				}
-				assert(validCard);
-
-				players_[playerIndex]->discardCard(command.card);
-				turnComplete = true;
-			}
+			turnComplete = players_[playerIndex]->humanDiscard(command.card);
 
 		} else if(command.type == DECK) {
 			for(int i=0; i<CARD_COUNT;i++) {
@@ -224,16 +211,6 @@ void Straights::playCard(int playerIndex, Card card) {
 	}
 
 	std::cout << "Player " << playerIndex+1 << " plays " << card << "." << std::endl;
-}
-
-void Straights::discardCard(int playerIndex, Card card) {
-	players_[playerIndex]->removeCardFromHand(card);
-	players_[playerIndex]->addCardToDiscards(card);
-
-	int rankInt = card.getRank() + 1;
-	players_[playerIndex]->addToRoundScore(rankInt);
-
-	std::cout << "Player " << playerIndex+1 << " discards " << card << "." <<std::endl;
 }
 
 std::vector<Card> Straights::getLegalPlays(std::vector<Card> vector) {

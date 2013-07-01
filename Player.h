@@ -9,7 +9,8 @@ public:
 	Player(char, int);
 	int totalScore() const;
 	int roundScore() const;
-
+	int playerIndex() const;
+	
 	void discardCard(Card);
 
 	bool isHuman() const;
@@ -25,7 +26,12 @@ public:
 	void addCardToDiscards(Card);
 	void clearDiscards();
 	void removeCardFromHand(Card);
+
+	bool humanDiscard(Card);
+	void setLegalPlaysInHand(std::vector<Card>);
 private:
+	std::vector<Card> legalPlaysInHand_;
+protected:	
 	int playerIndex_;
 	bool isHuman_;
 	int totalScore_;
