@@ -6,7 +6,7 @@ Player::Player(char input, int index) {
 	isHuman_ = (input == 'h' || input == 'H') ? true : false;
 	roundScore_ = 0;
 	totalScore_ = 0;
-	playerIndex_ = index;
+	playerIndex_ = index + 1;
 }
 
 int Player::roundScore() const{
@@ -99,7 +99,7 @@ void Player::discardCard(Card card) {
 	int rankInt = card.getRank() + 1;
 	addToRoundScore(rankInt);
 
-	std::cout << "Player " << playerIndex_+1 << " discards " << card << "." <<std::endl;
+	std::cout << "Player " << playerIndex_ << " discards " << card << "." <<std::endl;
 }
 
 bool Player::humanPlay(Card card, Table& table){
