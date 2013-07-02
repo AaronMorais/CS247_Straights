@@ -29,8 +29,8 @@ public:
 	void addCardToHand(Card);
 	void clearDiscards();
 
-	virtual bool play(Table&, Card){};
-	virtual bool discard(Card){};
+	virtual bool play(Table&, Card){return false;};
+	virtual bool discard(Card){return false;};
 	virtual void computerTurn(Table&){};
 	void setLegalPlays(Table&);
 	std::vector<Card> legalPlays() const;

@@ -171,7 +171,9 @@ void Straights::humanTurn(int playerIndex) {
 		} else if(command.type == RAGEQUIT) {
 			std::cout << "Player " << playerIndex+1 << " ragequits. A computer will now take over." << std::endl;
 			players_[playerIndex]->setHuman(false); //player is no longer human
-			players_[playerIndex] = new ComputerPlayer(*players_[playerIndex]);
+			Player* replacementPlayer = new ComputerPlayer(*players_[playerIndex]);
+			delete players_[playerIndex];
+			players_[playerIndex] = replacementPlayer;
 			players_[playerIndex]->computerTurn(table_); //computer turn is executed;
 			turnComplete = true;
 		}
@@ -199,7 +201,7 @@ void Straights::printRoundEnd(int playerIndex) {
 //prints out a card vector
 void Straights::printCardVector(std::vector<Card> vector) {
 	int size = vector.size();
-	for(std::vector<Card>::size_type i = 0; i != size; i++) {
+	for(std::vector<Card>::size_type i = 0; i != (unsigned)size; i++) {
 		std::cout << " ";
 	    std::cout << vector[i];
 	}
