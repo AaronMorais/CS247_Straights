@@ -6,9 +6,12 @@
 #include <vector>
 
 class Player {
+	friend class HumanPlayer;
+	friend class ComputerPlayer;
 public:
 	Player();
 	Player(char, int);
+	~Player();
 	int totalScore() const;
 	int roundScore() const;
 	int playerIndex() const;
@@ -23,22 +26,22 @@ public:
 	void resetRoundScore();
 	void addToTotalScore(int);
 
-	std::vector<Card> currentHand();
-	std::vector<Card> discards();
+	std::vector<Card> currentHand() const;
+	std::vector<Card> discards() const;
 	void addCardToHand(Card);
 	void addCardToDiscards(Card);
 	void clearDiscards();
 	void removeCardFromHand(Card);
 
-	virtual void playCard(Table&){};
+	virtual bool play(Table&, Card = *new Card());
+	virtual bool discard(Card = *new Card());
+	virtual void cplay(Table&){};
+	virtual void cdiscard(){};
 
-	bool humanPlay(Card, Table&);
-	bool humanDiscard(Card);
 	void setLegalPlays(Table&);
-	std::vector<Card> legalPlays();
+	std::vector<Card> legalPlays() const;
 private:
-	std::vector<Card> legalPlaysInHand_;
-protected:	
+	std::vector<Card> legalPlaysInHand_;	
 	int playerIndex_;
 	bool isHuman_;
 	int totalScore_;

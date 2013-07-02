@@ -1,5 +1,12 @@
 #include "Table.h"
 
+Table::~Table(){
+	clubs_.clear();
+	diamonds_.clear();
+	hearts_.clear();
+	spades_.clear();
+}
+
 void Table::addClubs(Card card){
 	clubs_.push_back(card);
 }
@@ -47,7 +54,6 @@ bool Table::isLegalCard(Card card) const{
 	//iterate through all previously played cards with the same suit and determine if it is of adjacent rank
 	for(std::vector<Card>::iterator it = suitVector.begin(); it != suitVector.end(); ++it) {
 		Rank cardRank = it->getRank();
-		int cardRankInt = cardRank;
 		if(cardRank == left || cardRank == right) {
 			return true; //card is legal
 		}

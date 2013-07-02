@@ -17,10 +17,10 @@ void Straights::invitePlayers() {
 		char input;
 		std::cin >> input;
 		assert(input == 'c' || input == 'C' || input == 'H' || input == 'h'); //will only accept human or computer options
-		if(input == 'c' || input == 'C'){
-			players_[i] = new ComputerPlayer(i);
-		}
 		players_[i] = new Player(input, i);
+		if(input == 'c' || input == 'C'){
+			players_[i] = new ComputerPlayer(*players_[i]);
+		}
 	}
 }
 
@@ -87,6 +87,7 @@ void Straights::playGame() {
 			for(int i=0; i<NUMBER_OF_PLAYERS;i++) { //goes through each players turn
 				int currentPlayerIndex = gameOrder[i];
 
+				players_[currentPlayerIndex]->setLegalPlays(table_); //the player determines its legal plays based on the table
 				if(players_[currentPlayerIndex]->isHuman()) {
 					humanTurn(currentPlayerIndex);
 				} else {
@@ -131,7 +132,6 @@ void Straights::humanTurn(int playerIndex) {
 	std::cout << "Your hand:";
 	printCardVector(currentHand);
 
-	players_[playerIndex]->setLegalPlays(table_); //the player determines its legal plays based on the table
 	std::cout << "Legal plays:";
 	if(players_[playerIndex]->legalPlays().size() == 0) { //if there are no legal plays
 		std::cout << " " << std::endl;
@@ -145,9 +145,9 @@ void Straights::humanTurn(int playerIndex) {
 		Command command;
 		std::cin >> command; //reads command
 		if(command.type == PLAY) { //human plays a card on the table
-			turnComplete = players_[playerIndex]->humanPlay(command.card, table_);
+			turnComplete = players_[playerIndex]->play(table_, command.card);
 		} else if(command.type == DISCARD) { //human discards
-			turnComplete = players_[playerIndex]->humanDiscard(command.card);
+			turnComplete = players_[playerIndex]->discard(command.card);
 		} else if(command.type == DECK) {
 			for(int i=0; i<CARD_COUNT;i++) {
 				if((i%DECK_CARDS_PER_LINE) == 0 && i>0) { //new line when the cards per line has been reached
@@ -163,19 +163,17 @@ void Straights::humanTurn(int playerIndex) {
 			std::cout << "Player " << playerIndex+1 << " ragequits. A computer will now take over." << std::endl;
 			players_[playerIndex]->setHuman(false); //player is no longer human
 			players_[playerIndex] = new ComputerPlayer(*players_[playerIndex]);
-			turnComplete = true;
 			robotTurn(playerIndex); //computer turn is executed;
+			turnComplete = true;
 		}
 	}
 }
 
 void Straights::robotTurn(int playerIndex) {
-	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
-	players_[playerIndex]->setLegalPlays(table_);
 	if(players_[playerIndex]->legalPlays().size() > 0) {
-		players_[playerIndex]->playCard(table_);
+		players_[playerIndex]->cplay(table_);
 	} else {
-		// players_[playerIndex]->discardCard(currentHand.at(0));
+		players_[playerIndex]->cdiscard();
 	}
 }
 

@@ -8,6 +8,7 @@
 class Table{ //handles the cards on the table
 	friend std::ostream &operator<<(std::ostream &, const Table &);
 public:
+	~Table();
 	void addClubs(Card); //add club cards to the table
 	void addDiamonds(Card);
 	void addHearts(Card); 

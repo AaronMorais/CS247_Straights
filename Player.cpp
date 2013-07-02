@@ -15,6 +15,12 @@ Player::Player(char input, int index) {
 	playerIndex_ = index;
 }
 
+Player::~Player(){
+	cards_.clear();
+	discards_.clear();
+	legalPlaysInHand_.clear();
+}
+
 int Player::roundScore() const{
 	return roundScore_;
 }
@@ -39,11 +45,11 @@ void Player::addToTotalScore(int addition) {
 	totalScore_ +=addition;
 }
 
-std::vector<Card> Player::currentHand() {
+std::vector<Card> Player::currentHand() const {
 	return cards_;
 }
 
-std::vector<Card> Player::discards() {
+std::vector<Card> Player::discards() const {
 	return discards_;
 }
 
@@ -108,7 +114,7 @@ void Player::discardCard(Card card) {
 	std::cout << "Player " << playerIndex_ + 1<< " discards " << card << "." <<std::endl;
 }
 
-bool Player::humanPlay(Card card, Table& table){
+bool Player::play(Table& table, Card card){
 	bool validCard = false;
 	for(std::vector<Card>::iterator it = legalPlaysInHand_.begin(); it != legalPlaysInHand_.end(); ++it) {
 		if(*it == card) {
@@ -124,7 +130,7 @@ bool Player::humanPlay(Card card, Table& table){
 	}
 }
 
-bool Player::humanDiscard(Card card){
+bool Player::discard(Card card){
 	if(legalPlaysInHand_.size() > 0) {
 		std::cout << "You have a legal play. You may not discard." << std::endl;
 		return false;
@@ -156,6 +162,6 @@ void Player::setLegalPlays(Table& table){
 		}
 	}
 }
-std::vector<Card> Player::legalPlays(){
+std::vector<Card> Player::legalPlays() const{
 	return legalPlaysInHand_;
 }
