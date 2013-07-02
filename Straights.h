@@ -22,8 +22,6 @@ private:
 	void createInitialHands();
 
 	void humanTurn(int playerIndex);
-	
-	std::vector<Card> getLegalPlays(std::vector<Card>);
 
 	int gameOrder [NUMBER_OF_PLAYERS];
 	void generateGameOrder(int);

@@ -11,7 +11,7 @@ HumanPlayer::HumanPlayer(int index){
 }
 
 //takes in a card and the table, and plays the card onto the table
-bool HumanPlayer::play(Card card, Table& table){
+bool HumanPlayer::play(Table& table, Card card){
 	bool validCard = false;
 	for(std::vector<Card>::iterator it = legalPlaysInHand_.begin(); it != legalPlaysInHand_.end(); ++it) {
 		if(*it == card) { //determines if the desired play card is a legal move

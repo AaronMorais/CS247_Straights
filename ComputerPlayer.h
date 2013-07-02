@@ -10,8 +10,8 @@ public:
 	ComputerPlayer(int index);
 	void computerTurn(Table&);
 private:
-	void cplay(Table&);
-	void cdiscard();
+	void play(Table&);
+	void discard();
 };
 
 #endif

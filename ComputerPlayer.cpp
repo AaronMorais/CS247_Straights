@@ -24,18 +24,18 @@ ComputerPlayer::ComputerPlayer(int index){
 //The computer's turn, determines whether a play or discard should be done
 void ComputerPlayer::computerTurn(Table &table){
 	if(legalPlaysInHand_.size() > 0) {
-		cplay(table);
+		play(table);
 	} else {
-		cdiscard();
+		discard();
 	}
 }
 
 //computer plays the first legally available card in the hand
-void ComputerPlayer::cplay(Table& table){
+void ComputerPlayer::play(Table& table){
 	playCard(legalPlaysInHand_.at(0), table);
 }
 
 //discards the first card
-void ComputerPlayer::cdiscard(){
+void ComputerPlayer::discard(){
 	discardCard(cards_.at(0));
 }
