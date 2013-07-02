@@ -17,9 +17,10 @@ void Straights::invitePlayers() {
 		char input;
 		std::cin >> input;
 		assert(input == 'c' || input == 'C' || input == 'H' || input == 'h'); //will only accept human or computer options
-		players_[i] = new Player(input, i);
 		if(input == 'c' || input == 'C'){
-			players_[i] = new ComputerPlayer(*players_[i]);
+			players_[i] = new ComputerPlayer(i);
+		}else{
+			players_[i] = new Player(input, i);
 		}
 	}
 }

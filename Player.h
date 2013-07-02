@@ -33,8 +33,8 @@ public:
 	void clearDiscards();
 	void removeCardFromHand(Card);
 
-	virtual bool play(Table&, Card = *new Card());
-	virtual bool discard(Card = *new Card());
+	virtual bool play(Table&, Card);
+	virtual bool discard(Card);
 	virtual void cplay(Table&){};
 	virtual void cdiscard(){};
 
