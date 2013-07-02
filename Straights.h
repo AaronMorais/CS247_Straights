@@ -1,6 +1,7 @@
 #ifndef _STRAIGHTS_
 #define _STRAIGHTS_
 
+#include "HumanPlayer.h"
 #include "ComputerPlayer.h"
 #include "Player.h"
 #include "Table.h"

@@ -1,5 +1,6 @@
 #include "Table.h"
 
+//destructor, clears the card vectors
 Table::~Table(){
 	clubs_.clear();
 	diamonds_.clear();
@@ -7,18 +8,22 @@ Table::~Table(){
 	spades_.clear();
 }
 
+//add clubs to the club vector
 void Table::addClubs(Card card){
 	clubs_.push_back(card);
 }
 
+//add a diamond card to the diamonds vector
 void Table::addDiamonds(Card card){
 	diamonds_.push_back(card);
 }
 
+//add a heart card to the cards vector
 void Table::addHearts(Card card){
 	hearts_.push_back(card);
 } 
 
+//add spades card to the cards vector
 void Table::addSpades(Card card){
 	spades_.push_back(card);
 }
@@ -30,6 +35,7 @@ void Table::empty(){ //clears all card vectors
 	spades_.clear();
 }
 
+//determines if a card is legal based on the current cards on the table
 bool Table::isLegalCard(Card card) const{
 	Suit suit = card.getSuit(); //gets detail of card
 	Rank rank = card.getRank();
@@ -61,7 +67,8 @@ bool Table::isLegalCard(Card card) const{
 	return false; //no match, card is not legal
 }
 
-void Table::printSuit(std::ostream &out, std::vector<Card> vector) const{//helper function for << operator
+//helper function for << operator
+void Table::printSuit(std::ostream &out, std::vector<Card> vector) const{
 	int size = vector.size(); //number of cards of the suit that will be printed
 	std::string ranks[RANK_COUNT] = {"A", "2", "3", "4", "5", "6",
 		"7", "8", "9", "10", "J", "Q", "K"};
@@ -85,6 +92,7 @@ void Table::printSuit(std::ostream &out, std::vector<Card> vector) const{//helpe
 	out << std::endl;
 }
 
+//ostream to print out the cards on the table by suit
 std::ostream &operator<<(std::ostream &out, const Table &table){
 	out << "Cards on the table: " << std::endl;
 

@@ -5,12 +5,14 @@
 #include <cstdlib>
 #include "limits.h"
 
+//constructor, initialized the players, generates deck, and deals the cards to the players
 Straights::Straights() {
 	invitePlayers(); //collects all the human and computer players
 	generateDeck(); //generates a deck
 	createInitialHands();
 }
 
+//gets input for human and computer players
 void Straights::invitePlayers() {
 	for(int i=0; i<NUMBER_OF_PLAYERS;i++) { //assigns either human or computer for the number of players
 		std::cout << "Is player " << (i+1) << " a human(h) or a computer(c)?\n>";
@@ -25,6 +27,7 @@ void Straights::invitePlayers() {
 	}
 }
 
+//generates a deck
 void Straights::generateDeck() {
 	int cardIndex = 0;
 	for(int suitInt=CLUB; suitInt != SUIT_COUNT; suitInt++) { //goes through the 4 suits
@@ -35,6 +38,7 @@ void Straights::generateDeck() {
 	}
 }
 
+//creates intial hand for all players
 void Straights::createInitialHands() {
 	shuffleDeck(); //the deck has to be shuffled first
 
@@ -55,6 +59,7 @@ void Straights::createInitialHands() {
 	generateGameOrder(startingPlayer); //determines the order of the players
 }
 
+//shuffles the deck
 void Straights::shuffleDeck() { //given function
 	int n = CARD_COUNT;
 
@@ -67,6 +72,7 @@ void Straights::shuffleDeck() { //given function
 	}
 }
 
+//generates the playing order for the players
 void Straights::generateGameOrder(int startingPlayer) {
 	int index = 0;
 	for(int i = startingPlayer; i<NUMBER_OF_PLAYERS; i++) { //game order starts with the startingPlayer
@@ -79,6 +85,7 @@ void Straights::generateGameOrder(int startingPlayer) {
 	}
 }
 
+//starts the game
 void Straights::playGame() {
 	bool gameOver = false;
 	while(!gameOver) {
@@ -126,6 +133,7 @@ void Straights::playGame() {
 	}
 }
 
+//human turn to play
 void Straights::humanTurn(int playerIndex) {
 	std::cout << table_; //the table is first printed out
 	//next the player's hand
@@ -170,6 +178,7 @@ void Straights::humanTurn(int playerIndex) {
 	}
 }
 
+//computer's turn the play
 void Straights::robotTurn(int playerIndex) {
 	if(players_[playerIndex]->legalPlays().size() > 0) {
 		players_[playerIndex]->cplay(table_);
@@ -178,6 +187,7 @@ void Straights::robotTurn(int playerIndex) {
 	}
 }
 
+//prints the stats for the end of the round
 void Straights::printRoundEnd(int playerIndex) {
 	Player *player = players_[playerIndex];
 
@@ -195,6 +205,7 @@ void Straights::printRoundEnd(int playerIndex) {
 	player->clearDiscards();
 }
 
+//prints out a card vector
 void Straights::printCardVector(std::vector<Card> vector) {
 	int size = vector.size();
 	for(std::vector<Card>::size_type i = 0; i != size; i++) {

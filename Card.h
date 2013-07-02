@@ -12,7 +12,6 @@ class Card{
 	friend std::istream &operator>>(std::istream &, Card &);
 
 public:
-	Card();
 	Card(Suit, Rank);
 	Suit getSuit() const;
 	Rank getRank() const;
