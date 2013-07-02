@@ -77,7 +77,7 @@ void Table::printSuit(std::ostream &out, std::vector<Card> vector) const{
 	} else {
 		for(int j=0; j < RANK_COUNT; j++) {//in order to print the cards in order
 			bool rankFound = false;
-			for(std::vector<Card>::size_type i = 0; i != size; i++) {
+			for(std::vector<Card>::size_type i = 0; i != (unsigned)size; i++) {
 				if(vector[i].getRank() == j) {//a card matching the rank was found
 					rankFound = true;
 					break;

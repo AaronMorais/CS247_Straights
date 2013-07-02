@@ -158,14 +158,7 @@ void Straights::humanTurn(int playerIndex) {
 		} else if(command.type == DISCARD) { //human discards
 			turnComplete = players_[playerIndex]->discard(command.card);
 		} else if(command.type == DECK) {
-			for(int i=0; i<CARD_COUNT;i++) {
-				if((i%DECK_CARDS_PER_LINE) == 0 && i>0) { //new line when the cards per line has been reached
-					std::cout << std::endl;
-				}
-				std::cout << *cards_[i]; //prints out each card
-				std::cout << " ";		 //with a space in between
-			}
-			std::cout << std::endl;
+			printDeck();
 		} else if(command.type == QUIT) {
 			exit(0);
 		} else if(command.type == RAGEQUIT) {
@@ -178,6 +171,18 @@ void Straights::humanTurn(int playerIndex) {
 			turnComplete = true;
 		}
 	}
+}
+
+//prints the deck
+void Straights::printDeck(){
+	for(int i=0; i<CARD_COUNT;i++) {
+		if((i%DECK_CARDS_PER_LINE) == 0 && i>0) { //new line when the cards per line has been reached
+			std::cout << std::endl;
+		}
+		std::cout << *cards_[i]; //prints out each card
+		std::cout << " ";		 //with a space in between
+	}
+	std::cout << std::endl;
 }
 
 //prints the stats for the end of the round

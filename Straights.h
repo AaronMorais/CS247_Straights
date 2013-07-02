@@ -22,6 +22,7 @@ private:
 	void createInitialHands();
 
 	void humanTurn(int playerIndex);
+	Player *players_[NUMBER_OF_PLAYERS]; 
 
 	int gameOrder [NUMBER_OF_PLAYERS];
 	void generateGameOrder(int);
@@ -30,11 +31,10 @@ private:
 	void generateDeck();
 	void shuffleDeck();
 
-	Player *players_[NUMBER_OF_PLAYERS]; 
-
 	Table table_;
-	void printCardVector(std::vector<Card>);
 
+	void printDeck();
+	void printCardVector(std::vector<Card>);
 	void printRoundEnd(int);
 };
 

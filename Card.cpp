@@ -39,7 +39,7 @@ istream &operator>>(istream &in, Card &c){
 	
 	//Read in the rank, make sure it's valid
 	c.rank_ = (Rank)ranks.find( str.at(0) );
-	assert ( c.rank_ != string::npos );
+	assert ( (unsigned)c.rank_ != string::npos );
 	
 	//If it's a 10, make sure the 2nd character is a 0
 	if ( c.rank_ == TEN ){
@@ -49,7 +49,7 @@ istream &operator>>(istream &in, Card &c){
 	
 	//Read in the suit, make sure it's valid
 	c.suit_ = (Suit)suits.find( str.at(1) );
-	assert ( c.suit_ != string::npos );
+	assert ( (unsigned)c.suit_ != string::npos );
 	
 	return in;
 }
