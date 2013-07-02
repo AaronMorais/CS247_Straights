@@ -20,7 +20,7 @@ void Straights::invitePlayers() {
 		if(input == 'c' || input == 'C'){
 			players_[i] = new ComputerPlayer(i);
 		}else{
-			players_[i] = new Player(input, i);
+			players_[i] = new HumanPlayer(i);
 		}
 	}
 }

@@ -114,39 +114,40 @@ void Player::discardCard(Card card) {
 	std::cout << "Player " << playerIndex_ + 1<< " discards " << card << "." <<std::endl;
 }
 
-bool Player::play(Table& table, Card card){
-	bool validCard = false;
-	for(std::vector<Card>::iterator it = legalPlaysInHand_.begin(); it != legalPlaysInHand_.end(); ++it) {
-		if(*it == card) {
-			validCard = true;
-		}
-	}
-	if(validCard) {
-		playCard(card, table);
-		return true;
-	} else {
-		std::cout << "This is not a legal play." << std::endl;
-		return false;
-	}
-}
+// bool Player::play(Table& table, Card card){
+// 	std::cout<<"BASE\n";
+// 	bool validCard = false;
+// 	for(std::vector<Card>::iterator it = legalPlaysInHand_.begin(); it != legalPlaysInHand_.end(); ++it) {
+// 		if(*it == card) {
+// 			validCard = true;
+// 		}
+// 	}
+// 	if(validCard) {
+// 		playCard(card, table);
+// 		return true;
+// 	} else {
+// 		std::cout << "This is not a legal play." << std::endl;
+// 		return false;
+// 	}
+// }
 
-bool Player::discard(Card card){
-	if(legalPlaysInHand_.size() > 0) {
-		std::cout << "You have a legal play. You may not discard." << std::endl;
-		return false;
-	} else {
-		bool validCard = false;
-		for(std::vector<Card>::iterator it = cards_.begin(); it != cards_.end(); ++it) {
-			if(*it == card) {
-				validCard = true;
-			}
-		}
-		assert(validCard);
+// bool Player::discard(Card card){
+// 	if(legalPlaysInHand_.size() > 0) {
+// 		std::cout << "You have a legal play. You may not discard." << std::endl;
+// 		return false;
+// 	} else {
+// 		bool validCard = false;
+// 		for(std::vector<Card>::iterator it = cards_.begin(); it != cards_.end(); ++it) {
+// 			if(*it == card) {
+// 				validCard = true;
+// 			}
+// 		}
+// 		assert(validCard);
 
-		discardCard(card);
-		return true;
-	}
-}
+// 		discardCard(card);
+// 		return true;
+// 	}
+// }
 
 void Player::setLegalPlays(Table& table){
 	legalPlaysInHand_.clear();

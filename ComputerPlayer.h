@@ -2,7 +2,6 @@
 #define _COMPUTER_
 
 #include "Player.h"
-#include "HumanPlayer.h"
 #include <vector>
 
 class ComputerPlayer: public Player {

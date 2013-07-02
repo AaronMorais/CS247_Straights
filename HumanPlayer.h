@@ -7,6 +7,7 @@
 class HumanPlayer: public Player {
 public:
 	HumanPlayer(int index);
+	bool play(Card, Table&);
 	bool discard(Card);
 };
 

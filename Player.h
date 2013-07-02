@@ -16,8 +16,6 @@ public:
 	int roundScore() const;
 	int playerIndex() const;
 
-	void discardCard(Card);
-	void playCard(Card, Table&);
 
 	bool isHuman() const;
 	void setHuman(bool isHuman);
@@ -29,18 +27,20 @@ public:
 	std::vector<Card> currentHand() const;
 	std::vector<Card> discards() const;
 	void addCardToHand(Card);
-	void addCardToDiscards(Card);
 	void clearDiscards();
-	void removeCardFromHand(Card);
 
-	virtual bool play(Table&, Card);
-	virtual bool discard(Card);
+	virtual bool play(Table&, Card){};
+	virtual bool discard(Card){};
 	virtual void cplay(Table&){};
 	virtual void cdiscard(){};
 
 	void setLegalPlays(Table&);
 	std::vector<Card> legalPlays() const;
 private:
+	void removeCardFromHand(Card);
+	void addCardToDiscards(Card);
+	void discardCard(Card);
+	void playCard(Card, Table&);
 	std::vector<Card> legalPlaysInHand_;	
 	int playerIndex_;
 	bool isHuman_;

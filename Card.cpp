@@ -3,6 +3,10 @@
 #include <cassert>
 using namespace std;
 
+Card::Card(){
+	suit_ = SPADE;
+	rank_ = ACE;
+}
 Card::Card(Suit s, Rank r){
 	suit_ = s;
 	rank_ = r;

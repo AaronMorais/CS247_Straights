@@ -3,7 +3,26 @@
 #include <cassert>
 
 HumanPlayer::HumanPlayer(int index){
-	playerIndex_ = 0;
+	roundScore_ = 0;
+	totalScore_ = 0;
+	playerIndex_ = index;
+	isHuman_ = true;
+}
+
+bool HumanPlayer::play(Card card, Table& table){
+	bool validCard = false;
+	for(std::vector<Card>::iterator it = legalPlaysInHand_.begin(); it != legalPlaysInHand_.end(); ++it) {
+		if(*it == card) {
+			validCard = true;
+		}
+	}
+	if(validCard) {
+		playCard(card, table);
+		return true;
+	} else {
+		std::cout << "This is not a legal play." << std::endl;
+		return false;
+	}
 }
 
 bool HumanPlayer::discard(Card card){
