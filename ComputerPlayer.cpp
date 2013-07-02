@@ -22,7 +22,7 @@ ComputerPlayer::ComputerPlayer(int index){
 }
 
 //The computer's turn, determines whether a play or discard should be done
-void computerTurn(Table &table){
+void ComputerPlayer::computerTurn(Table &table){
 	if(legalPlaysInHand_.size() > 0) {
 		cplay(table);
 	} else {

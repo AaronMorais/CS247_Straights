@@ -172,7 +172,7 @@ void Straights::humanTurn(int playerIndex) {
 			std::cout << "Player " << playerIndex+1 << " ragequits. A computer will now take over." << std::endl;
 			players_[playerIndex]->setHuman(false); //player is no longer human
 			players_[playerIndex] = new ComputerPlayer(*players_[playerIndex]);
-			robotTurn(playerIndex); //computer turn is executed;
+			players_[playerIndex]->computerTurn(table_); //computer turn is executed;
 			turnComplete = true;
 		}
 	}

@@ -22,15 +22,13 @@ private:
 	void createInitialHands();
 
 	void humanTurn(int playerIndex);
-	std::string humanInput();
-	void robotTurn(int playerIndex);
 	
 	std::vector<Card> getLegalPlays(std::vector<Card>);
 
 	int gameOrder [NUMBER_OF_PLAYERS];
 	void generateGameOrder(int);
 
-	Card *cards_ [CARD_COUNT];	 
+	Card *cards_ [CARD_COUNT];	
 	void generateDeck();
 	void shuffleDeck();
 

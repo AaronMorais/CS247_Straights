@@ -1,4 +1,4 @@
-#include <Straights.h>
+#include "Straights.h"
 #include <cstdlib>
 
 int main(int argc, char *argv[]) {

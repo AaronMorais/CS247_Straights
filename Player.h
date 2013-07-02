@@ -31,9 +31,10 @@ public:
 
 	virtual bool play(Table&, Card){};
 	virtual bool discard(Card){};
-
+	virtual void computerTurn(Table&){};
 	void setLegalPlays(Table&);
 	std::vector<Card> legalPlays() const;
+
 private:
 	void removeCardFromHand(Card);
 	void addCardToDiscards(Card);
