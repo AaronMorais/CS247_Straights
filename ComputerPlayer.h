@@ -8,6 +8,8 @@ class ComputerPlayer: public Player {
 public:
 	ComputerPlayer(const Player&);
 	ComputerPlayer(int index);
+	void computerTurn(Table&);
+private:
 	void cplay(Table&);
 	void cdiscard();
 };

@@ -21,6 +21,14 @@ ComputerPlayer::ComputerPlayer(int index){
 	isHuman_ = false;
 }
 
+void computerTurn(Table &table){
+	if(legalPlaysInHand_.size() > 0) {
+		cplay(table);
+	} else {
+		cdiscard();
+	}
+}
+
 //computer plays the first legally available card in the hand
 void ComputerPlayer::cplay(Table& table){
 	playCard(legalPlaysInHand_.at(0), table);

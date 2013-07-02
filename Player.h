@@ -31,8 +31,6 @@ public:
 
 	virtual bool play(Table&, Card){};
 	virtual bool discard(Card){};
-	virtual void cplay(Table&){};
-	virtual void cdiscard(){};
 
 	void setLegalPlays(Table&);
 	std::vector<Card> legalPlays() const;

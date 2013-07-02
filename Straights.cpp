@@ -99,7 +99,7 @@ void Straights::playGame() {
 				if(players_[currentPlayerIndex]->isHuman()) {
 					humanTurn(currentPlayerIndex);
 				} else {
-					robotTurn(currentPlayerIndex);
+					players_[currentPlayerIndex]->computerTurn(table_);
 				}
 			}
 			cardsRemaining--; //every player has either played a card or discarded
@@ -175,15 +175,6 @@ void Straights::humanTurn(int playerIndex) {
 			robotTurn(playerIndex); //computer turn is executed;
 			turnComplete = true;
 		}
-	}
-}
-
-//computer's turn the play
-void Straights::robotTurn(int playerIndex) {
-	if(players_[playerIndex]->legalPlays().size() > 0) {
-		players_[playerIndex]->cplay(table_);
-	} else {
-		players_[playerIndex]->cdiscard();
 	}
 }
 
