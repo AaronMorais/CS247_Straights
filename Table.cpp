@@ -28,8 +28,8 @@ void Table::addSpades(Card card){
 	spades_.push_back(card);
 }
 
-*Card Table::getTable(){
-	Card[52] onTable;
+Card* Table::getTable(){
+	Card *onTable[52];
 	int j=0;
 	for(int i = 0; i < 4; i++){
 		std::vector<Card> suitVector; 
@@ -43,11 +43,11 @@ void Table::addSpades(Card card){
 			case 4:
 				suitVector = spades_;
 		}
-		for(std::vector<Card>::iterator it = suitVector_.begin(); it != suitVector.end(); ++it) {
-			onTable[j++] = it;
+		for(std::vector<Card>::iterator it = suitVector.begin(); it != suitVector.end(); ++it) {
+			onTable[j++] = &*it;
 		}
 	}
-	return onTable;
+	return *onTable;
 }
 
 void Table::empty(){ //clears all card vectors
