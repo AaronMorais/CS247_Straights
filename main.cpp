@@ -1,5 +1,6 @@
 #include <gtkmm.h>
 #include "Straights.h"
+#include "MainWindow.h"
 #include <cstdlib>
 
 int main(int argc, char *argv[]) {
@@ -13,7 +14,7 @@ int main(int argc, char *argv[]) {
 	// straightsGame->playGame();
 
 	Gtk::Main   kit( argc, argv );          
-	Gtk::Window window;
+	MainWindow window;
 	Gtk::Main::run( window );
 
  	return 0;
