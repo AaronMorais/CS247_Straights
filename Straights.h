@@ -14,7 +14,7 @@ const int DECK_CARDS_PER_LINE = 13;
 const int GAME_OVER_SCORE = 80;
 
 class Straights {
-	friend class Table;
+	friend class MainWindow;
 public:
 	Straights();
 	void playGame();

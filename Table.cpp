@@ -32,7 +32,7 @@ void Table::addSpades(Card card){
 	numberOfCardsOnTable++;
 }
 
-*Card Table::getTable(){
+Card* Table::getTable(){
 	Card onTable[numberOfCardsOnTable];
 	int j=0;
 	for(int i = 0; i < 4; i++){

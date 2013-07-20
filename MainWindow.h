@@ -17,9 +17,11 @@ public:
 	~MainWindow();
 	void button_quit();
 	void startGame();
+	void updateGame();
 private:
 	Gtk::Image *tableCard[4][13];
 	Gtk::Button startGameButton;
+	Gtk::Button updateButton;
 	Gtk::HBox tableBox[4];
 	Gtk::Frame mainFrame;
 	Gtk::Table mainTable;
