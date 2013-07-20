@@ -28,6 +28,28 @@ void Table::addSpades(Card card){
 	spades_.push_back(card);
 }
 
+*Card Table::getTable(){
+	Card[52] onTable;
+	int j=0;
+	for(int i = 0; i < 4; i++){
+		std::vector<Card> suitVector; 
+		switch(i){
+			case 1:
+				suitVector = clubs_;
+			case 2:
+				suitVector = diamonds_;
+			case 3:
+				suitVector = hearts_;
+			case 4:
+				suitVector = spades_;
+		}
+		for(std::vector<Card>::iterator it = suitVector_.begin(); it != suitVector.end(); ++it) {
+			onTable[j++] = it;
+		}
+	}
+	return onTable;
+}
+
 void Table::empty(){ //clears all card vectors
 	clubs_.clear();		
 	diamonds_.clear();

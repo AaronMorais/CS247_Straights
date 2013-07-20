@@ -13,6 +13,7 @@ public:
 	void addDiamonds(Card);
 	void addHearts(Card); 
 	void addSpades(Card);
+	*Card getTable();
 	void empty(); //resets the table
 	bool isLegalCard(Card card) const; //checks the cards on the table to determine if a card is legal
 	
