@@ -1,25 +1,57 @@
 #include "MainWindow.h"
 
-MainWindow::MainWindow() : mainBox(true, 10) {
+MainWindow::MainWindow() : mainTable(5,1,true){	
+	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
+	
 	set_border_width(10);
+
+
 
 	mainFrame.set_label("Cards on the table");
 	mainFrame.set_label_align( Gtk::ALIGN_CENTER, Gtk::ALIGN_TOP );
 	mainFrame.set_shadow_type( Gtk::SHADOW_ETCHED_OUT );
 	add(mainFrame);
 
-	mainFrame.add(mainBox);
-	
-	for(int i=0; i<5; i++) {
-		table[i] = new Gtk::Image();
-		mainBox.add(*table[i]);
-	}
+	mainFrame.add(mainTable);
 
-	mainBox.add(button);
+	mainTable.attach(startGameButton, 0, 1, 0, 1);
+	startGameButton.signal_clicked().connect(sigc::mem_fun(*this,
+              &MainWindow::startGame) );
+
+	for(int suitInt=CLUB; suitInt != SUIT_COUNT; suitInt++) { //goes through the 4 suits
+		tableBox[suitInt].set_homogeneous(true);
+		tableBox[suitInt].set_spacing(10);
+		mainTable.attach(tableBox[suitInt], 0, 1, suitInt+1, suitInt+2);
+		mainTable.set_row_spacing(suitInt, 10);
+		for(int rankInt=ACE; rankInt != RANK_COUNT; rankInt++) { //goes through all ranks
+			const Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*new Card(static_cast<Suit>(suitInt), static_cast<Rank>(rankInt))); 
+			tableCard[suitInt][rankInt] = new Gtk::Image(cardTempPixbuf);
+			tableBox[suitInt].add(*tableCard[suitInt][rankInt]);
+		}
+	}
 
 	show_all();
 }
 
+void MainWindow::startGame() {
+	straightsGame = new Straights();
+}
+
+
+// void MainWindow::updateTable() {
+// 	for(int j=0; j<52; j++) {
+// 		tableCard[suitInt][rankInt] = new Gtk::Image(nullCardPixbuf);
+// 	}
+// 	for(int j=0; j<table.size(); j++) {
+// 		const Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(table[j]); 
+// 		tableCard[suitInt][rankInt] = new Gtk::Image(cardTempPixbuf);
+// 	}
+// }
+
+void MainWindow::button_quit() {
+	hide();
+}
+
 MainWindow::~MainWindow() {
-	
+
 }
