@@ -10,9 +10,6 @@ int main(int argc, char *argv[]) {
 	}  
     srand48(seed);
 
-	// Straights *straightsGame = new Straights();
-	// straightsGame->playGame();
-
 	Gtk::Main   kit( argc, argv );          
 	MainWindow window;
 	Gtk::Main::run( window );

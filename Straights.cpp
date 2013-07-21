@@ -1,16 +1,17 @@
 #include "Straights.h"
 #include <iostream>
+#include <algorithm>
 #include <vector>
 #include <cassert>
 #include <cstdlib>
 #include "limits.h"
 
 //constructor, initialized the players, generates deck, and deals the cards to the players
-Straights::Straights() {
-	invitePlayers(); //collects all the human and computer players
-	generateDeck(); //generates a deck
-	createInitialHands();
-}
+// Straights::Straights() {
+// 	invitePlayers(); //collects all the human and computer players
+// 	generateDeck(); //generates a deck
+// 	createInitialHands();
+// }
 
 Straights::Straights(bool humanPlayer[]) {
 	for(int i=0; i<NUMBER_OF_PLAYERS; i++) {
@@ -20,6 +21,10 @@ Straights::Straights(bool humanPlayer[]) {
 			players_[i] = new ComputerPlayer(i);
 		}
 	}
+
+	gameOver = false;
+	cardsRemaining = 52; //Assuming hands will be evenly divisible
+	nextPlayer = 0;
 
 	generateDeck(); //generates a deck
 	createInitialHands();
@@ -99,55 +104,65 @@ void Straights::generateGameOrder(int startingPlayer) {
 }
 
 //starts the game
-void Straights::playGame() {
-	bool gameOver = false;
-	while(!gameOver) {
-		int cardsRemaining = CARD_COUNT/NUMBER_OF_PLAYERS; //Assuming hands will be evenly divisible
-		std::cout << "A new round begins. It's player " << (gameOrder[0]+1) << "'s turn to play." << std::endl; 
-		while(cardsRemaining != 0) {//cards remaining in hand
-			for(int i=0; i<NUMBER_OF_PLAYERS;i++) { //goes through each players turn
-				int currentPlayerIndex = gameOrder[i];
-
-				players_[currentPlayerIndex]->setLegalPlays(table_); //the player determines its legal plays based on the table
-				if(players_[currentPlayerIndex]->isHuman()) {
-					humanTurn(currentPlayerIndex);
-				} else {
-					players_[currentPlayerIndex]->computerTurn(table_);
-				}
+bool Straights::playGame() {
+	std::cout << "A new round begins. It's player " << (gameOrder[0]+1) << "'s turn to play." << std::endl; 
+	while(cardsRemaining != 0) {
+		int currentPlayerIndex = gameOrder[nextPlayer];
+		players_[currentPlayerIndex]->setLegalPlays(table_); //the player determines its legal plays based on the table
+		if(players_[currentPlayerIndex]->isHuman()) {
+			std::cout << "human" << std::endl;
+			currentPlayer = currentPlayerIndex;
+			nextPlayer++;
+			if(nextPlayer > (NUMBER_OF_PLAYERS-1)) {
+				nextPlayer = 0;
 			}
-			cardsRemaining--; //every player has either played a card or discarded
+			return false;
+		} else {
+			std::cout << "computer" << std::endl;
+			players_[currentPlayerIndex]->computerTurn(table_);
 		}
-
-		int minimumScore = INT_MAX;
-
-		for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
-			printRoundEnd(i); //print round stats for each player
-
-			int score = players_[i]->totalScore();
-			if(score >= GAME_OVER_SCORE) {
-				gameOver = true;
-			}
-			if(score < minimumScore) { //sets minimum score
-				minimumScore = score;
-			}
-		}
-
-		if(gameOver) {
-			for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
-				int score = players_[i]->totalScore();
-				if(score == minimumScore) { //finds the winner by finding a match with the minimum score
-					std::cout << "Player " << (i+1) << " wins!" << std::endl;
-				}
-			}
-		} else { //new round need to create new hands and a new table
-			createInitialHands();
-			table_.empty();
+		cardsRemaining--; //every player has either played a card or discarded
+		nextPlayer++;
+		if(nextPlayer > (NUMBER_OF_PLAYERS-1)) {
+			nextPlayer = 0;
 		}
 	}
+
+	int minimumScore = INT_MAX;
+	bool gameOver = false;
+
+	for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+		printRoundEnd(i); //print round stats for each player
+
+		int score = players_[i]->totalScore();
+		if(score >= GAME_OVER_SCORE) {
+			gameOver = true;
+		}
+		if(score < minimumScore) { //sets minimum score
+			minimumScore = score;
+		}
+	}
+
+	if(gameOver) {
+		for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+			int score = players_[i]->totalScore();
+			if(score == minimumScore) { //finds the winner by finding a match with the minimum score
+				std::cout << "Player " << (i+1) << " wins!" << std::endl;
+			}
+		}
+	} else { //new round need to create new hands and a new table
+		createInitialHands();
+		table_.empty();
+	}
+	cardsRemaining = 52;
+	nextPlayer = 0;
+	int currentPlayerIndex = gameOrder[nextPlayer];
+	currentPlayer = currentPlayerIndex;
+	return !gameOver;
 }
 
 //human turn to play
-void Straights::humanTurn(int playerIndex) {
+bool Straights::humanTurn(int playerIndex, Type type, Card card) {
 	std::cout << table_; //the table is first printed out
 	//next the player's hand
 	std::vector<Card> currentHand = players_[playerIndex]->currentHand();
@@ -162,28 +177,28 @@ void Straights::humanTurn(int playerIndex) {
 	}
 
 	bool turnComplete = false; //invalid moves will result in false
-	while(!turnComplete) {
-		std::cout << ">";
-		Command command;
-		std::cin >> command; //reads command
-		if(command.type == PLAY) { //human plays a card on the table
-			turnComplete = players_[playerIndex]->play(table_, command.card);
-		} else if(command.type == DISCARD) { //human discards
-			turnComplete = players_[playerIndex]->discard(command.card);
-		} else if(command.type == DECK) {
-			printDeck();
-		} else if(command.type == QUIT) {
-			exit(0);
-		} else if(command.type == RAGEQUIT) {
-			std::cout << "Player " << playerIndex+1 << " ragequits. A computer will now take over." << std::endl;
-			players_[playerIndex]->setHuman(false); //player is no longer human
-			Player* replacementPlayer = new ComputerPlayer(*players_[playerIndex]);
-			delete players_[playerIndex];
-			players_[playerIndex] = replacementPlayer;
-			players_[playerIndex]->computerTurn(table_); //computer turn is executed;
-			turnComplete = true;
+	std::cout << ">";
+	if(type == PLAY) { //human plays a card on the table
+		std::cout << card << std::endl;
+		turnComplete = players_[playerIndex]->discard(card);
+		if(!turnComplete) {
+			turnComplete = players_[playerIndex]->play(table_, card);
 		}
+		std::cout << "complete!" << std::endl;
+	} else if(type == DECK) {
+		printDeck();
+	} else if(type == QUIT) {
+		exit(0);
+	} else if(type == RAGEQUIT) {
+		std::cout << "Player " << playerIndex+1 << " ragequits. A computer will now take over." << std::endl;
+		players_[playerIndex]->setHuman(false); //player is no longer human
+		Player* replacementPlayer = new ComputerPlayer(*players_[playerIndex]);
+		delete players_[playerIndex];
+		players_[playerIndex] = replacementPlayer;
+		players_[playerIndex]->computerTurn(table_); //computer turn is executed;
+		turnComplete = true;
 	}
+	return turnComplete;
 }
 
 //prints the deck

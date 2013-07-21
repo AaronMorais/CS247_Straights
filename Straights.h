@@ -16,14 +16,13 @@ const int GAME_OVER_SCORE = 80;
 class Straights {
 	friend class MainWindow;
 public:
-	Straights();
 	Straights(bool[]);
-	void playGame();
+	bool playGame();
 private:
 	void invitePlayers();
 	void createInitialHands();
 
-	void humanTurn(int playerIndex);
+	bool humanTurn(int playerIndex, Type type, Card card);
 	Player *players_[NUMBER_OF_PLAYERS]; 
 
 	int gameOrder [NUMBER_OF_PLAYERS];
@@ -38,6 +37,11 @@ private:
 	void printDeck();
 	void printCardVector(std::vector<Card>);
 	void printRoundEnd(int);
+
+	bool gameOver;
+	int cardsRemaining; //Assuming hands will be evenly divisible
+	int currentPlayer;
+	int nextPlayer;
 };
 
 #endif

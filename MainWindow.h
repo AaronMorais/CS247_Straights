@@ -21,6 +21,7 @@ public:
 	void endGame();
 	void rageQuit(int);
 	void selectCard(int);
+	void updateGame();
 private:
 	Gtk::VBox mainBox;
 

@@ -23,7 +23,7 @@ MainWindow::MainWindow() : mainBox(false, 10) {
 	tableContainerBox.set_homogeneous(true);
 	tableContainerBox.set_spacing(10);
 
-	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
+	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
 	for(int i=0; i<4; i++) { //goes through the 4 suits
 		tableContainerBox.add(tableBox[i]);
 		tableBox[i].set_homogeneous(true);
@@ -69,8 +69,10 @@ MainWindow::MainWindow() : mainBox(false, 10) {
 void MainWindow::startGame() {
 	StartDialogBox dialog(*this, "Which players are human?");
 	straightsGame = new Straights(humanPlayer);
-	straightsGame->playGame();
-	//player can select card and start game
+	std::cout << "LOGGG" << std::endl;
+	bool over = straightsGame->playGame();
+	std::cout << "game played" << std::endl;
+	updateGame();
 	return;
 }
 
@@ -86,28 +88,58 @@ void MainWindow::rageQuit(int index) {
 }
 
 void MainWindow::selectCard(int index) {
+	int currentPlayer = straightsGame->currentPlayer;
 	//human clicks on card, table updates, next human plaer can play
+	Card card = straightsGame->players_[currentPlayer]->currentHand()[index];
+	bool turnComplete = straightsGame->humanTurn(currentPlayer, PLAY, card);
+
+	std::cout << "turn: " << turnComplete << std::endl;
+	if(turnComplete) {
+		std::cout << "turn is complete" << std::endl;
+		bool over = straightsGame->playGame();
+		std::cout << currentPlayer << std::endl;
+		updateGame();
+		std::cout << "Updated" << std::endl;
+		if(over) {
+			std::cout << "OVER" << std::endl;
+		}
+	}
+
 	std::cout << "Select at index: " << index << std::endl;
 	return;
 }
 
 //game over observer
 
-// void MainWindow::updateGame() {
-// 	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
-// 	for(int j=0; j<52; j++) {
-// 		int suitInt = j/13;
-// 		int rankInt = j%13;
-// 		tableCard[suitInt][rankInt]->set(nullCardPixbuf);
-// 	}
-// 	std::vector<Card> tableVector = straightsGame->table_.getTable();
-// 	for(std::vector<Card>::iterator it = tableVector.begin(); it != tableVector.end(); ++it) {
-// 		const Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
-// 		tableCard[it->getSuit()][it->getRank()]->set(cardTempPixbuf);
-// 		std::cout << *it << std::endl;
-// 	}
-// 	return;
-// }
+void MainWindow::updateGame() {
+	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
+	for(int j=0; j<52; j++) {
+		int suitInt = j/13;
+		int rankInt = j%13;
+		tableCard[suitInt][rankInt]->set(nullCardPixbuf);
+	}
+	std::vector<Card> tableVector = straightsGame->table_.getTable();
+	for(std::vector<Card>::iterator it = tableVector.begin(); it != tableVector.end(); ++it) {
+		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
+		tableCard[it->getSuit()][it->getRank()]->set(cardTempPixbuf);
+		std::cout << *it << std::endl;
+	}
+	for(int j=0; j<13; j++) {
+		handCard[j]->set(nullCardPixbuf);
+	}
+	int index = 0;
+	int currentPlayer = straightsGame->currentPlayer;
+	std::cout << "About to update " << currentPlayer << std::endl;
+	std::vector<Card> handVector = straightsGame->players_[currentPlayer]->currentHand();
+	for(std::vector<Card>::iterator it = handVector.begin(); it != handVector.end(); ++it) {
+		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
+		handCard[index]->set(cardTempPixbuf);
+		index++;
+		std::cout << index << std::endl;
+	}
+
+	return;
+}
 
 MainWindow::~MainWindow() {
 
