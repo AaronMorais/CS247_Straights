@@ -133,6 +133,7 @@ void MainWindow::updateGame() {
 	}
 	for(int j=0; j<13; j++) {
 		handCard[j]->set(nullCardPixbuf);
+		handButton[j].set_sensitive(false);
 	}
 
 	int index = 0;
@@ -142,6 +143,7 @@ void MainWindow::updateGame() {
 	for(std::vector<Card>::iterator it = handVector.begin(); it != handVector.end(); ++it) {
 		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
 		handCard[index]->set(cardTempPixbuf);
+		handButton[index].set_sensitive(true);
 		index++;
 	}
 
@@ -153,6 +155,12 @@ void MainWindow::updateGame() {
 		std::ostringstream oss2;
 		oss2 << straightsGame->players_[i]->discards().size() <<" discards";
 		playerDiscardsLabel[i].set_label(oss2.str());
+
+		if(currentPlayer == i) {
+			playerRageButton[i].set_sensitive(true);
+		} else {
+			playerRageButton[i].set_sensitive(false);
+		}
 	}
 
 	std::ostringstream oss;
