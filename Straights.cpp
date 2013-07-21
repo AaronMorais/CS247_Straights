@@ -110,7 +110,6 @@ bool Straights::playGame() {
 		int currentPlayerIndex = gameOrder[nextPlayer];
 		players_[currentPlayerIndex]->setLegalPlays(table_); //the player determines its legal plays based on the table
 		if(players_[currentPlayerIndex]->isHuman()) {
-			std::cout << "human" << std::endl;
 			currentPlayer = currentPlayerIndex;
 			nextPlayer++;
 			if(nextPlayer > (NUMBER_OF_PLAYERS-1)) {
@@ -118,7 +117,6 @@ bool Straights::playGame() {
 			}
 			return false;
 		} else {
-			std::cout << "computer" << std::endl;
 			players_[currentPlayerIndex]->computerTurn(table_);
 		}
 		cardsRemaining--; //every player has either played a card or discarded
@@ -184,7 +182,6 @@ bool Straights::humanTurn(int playerIndex, Type type, Card card) {
 		if(!turnComplete) {
 			turnComplete = players_[playerIndex]->play(table_, card);
 		}
-		std::cout << "complete!" << std::endl;
 	} else if(type == DECK) {
 		printDeck();
 	} else if(type == QUIT) {
