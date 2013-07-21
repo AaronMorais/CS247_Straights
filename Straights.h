@@ -14,11 +14,13 @@ const int DECK_CARDS_PER_LINE = 13;
 const int GAME_OVER_SCORE = 80;
 
 class Straights {
-	friend class MainWindow;
+	friend class Game;
 public:
 	Straights(bool[]);
 	bool playGame();
+	std::string gameOverMessage();
 private:
+	std::string gameOverMessage_;
 	void invitePlayers();
 	void createInitialHands();
 

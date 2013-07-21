@@ -143,13 +143,17 @@ bool Straights::playGame() {
 			}
 		}
 
+		std::ostringstream oss;
+
 		if(gameOver) {
 			for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
 				int score = players_[i]->totalScore();
 				if(score == minimumScore) { //finds the winner by finding a match with the minimum score
 					std::cout << "Player " << (i+1) << " wins!" << std::endl;
+					oss << "Player " << (i+1) << " wins with a score of: " << score << "\n";
 				}
 			}
+			gameOverMessage = oss.str();
 			return true;
 		} else { //new round need to create new hands and a new table
 			createInitialHands();
@@ -160,6 +164,10 @@ bool Straights::playGame() {
 		int currentPlayerIndex = gameOrder[nextPlayer];
 		currentPlayer = currentPlayerIndex;
 	}	
+}
+
+std::string gameOverMessage(){
+	return gameOverMessage_;
 }
 
 //human turn to play
