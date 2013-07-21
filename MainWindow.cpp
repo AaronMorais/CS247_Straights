@@ -67,7 +67,8 @@ MainWindow::MainWindow() : mainBox(false, 10) {
 }
 
 void MainWindow::startGame() {
-	StartDialogBox dialog(*this, "Which players are human?");
+	StartDialogBox startDialog(*this, "Which players are human?");
+	SeedDialogBox seedDialog(*this, "Enter a Random Seed");
 	straightsGame = new Straights(humanPlayer);
 	bool over = straightsGame->playGame();
 	updateGame();

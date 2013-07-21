@@ -11,6 +11,7 @@
 #include "DeckGUI.h"
 #include "Straights.h"
 #include "StartDialogBox.h"
+#include "SeedDialogBox.h"
 
 class MainWindow: public Gtk::Window {
 friend class StartDialogBox;
