@@ -13,7 +13,7 @@ public:
 	void addDiamonds(Card);
 	void addHearts(Card); 
 	void addSpades(Card);
-	Card* getTable();
+	std::vector<Card> getTable();
 	void empty(); //resets the table
 	bool isLegalCard(Card card) const; //checks the cards on the table to determine if a card is legal
 	
@@ -24,7 +24,6 @@ private:
 	std::vector<Card> diamonds_;
 	std::vector<Card> hearts_;
 	std::vector<Card> spades_;
-	int numberOfCardsOnTable = 0;
 };
 
 std::ostream &operator<<(std::ostream &, const Table &);

@@ -1,4 +1,5 @@
 #include "MainWindow.h"
+#include <iostream>
 
 MainWindow::MainWindow() : mainTable(5,2,true){		
 	set_border_width(10);
@@ -36,22 +37,29 @@ MainWindow::MainWindow() : mainTable(5,2,true){
 
 void MainWindow::startGame() {
 	straightsGame = new Straights();
+	return;
 }
 
 
 void MainWindow::updateGame() {
-	// const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
-	// Card *tableCards = straightsGame->table_.getTable();
-	// for(int j=0; j<52; j++) {
-	// 	int suitInt = j/13;
-	// 	int rankInt = j%13;
-	// 	const Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(tableCards[j]); 
-	// 	tableCard[suitInt][rankInt] = new Gtk::Image(cardTempPixbuf);
-	// }
+	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
+	for(int j=0; j<52; j++) {
+		int suitInt = j/13;
+		int rankInt = j%13;
+		tableCard[suitInt][rankInt]->set(nullCardPixbuf);
+	}
+	std::vector<Card> tableVector = straightsGame->table_.getTable();
+	for(std::vector<Card>::iterator it = tableVector.begin(); it != tableVector.end(); ++it) {
+		const Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
+		tableCard[it->getSuit()][it->getRank()]->set(cardTempPixbuf);
+		std::cout << *it << std::endl;
+	}
+	return;
 }
 
 void MainWindow::button_quit() {
 	hide();
+	return;
 }
 
 MainWindow::~MainWindow() {

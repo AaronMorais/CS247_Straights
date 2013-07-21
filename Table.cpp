@@ -11,47 +11,30 @@ Table::~Table(){
 //add clubs to the club vector
 void Table::addClubs(Card card){
 	clubs_.push_back(card);
-	numberOfCardsOnTable++;
 }
 
 //add a diamond card to the diamonds vector
 void Table::addDiamonds(Card card){
 	diamonds_.push_back(card);
-	numberOfCardsOnTable++;
 }
 
 //add a heart card to the cards vector
 void Table::addHearts(Card card){
 	hearts_.push_back(card);
-	numberOfCardsOnTable++;
 } 
 
 //add spades card to the cards vector
 void Table::addSpades(Card card){
 	spades_.push_back(card);
-	numberOfCardsOnTable++;
 }
 
-Card* Table::getTable(){
-	Card onTable[numberOfCardsOnTable];
-	int j=0;
-	for(int i = 0; i < 4; i++){
-		std::vector<Card> suitVector; 
-		switch(i){
-			case 1:
-				suitVector = clubs_;
-			case 2:
-				suitVector = diamonds_;
-			case 3:
-				suitVector = hearts_;
-			case 4:
-				suitVector = spades_;
-		}
-		for(std::vector<Card>::iterator it = suitVector.begin(); it != suitVector.end(); ++it) {
-			onTable[j++] = &*it;
-		}
-	}
-	return *onTable;
+std::vector<Card> Table::getTable(){
+	std::vector<Card> cardsVector; 
+	cardsVector.insert(cardsVector.end(), clubs_.begin(), clubs_.end());
+	cardsVector.insert(cardsVector.end(), diamonds_.begin(), diamonds_.end());
+	cardsVector.insert(cardsVector.end(), hearts_.begin(), hearts_.end());
+	cardsVector.insert(cardsVector.end(), spades_.begin(), spades_.end());
+	return cardsVector;
 }
 
 void Table::empty(){ //clears all card vectors
@@ -59,7 +42,6 @@ void Table::empty(){ //clears all card vectors
 	diamonds_.clear();
 	hearts_.clear();		
 	spades_.clear();
-	numberOfCardsOnTable = 0;
 }
 
 //determines if a card is legal based on the current cards on the table
