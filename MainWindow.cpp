@@ -83,12 +83,22 @@ void MainWindow::endGame() {
 
 void MainWindow::rageQuit(int index) {
 	//computer does move, table updates, next human player can play
-	std::cout << "Rage at index: " << index << std::endl;
+	Card *card = new Card(SPADE, NINE);
+	int currentPlayer = straightsGame->currentPlayer;
+	straightsGame->humanTurn(currentPlayer, RAGEQUIT, *card);
+	bool over = straightsGame->playGame();
+	std::cout << currentPlayer << std::endl;
+	updateGame();
+	std::cout << "Updated" << std::endl;
+	if(over) {
+		std::cout << "OVER" << std::endl;
+	}
 	return;
 }
 
 void MainWindow::selectCard(int index) {
 	int currentPlayer = straightsGame->currentPlayer;
+
 	//human clicks on card, table updates, next human plaer can play
 	Card card = straightsGame->players_[currentPlayer]->currentHand()[index];
 	bool turnComplete = straightsGame->humanTurn(currentPlayer, PLAY, card);
