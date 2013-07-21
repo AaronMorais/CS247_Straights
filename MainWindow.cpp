@@ -1,6 +1,8 @@
 #include "MainWindow.h"
 #include <iostream>
 #include <sstream>
+#include <string>
+#include "limits.h"
 
 MainWindow::MainWindow() : mainBox(false, 10) {		
 	set_border_width(10);
@@ -74,8 +76,7 @@ void MainWindow::startGame() {
 	StartDialogBox startDialog(*this, "Which players are human?");
 	SeedDialogBox seedDialog(*this, "Enter a Random Seed");
 	straightsGame = new Straights(humanPlayer);
-	bool over = straightsGame->playGame();
-	updateGame();
+	playGame();
 	return;
 }
 
@@ -91,11 +92,8 @@ void MainWindow::rageQuit(int index) {
 	int currentPlayer = straightsGame->currentPlayer;
 	straightsGame->humanTurn(currentPlayer, RAGEQUIT, *card);
 
-	bool over = straightsGame->playGame();
-	updateGame();
-	if(over) {
- 		std::cout << "Game OVER dialog here?" << std::endl;
-	}
+	playGame();
+
 	return;
 }
 
@@ -111,17 +109,53 @@ void MainWindow::selectCard(int index) {
 	bool turnComplete = straightsGame->humanTurn(currentPlayer, PLAY, card);
 
 	if(turnComplete) {
-		bool over = straightsGame->playGame();
-		updateGame();
-		if(over) {
-			std::cout << "Game OVER dialog here?" << std::endl;
-		}
+		playGame();
 	}
 
 	return;
 }
 
-//game over observer?
+void MainWindow::playGame() {
+	bool over = straightsGame->playGame();
+	updateGame();
+	if(over) {
+		std::string gameOverString;
+		int minimumScore = INT_MAX;
+		for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+			int score = straightsGame->players_[i]->totalScore();
+			if(score < minimumScore) { //sets minimum score
+				minimumScore = score;
+			}
+		}
+
+		for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+			int score = straightsGame->players_[i]->totalScore();
+			if(score == minimumScore) { //finds the winner by finding a match with the minimum score
+				std::ostringstream oss;
+				oss << "Player " << (i+1) << " wins with a score of: " << score << "\n";
+				gameOverString += oss.str();
+			}
+		}
+		gameOverString += "Start a new game?";
+
+		Gtk::MessageDialog dialog(*this, "Game Over!",
+		          false /* use_markup */, Gtk::MESSAGE_INFO,
+		          Gtk::BUTTONS_OK_CANCEL);
+		dialog.set_secondary_text(gameOverString);
+		int result = dialog.run();
+		switch (result) {
+	        case Gtk::RESPONSE_OK:
+	        	startGame();
+	        	break;
+	        case Gtk::RESPONSE_CANCEL:
+        		for(int i=0; i<4; i++) { //goes through the 4 players
+					playerRageButton[i].set_sensitive(false);
+				}
+				break;
+		}
+
+	}
+}
 
 void MainWindow::updateGame() {
 	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();

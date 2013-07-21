@@ -7,6 +7,7 @@
 #include <gtkmm/button.h>
 #include <gtkmm/frame.h>
 #include <gtkmm/label.h>
+#include <gtkmm/messagedialog.h>
 #include "Card.h"
 #include "DeckGUI.h"
 #include "Straights.h"
@@ -23,6 +24,7 @@ public:
 	void rageQuit(int);
 	void selectCard(int);
 	void updateGame();
+	void playGame();
 private:
 	Gtk::VBox mainBox;
 
