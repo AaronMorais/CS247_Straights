@@ -8,6 +8,7 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/label.h>
 #include <gtkmm/messagedialog.h>
+#include <string>
 #include "Card.h"
 #include "DeckGUI.h"
 #include "Straights.h"
@@ -17,7 +18,7 @@
 class MainWindow: public Gtk::Window {
 friend class StartDialogBox;
 public:
-	MainWindow();
+	MainWindow(Game);
 	~MainWindow();
 	void startGame();
 	void endGame();
@@ -25,7 +26,9 @@ public:
 	void selectCard(int);
 	void updateGame();
 	void playGame();
+	void gameOverDialog(std::string);
 private:
+	Game gameController;
 	Gtk::VBox mainBox;
 
 	Gtk::HBox gameButtonBox;
