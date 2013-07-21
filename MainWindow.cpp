@@ -37,7 +37,8 @@ MainWindow::MainWindow() : mainBox(false, 10) {
 	mainBox.add(playerBox);
 	for(int i=0; i<4; i++) { //goes through the 4 players
 		playerRageButton[i].set_label("Rage!");
-		playerPointsLabel[i].set_label("0 points");
+		playerRoundPointsLabel[i].set_label("0 round points");
+		playerTotalPointsLabel[i].set_label("0 total points");
 		playerDiscardsLabel[i].set_label("0 discards");
 
 		std::ostringstream oss;
@@ -50,7 +51,8 @@ MainWindow::MainWindow() : mainBox(false, 10) {
 		playerBox.add(playerFrame[i]);
 		playerFrame[i].add(playerContainer[i]);
 		playerContainer[i].add(playerRageButton[i]);
-		playerContainer[i].add(playerPointsLabel[i]);
+		playerContainer[i].add(playerRoundPointsLabel[i]);
+		playerContainer[i].add(playerTotalPointsLabel[i]);
 		playerContainer[i].add(playerDiscardsLabel[i]);
 	}
 
@@ -152,12 +154,16 @@ void MainWindow::updateGame() {
 
 	for(int i=0; i<4; i++) { //goes through the 4 players
 		std::ostringstream oss;
-		oss << straightsGame->players_[i]->roundScore() <<" points";
-		playerPointsLabel[i].set_label(oss.str());
+		oss << straightsGame->players_[i]->roundScore() <<" round points";
+		playerRoundPointsLabel[i].set_label(oss.str());
 
-		std::ostringstream oss2;
-		oss2 << straightsGame->players_[i]->discards().size() <<" discards";
-		playerDiscardsLabel[i].set_label(oss2.str());
+		oss.str(std::string());
+		oss << (straightsGame->players_[i]->totalScore() + straightsGame->players_[i]->roundScore()) <<" total points";
+		playerTotalPointsLabel[i].set_label(oss.str());
+
+		oss.str(std::string());
+		oss << straightsGame->players_[i]->discards().size() <<" discards";
+		playerDiscardsLabel[i].set_label(oss.str());
 
 		if(currentPlayer == i) {
 			playerRageButton[i].set_sensitive(true);

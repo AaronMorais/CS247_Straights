@@ -39,7 +39,8 @@ private:
 	Gtk::Frame playerFrame[4];
 	Gtk::VBox playerContainer[4];
 	Gtk::Button playerRageButton[4];
-	Gtk::Label playerPointsLabel[4];
+	Gtk::Label playerRoundPointsLabel[4];
+	Gtk::Label playerTotalPointsLabel[4];
 	Gtk::Label playerDiscardsLabel[4];
 
 	Gtk::Frame handFrame;
