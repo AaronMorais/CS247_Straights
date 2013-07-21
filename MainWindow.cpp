@@ -144,12 +144,14 @@ void MainWindow::updateGame() {
 	int index = 0;
 	int currentPlayer = straightsGame->currentPlayer;
 
-	std::vector<Card> handVector = straightsGame->players_[currentPlayer]->currentHand();
-	for(std::vector<Card>::iterator it = handVector.begin(); it != handVector.end(); ++it) {
-		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
-		handCard[index]->set(cardTempPixbuf);
-		handButton[index].set_sensitive(true);
-		index++;
+	if(straightsGame->players_[currentPlayer]->isHuman()) {
+		std::vector<Card> handVector = straightsGame->players_[currentPlayer]->currentHand();
+		for(std::vector<Card>::iterator it = handVector.begin(); it != handVector.end(); ++it) {
+			Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
+			handCard[index]->set(cardTempPixbuf);
+			handButton[index].set_sensitive(true);
+			index++;
+		}
 	}
 
 	for(int i=0; i<4; i++) { //goes through the 4 players
