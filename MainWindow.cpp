@@ -45,6 +45,7 @@ MainWindow::MainWindow() : mainBox(false, 10) {
 		playerFrame[i].set_label(oss.str());
 
 		playerRageButton[i].signal_clicked().connect(sigc::bind<int>(sigc::mem_fun(*this,&MainWindow::rageQuit), i));
+		playerRageButton[i].set_sensitive(false);
 
 		playerBox.add(playerFrame[i]);
 		playerFrame[i].add(playerContainer[i]);
@@ -60,6 +61,7 @@ MainWindow::MainWindow() : mainBox(false, 10) {
 		handCard[i] = new Gtk::Image(nullCardPixbuf);
 		handButton[i].set_image(*handCard[i]);
 		handButton[i].signal_clicked().connect(sigc::bind<int>(sigc::mem_fun(*this,&MainWindow::selectCard), i));
+		handButton[i].set_sensitive(false);
 		handBox.add(handButton[i]);
 	}
 
