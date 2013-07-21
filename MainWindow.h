@@ -6,7 +6,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/button.h>
 #include <gtkmm/frame.h>
-#include <gtkmm/table.h>
+#include <gtkmm/label.h>
 #include "Card.h"
 #include "DeckGUI.h"
 #include "Straights.h"
@@ -15,16 +15,33 @@ class MainWindow: public Gtk::Window {
 public:
 	MainWindow();
 	~MainWindow();
-	void button_quit();
 	void startGame();
-	void updateGame();
+	void endGame();
+	void rageQuit(int);
+	void selectCard(int);
 private:
-	Gtk::Image *tableCard[4][13];
-	Gtk::Button startGameButton;
-	Gtk::Button updateButton;
+	Gtk::VBox mainBox;
+
+	Gtk::HBox gameButtonBox;
+	Gtk::Button gameStartButton;
+	Gtk::Button gameEndButton;
+
+	Gtk::Frame tableFrame;
+	Gtk::VBox tableContainerBox;
 	Gtk::HBox tableBox[4];
-	Gtk::Frame mainFrame;
-	Gtk::Table mainTable;
+	Gtk::Image *tableCard[4][13];
+	
+	Gtk::HBox playerBox;
+	Gtk::Frame playerFrame[4];
+	Gtk::VBox playerContainer[4];
+	Gtk::Button playerRageButton[4];
+	Gtk::Label playerPointsLabel[4];
+	Gtk::Label playerDiscardsLabel[4];
+
+	Gtk::Frame handFrame;
+	Gtk::HBox handBox;
+	Gtk::Button handButton[13];
+	Gtk::Image *handCard[13];
 
 	DeckGUI deck;
 	Straights *straightsGame;
