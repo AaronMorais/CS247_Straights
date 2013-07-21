@@ -163,15 +163,29 @@ void MainWindow::updateGame() {
 
 	for(int i=0; i<4; i++) { //goes through the 4 players
 		std::ostringstream oss;
-		oss << gameController.getRoundScore() <<" round points";
+
+		int roundScore = straightsGame->players_[i]->roundScore();
+		oss << roundScore << " round point";
+		if(roundScore != 1) {
+			oss << "s";
+		}
 		playerRoundPointsLabel[i].set_label(oss.str());
 
 		oss.str(std::string());
-		oss << (gameController.getTotalScore() + gameController.getRoundScore()) <<" total points";
+		int totalScore = straightsGame->players_[i]->totalScore() + straightsGame->players_[i]->roundScore();
+		oss << totalScore << " total point";
+		if(totalScore != 1) {
+			oss << "s";
+		}
 		playerTotalPointsLabel[i].set_label(oss.str());
 
 		oss.str(std::string());
-		oss << gameController.getDiscards() <<" discards";
+		int discards = straightsGame->players_[i]->discards().size();
+		oss << discards << " discard";
+		if(discards != 1) {
+			oss << "s";
+		}
+
 		playerDiscardsLabel[i].set_label(oss.str());
 
 		if(currentPlayer == i) {
