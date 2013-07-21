@@ -2,13 +2,11 @@ TODO
 
 Multiple rounds
 Dialog for game over
-Dialog for seed
-Disable rage buttons
-disable card buttons
 BONUS
+	Press enter in number dialog
+	Hide/combine player dialog before number dialog
 	indicator of legal and illegal cards
-
-
+	
 COMPLETED
 UML
 Code remarks and abstraction 
@@ -39,3 +37,6 @@ Human Player
 	- Socring
 Fix removing card from hand for player class
 Fix include structure with makefile
+Dialog for seed
+Disable rage buttons
+disable card buttons
