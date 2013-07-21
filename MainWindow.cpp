@@ -4,7 +4,7 @@
 #include <string>
 #include "limits.h"
 
-MainWindow::MainWindow(Game game) : mainBox(false, 10) {		
+MainWindow::MainWindow(Game *game) : mainBox(false, 10) {		
 	gameController = game;
 	set_border_width(10);
 
@@ -76,7 +76,7 @@ MainWindow::MainWindow(Game game) : mainBox(false, 10) {
 void MainWindow::startGame() {
 	StartDialogBox startDialog(*this, "Which players are human?");
 	SeedDialogBox seedDialog(*this, "Enter a Random Seed");
-	gameController.newGame(humanPlayer);
+	gameController->newGame(humanPlayer);
 	playGame();
 	return;
 }
@@ -89,7 +89,7 @@ void MainWindow::endGame() {
 void MainWindow::rageQuit(int index) {
 	//computer does move, table updates, next human player can play
 	
-	gameController.humanTurn(RAGEQUIT, 0);
+	gameController->humanTurn(RAGEQUIT, 0);
 
 	playGame();
 
@@ -97,7 +97,7 @@ void MainWindow::rageQuit(int index) {
 }
 
 void MainWindow::selectCard(int index) {
-	turnComplete = gameController.humanTurn(PLAY, index);
+	bool turnComplete = gameController->humanTurn(PLAY, index);
 	if(turnComplete) {
 		playGame();
 	}
@@ -106,7 +106,7 @@ void MainWindow::selectCard(int index) {
 }
 
 void MainWindow::playGame() {
-	gameController.playGame();
+	gameController->playGame();
 	updateGame();
 }
 
@@ -124,9 +124,7 @@ void MainWindow::gameOverDialog(std::string gameOverString){
         	startGame();
         	break;
         case Gtk::RESPONSE_CANCEL:
-    		for(int i=0; i<4; i++) { //goes through the 4 players
-				playerRageButton[i].set_sensitive(false);
-			}
+        	endGame();
 			break;
 	}
 }
@@ -139,7 +137,7 @@ void MainWindow::updateGame() {
 		tableCard[suitInt][rankInt]->set(nullCardPixbuf);
 	}
 
-	std::vector<Card> tableVector = gameController.getTable();
+	std::vector<Card> tableVector = gameController->getTable();
 	for(std::vector<Card>::iterator it = tableVector.begin(); it != tableVector.end(); ++it) {
 		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
 		tableCard[it->getSuit()][it->getRank()]->set(cardTempPixbuf);
@@ -151,7 +149,7 @@ void MainWindow::updateGame() {
 
 	int index = 0;
 
-	std::vector<Card> handVector = gameController.getCurrentHand();
+	std::vector<Card> handVector = gameController->getCurrentHand();
 	for(std::vector<Card>::iterator it = handVector.begin(); it != handVector.end(); ++it) {
 		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
 		handCard[index]->set(cardTempPixbuf);
@@ -159,12 +157,12 @@ void MainWindow::updateGame() {
 		index++;
 	}
 
-	currentPlayer = gameController.currentPlayer();
+	int currentPlayer = gameController->currentPlayer();
 
 	for(int i=0; i<4; i++) { //goes through the 4 players
 		std::ostringstream oss;
 
-		int roundScore = straightsGame->players_[i]->roundScore();
+		int roundScore = gameController->playerRoundScore(i);
 		oss << roundScore << " round point";
 		if(roundScore != 1) {
 			oss << "s";
@@ -172,7 +170,8 @@ void MainWindow::updateGame() {
 		playerRoundPointsLabel[i].set_label(oss.str());
 
 		oss.str(std::string());
-		int totalScore = straightsGame->players_[i]->totalScore() + straightsGame->players_[i]->roundScore();
+
+		int totalScore = gameController->playerTotalScore(i) + gameController->playerRoundScore(i);
 		oss << totalScore << " total point";
 		if(totalScore != 1) {
 			oss << "s";
@@ -180,7 +179,7 @@ void MainWindow::updateGame() {
 		playerTotalPointsLabel[i].set_label(oss.str());
 
 		oss.str(std::string());
-		int discards = straightsGame->players_[i]->discards().size();
+		int discards = gameController->playerDiscards(i);
 		oss << discards << " discard";
 		if(discards != 1) {
 			oss << "s";

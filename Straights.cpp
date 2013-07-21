@@ -1,5 +1,6 @@
 #include "Straights.h"
 #include <iostream>
+#include <sstream>
 #include <algorithm>
 #include <vector>
 #include <cassert>
@@ -153,7 +154,7 @@ bool Straights::playGame() {
 					oss << "Player " << (i+1) << " wins with a score of: " << score << "\n";
 				}
 			}
-			gameOverMessage = oss.str();
+			gameOverMessage_ = oss.str();
 			return true;
 		} else { //new round need to create new hands and a new table
 			createInitialHands();
@@ -166,7 +167,7 @@ bool Straights::playGame() {
 	}	
 }
 
-std::string gameOverMessage(){
+std::string Straights::gameOverMessage(){
 	return gameOverMessage_;
 }
 

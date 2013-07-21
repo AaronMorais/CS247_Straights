@@ -14,11 +14,14 @@
 #include "Straights.h"
 #include "StartDialogBox.h"
 #include "SeedDialogBox.h"
+#include "Game.h"
+
+class Game;
 
 class MainWindow: public Gtk::Window {
 friend class StartDialogBox;
 public:
-	MainWindow(Game);
+	MainWindow(Game*);
 	~MainWindow();
 	void startGame();
 	void endGame();
@@ -28,7 +31,7 @@ public:
 	void playGame();
 	void gameOverDialog(std::string);
 private:
-	Game gameController;
+	Game *gameController;
 	Gtk::VBox mainBox;
 
 	Gtk::HBox gameButtonBox;
