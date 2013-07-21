@@ -147,7 +147,15 @@ void MainWindow::updateGame() {
 		index++;
 		std::cout << index << std::endl;
 	}
+	for(int i=0; i<4; i++) { //goes through the 4 players
+		std::ostringstream oss;
+		oss << straightsGame->players_[i]->roundScore() <<" points";
+		playerPointsLabel[i].set_label(oss.str());
 
+		std::ostringstream oss2;
+		oss2 << straightsGame->players_[i]->discards().size() <<" discards";
+		playerDiscardsLabel[i].set_label(oss2.str());
+	}
 	return;
 }
 
