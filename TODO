@@ -1,13 +1,15 @@
 TODO
 
-Multiple rounds
-Dialog for game over
-BONUS
 	Press enter in number dialog
 	Hide/combine player dialog before number dialog
-	indicator of legal and illegal cards
+	BONUS
+		indicator of legal and illegal cards
+		music
+		show all Discards
 	
 COMPLETED
+Dialog for game over
+Multiple rounds
 UML
 Code remarks and abstraction 
 Fix memory leaks with valgrind
