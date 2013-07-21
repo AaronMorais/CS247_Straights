@@ -13,8 +13,7 @@ SeedDialogBox::SeedDialogBox( MainWindow & parentWindow, string title) : Dialog(
 	seedEntry.set_text("0");
 	
 	// Add a standard "ok" buttons with the appropriate responses when clicked.
-    Gtk::Button * okButton = add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
-	contentArea->add(*okButton);
+    add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
 	show_all_children();
 	

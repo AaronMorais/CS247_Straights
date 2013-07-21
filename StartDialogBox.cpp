@@ -18,8 +18,7 @@ StartDialogBox::StartDialogBox( MainWindow & parentWindow, string title) : Dialo
 	} 
 	
 	// Add a standard "ok" buttons with the appropriate responses when clicked.
-    Gtk::Button * okButton = add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
-	contentArea->add(*okButton);
+    add_button(Gtk::Stock::OK, Gtk::RESPONSE_OK);
 
 	show_all_children();
 	

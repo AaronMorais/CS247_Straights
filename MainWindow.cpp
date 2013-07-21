@@ -101,7 +101,7 @@ void MainWindow::selectCard(int index) {
 	int currentPlayer = straightsGame->currentPlayer;
 
 	std::vector<Card> currentHandVector = straightsGame->players_[currentPlayer]->currentHand();
-	if(index >= (unsigned)currentHandVector.size()) {
+	if((unsigned)index >= currentHandVector.size()) {
 		return;
 	}
 
