@@ -1,6 +1,5 @@
 #!/bin/bash
 make clean
-ssh -X cs "rm -r CS247Project"
 cd ../
-scp -r P1 cs:CS247Project
-ssh -X cs "cd CS247Project; make clean; make; ./straights"
+rsync -r -a -v -e ssh --delete ~/se/cs247/p1 cs:~/CS247Project
+ssh -X cs "cd CS247Project/p1; make clean; make; ./straights"
