@@ -105,58 +105,61 @@ void Straights::generateGameOrder(int startingPlayer) {
 
 //starts the game
 bool Straights::playGame() {
-	std::cout << "A new round begins. It's player " << (gameOrder[0]+1) << "'s turn to play." << std::endl; 
-	while(cardsRemaining != 0) {
-		int currentPlayerIndex = gameOrder[nextPlayer];
-		players_[currentPlayerIndex]->setLegalPlays(table_); //the player determines its legal plays based on the table
-		if(players_[currentPlayerIndex]->isHuman()) {
-			currentPlayer = currentPlayerIndex;
+	bool gameOver = false;
+	while(!gameOver) {
+		std::cout << "A new round begins. It's player " << (gameOrder[0]+1) << "'s turn to play." << std::endl; 
+		while(cardsRemaining != 0) {
+			int currentPlayerIndex = gameOrder[nextPlayer];
+			players_[currentPlayerIndex]->setLegalPlays(table_); //the player determines its legal plays based on the table
+			if(players_[currentPlayerIndex]->isHuman()) {
+				currentPlayer = currentPlayerIndex;
+				nextPlayer++;
+				cardsRemaining--; //every player has either played a card or discarded
+				if(nextPlayer > (NUMBER_OF_PLAYERS-1)) {
+					nextPlayer = 0;
+				}
+				return false;
+			} else {
+				players_[currentPlayerIndex]->computerTurn(table_);
+			}
+			cardsRemaining--; //every player has either played a card or discarded
 			nextPlayer++;
 			if(nextPlayer > (NUMBER_OF_PLAYERS-1)) {
 				nextPlayer = 0;
 			}
-			return false;
-		} else {
-			players_[currentPlayerIndex]->computerTurn(table_);
 		}
-		cardsRemaining--; //every player has either played a card or discarded
-		nextPlayer++;
-		if(nextPlayer > (NUMBER_OF_PLAYERS-1)) {
-			nextPlayer = 0;
-		}
-	}
+		int minimumScore = INT_MAX;
+		bool gameOver = false;
 
-	int minimumScore = INT_MAX;
-	bool gameOver = false;
-
-	for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
-		printRoundEnd(i); //print round stats for each player
-
-		int score = players_[i]->totalScore();
-		if(score >= GAME_OVER_SCORE) {
-			gameOver = true;
-		}
-		if(score < minimumScore) { //sets minimum score
-			minimumScore = score;
-		}
-	}
-
-	if(gameOver) {
 		for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+			printRoundEnd(i); //print round stats for each player
+
 			int score = players_[i]->totalScore();
-			if(score == minimumScore) { //finds the winner by finding a match with the minimum score
-				std::cout << "Player " << (i+1) << " wins!" << std::endl;
+			if(score >= GAME_OVER_SCORE) {
+				gameOver = true;
+			}
+			if(score < minimumScore) { //sets minimum score
+				minimumScore = score;
 			}
 		}
-	} else { //new round need to create new hands and a new table
-		createInitialHands();
-		table_.empty();
-	}
-	cardsRemaining = 52;
-	nextPlayer = 0;
-	int currentPlayerIndex = gameOrder[nextPlayer];
-	currentPlayer = currentPlayerIndex;
-	return !gameOver;
+
+		if(gameOver) {
+			for(int i=0; i<NUMBER_OF_PLAYERS;i++) {
+				int score = players_[i]->totalScore();
+				if(score == minimumScore) { //finds the winner by finding a match with the minimum score
+					std::cout << "Player " << (i+1) << " wins!" << std::endl;
+				}
+			}
+			return true;
+		} else { //new round need to create new hands and a new table
+			createInitialHands();
+			table_.empty();
+		}
+		cardsRemaining = 52;
+		nextPlayer = 0;
+		int currentPlayerIndex = gameOrder[nextPlayer];
+		currentPlayer = currentPlayerIndex;
+	}	
 }
 
 //human turn to play
