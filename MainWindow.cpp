@@ -150,6 +150,11 @@ void MainWindow::updateGame() {
 		oss2 << straightsGame->players_[i]->discards().size() <<" discards";
 		playerDiscardsLabel[i].set_label(oss2.str());
 	}
+
+	std::ostringstream oss;
+	oss << "Player " << (currentPlayer+1) << "'s hand";
+	handFrame.set_label(oss.str());
+
 	return;
 }
 
