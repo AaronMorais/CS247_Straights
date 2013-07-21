@@ -17,6 +17,7 @@ class Straights {
 	friend class MainWindow;
 public:
 	Straights();
+	Straights(bool[]);
 	void playGame();
 private:
 	void invitePlayers();

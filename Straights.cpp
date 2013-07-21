@@ -12,6 +12,19 @@ Straights::Straights() {
 	createInitialHands();
 }
 
+Straights::Straights(bool humanPlayer[]) {
+	for(int i=0; i<NUMBER_OF_PLAYERS; i++) {
+		if(humanPlayer[i]) {
+			players_[i] = new HumanPlayer(i);
+		} else {
+			players_[i] = new ComputerPlayer(i);
+		}
+	}
+
+	generateDeck(); //generates a deck
+	createInitialHands();
+}
+
 //gets input for human and computer players
 void Straights::invitePlayers() {
 	for(int i=0; i<NUMBER_OF_PLAYERS;i++) { //assigns either human or computer for the number of players

@@ -67,7 +67,10 @@ MainWindow::MainWindow() : mainBox(false, 10) {
 }
 
 void MainWindow::startGame() {
-	straightsGame = new Straights();
+	StartDialogBox dialog(*this, "Which players are human?");
+	straightsGame = new Straights(humanPlayer);
+	straightsGame->playGame();
+	//player can select card and start game
 	return;
 }
 
@@ -77,14 +80,18 @@ void MainWindow::endGame() {
 }
 
 void MainWindow::rageQuit(int index) {
+	//computer does move, table updates, next human player can play
 	std::cout << "Rage at index: " << index << std::endl;
 	return;
 }
 
 void MainWindow::selectCard(int index) {
+	//human clicks on card, table updates, next human plaer can play
 	std::cout << "Select at index: " << index << std::endl;
 	return;
 }
+
+//game over observer
 
 // void MainWindow::updateGame() {
 // 	const Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();

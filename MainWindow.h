@@ -1,4 +1,4 @@
-#ifndef _MAINWINDW_
+#ifndef _MAINWINDOW_
 #define _MAINWINDOW_
 
 #include <gtkmm/window.h>
@@ -10,8 +10,10 @@
 #include "Card.h"
 #include "DeckGUI.h"
 #include "Straights.h"
+#include "StartDialogBox.h"
 
 class MainWindow: public Gtk::Window {
+friend class StartDialogBox;
 public:
 	MainWindow();
 	~MainWindow();
@@ -45,6 +47,7 @@ private:
 
 	DeckGUI deck;
 	Straights *straightsGame;
+	bool humanPlayer[4];
 };
 
 #endif
