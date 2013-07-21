@@ -10,8 +10,8 @@ using std::transform;
 const char * image_names[] = {   
 	"card_images/0_0.png", "card_images/0_1.png", "card_images/0_2.png", "card_images/0_3.png",
 	"card_images/0_4.png", "card_images/0_5.png", "card_images/0_6.png", "card_images/0_7.png",
-	"card_images/0_8.png", "card_images/0_9.png", "card_images/0_j.png", "card_images/0_k.png",
-	"card_images/0_q.png", 
+	"card_images/0_8.png", "card_images/0_9.png", "card_images/0_j.png", "card_images/0_q.png",
+	"card_images/0_k.png", 
 
 	"card_images/1_0.png", "card_images/1_1.png", "card_images/1_2.png", "card_images/1_3.png",
 	"card_images/1_4.png", "card_images/1_5.png", "card_images/1_6.png", "card_images/1_7.png",
