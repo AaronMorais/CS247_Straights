@@ -17,11 +17,10 @@ public:
 	std::vector<Card> getCurrentHand();
 	void newGame(bool humanPlayer[]);
 	int currentPlayer();
-	bool humanTurn(Type, Card);
+	bool humanTurn(Type, int);
 	int playerRoundScore(int);
 	int playerTotalScore(int);
 	int playerDiscards(int);
-	int currentPlayer();
 
 private:
 	MainWindow *mainWindow_;
