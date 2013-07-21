@@ -97,8 +97,12 @@ void MainWindow::rageQuit(int index) {
 void MainWindow::selectCard(int index) {
 	int currentPlayer = straightsGame->currentPlayer;
 
-	//human clicks on card, table updates, next human plaer can play
-	Card card = straightsGame->players_[currentPlayer]->currentHand()[index];
+	std::vector<Card> currentHandVector = straightsGame->players_[currentPlayer]->currentHand();
+	if(index >= currentHandVector.size()) {
+		return;
+	}
+
+	Card card = currentHandVector[index];
 	bool turnComplete = straightsGame->humanTurn(currentPlayer, PLAY, card);
 
 	if(turnComplete) {
