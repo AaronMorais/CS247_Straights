@@ -27,6 +27,7 @@ public:
 	~MainWindow();
 	void startGame();
 	void endGame();
+	void seedGame();
 	void rageQuit(int);
 	void selectCard(int);
 	void updateGame();
@@ -44,7 +45,7 @@ private:
 	Gtk::HBox gameButtonBox;
 	Gtk::Button gameStartButton;
 	Gtk::Button gameEndButton;
-	Gtk::Button gameChangeSeedButton;
+	Gtk::Button gameSeedButton;
 
 	Gtk::Frame tableFrame;
 	Gtk::VBox tableContainerBox;
@@ -72,6 +73,7 @@ private:
 
 	Straights *straightsGame;
 	bool humanPlayer[4];
+	int seed;
 };
 
 #endif

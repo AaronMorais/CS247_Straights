@@ -14,7 +14,7 @@
 // 	createInitialHands();
 // }
 
-Straights::Straights(bool humanPlayer[]) {
+Straights::Straights(bool humanPlayer[], seed) {
 	for(int i=0; i<NUMBER_OF_PLAYERS; i++) {
 		if(humanPlayer[i]) {
 			players_[i] = new HumanPlayer(i);
@@ -26,7 +26,7 @@ Straights::Straights(bool humanPlayer[]) {
 	gameOver = false;
 	cardsRemaining = 52; //Assuming hands will be evenly divisible
 	nextPlayer = 0;
-
+	srand48(seed);
 	generateDeck(); //generates a deck
 	createInitialHands();
 }

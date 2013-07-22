@@ -21,8 +21,7 @@ SeedDialogBox::SeedDialogBox( MainWindow & parentWindow, string title) : Dialog(
     switch (result) {
         case Gtk::RESPONSE_OK:
 	        std::string seedString = seedEntry.get_text();
-			int seed = atoi(seedString.c_str());
-		    srand48(seed);
+			window_->seed = atoi(seedString.c_str());
             break;
     } 
 } 

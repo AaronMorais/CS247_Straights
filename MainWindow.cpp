@@ -20,9 +20,9 @@ MainWindow::MainWindow(Game *game) : mainBox(false, 10) {
 	gameEndButton.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::endGame));
 	gameButtonBox.add(gameEndButton);
 
-	gameChangeSeedButton.set_label("Change Game Seed");
-	gameChangeSeedButton.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::changeSeed));
-	gameButtonBox.add(gameChangeSeedButton);
+	gameSeedButton.set_label("Seed Next Game");
+	gameSeedButton.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::seedGame));
+	gameButtonBox.add(gameSeedButton);
 
 	tableFrame.set_label("Cards on the table");
 	mainBox.add(tableFrame);
@@ -83,7 +83,7 @@ MainWindow::MainWindow(Game *game) : mainBox(false, 10) {
 
 void MainWindow::startGame() {
 	StartDialogBox startDialog(*this, "Which players are human?");
-	gameController->newGame(humanPlayer);
+	gameController->newGame(humanPlayer, seed);
 	playGame();
 	return;
 }
@@ -93,7 +93,7 @@ void MainWindow::endGame() {
 	return;
 }
 
-void MainWindow::changeSeed() {
+void MainWindow::seedGame() {
 	SeedDialogBox seedDialog(*this, "Enter a Random Seed");
 	return;
 }

@@ -16,7 +16,7 @@ const int GAME_OVER_SCORE = 80;
 class Straights {
 	friend class Game;
 public:
-	Straights(bool[]);
+	Straights(bool[], int);
 	bool playGame();
 	std::string gameOverMessage();
 private:
@@ -44,6 +44,7 @@ private:
 	int cardsRemaining; //Assuming hands will be evenly divisible
 	int currentPlayer;
 	int nextPlayer;
+
 };
 
 #endif
