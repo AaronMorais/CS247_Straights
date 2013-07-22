@@ -67,7 +67,8 @@ MainWindow::MainWindow(Game *game) : mainBox(false, 10) {
 		handButton[i].set_image(*handCard[i]);
 		handButton[i].signal_clicked().connect(sigc::bind<int>(sigc::mem_fun(*this,&MainWindow::selectCard), i));
 		handButton[i].set_sensitive(false);
-		handBox.add(handButton[i]);
+		handCardBox[i].add(handButton[i]);
+		handBox.add(handCardBox[i]);
 	}
 
 	show_all();
@@ -145,6 +146,7 @@ void MainWindow::updateGame() {
 	for(int j=0; j<13; j++) {
 		handCard[j]->set(nullCardPixbuf);
 		handButton[j].set_sensitive(false);
+		handCardBox[j]->modify_bg(Gtk::STATE_NORMAL, Gtk::Gdk::color_parse("black"));
 	}
 
 	int index = 0;
@@ -152,6 +154,7 @@ void MainWindow::updateGame() {
 	std::vector<Card> handVector = gameController->getCurrentHand();
 	for(std::vector<Card>::iterator it = handVector.begin(); it != handVector.end(); ++it) {
 		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
+		handCardBox[index]->modify_bg(Gtk::STATE_NORMAL, Gtk::Gdk::color_parse("pink"));
 		handCard[index]->set(cardTempPixbuf);
 		handButton[index].set_sensitive(true);
 		index++;

@@ -8,6 +8,7 @@
 #include <gtkmm/frame.h>
 #include <gtkmm/label.h>
 #include <gtkmm/messagedialog.h>
+#include <gtkmm/eventbox.h>
 #include <string>
 #include "Card.h"
 #include "DeckGUI.h"
@@ -53,6 +54,7 @@ private:
 
 	Gtk::Frame handFrame;
 	Gtk::HBox handBox;
+	Gtk::EventBox *handCardBox[13];
 	Gtk::Button handButton[13];
 	Gtk::Image *handCard[13];
 
