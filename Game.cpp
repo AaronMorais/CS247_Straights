@@ -22,9 +22,16 @@ std::vector<Card> Game::getTable(){
 	return straights_->table_.getTable();
 }
 
+bool cardComparison(const Card &a, const Card &b) {
+	return ((a.getSuit() < b.getSuit()) ||
+		(a.getSuit() == b.getSuit()) && (a.getRank() < b.getRank()));
+}
+
 std::vector<Card> Game::getCurrentHand(){
 	int currentPlayer = straights_->currentPlayer;
-	return straights_->players_[currentPlayer]->currentHand();
+	std::vector<Card> currentHandVector = straights_->players_[currentPlayer]->currentHand();
+	std::sort (currentHandVector.begin(), currentHandVector.end(), &cardComparison);
+	return currentHandVector;
 }
 
 bool Game::humanTurn(Type type, int index){
@@ -32,7 +39,7 @@ bool Game::humanTurn(Type type, int index){
 	bool turnComplete = false;
 	switch(type){
 		case(PLAY): {
-			std::vector<Card> currentHandVector = straights_->players_[currentPlayer]->currentHand();
+			std::vector<Card> currentHandVector = getCurrentHand();
 			if((unsigned)index >= currentHandVector.size()) {
 				return false;
 			}
