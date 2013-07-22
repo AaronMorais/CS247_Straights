@@ -84,6 +84,8 @@ Glib::RefPtr<Gdk::Pixbuf> DeckGUI::getNullCardImage() {
 	return deck[ size-1 ];
 } // DeckGUI::getNullCardImage
 
+
+// Returns the legal image to use the specified card.
 Glib::RefPtr<Gdk::Pixbuf> DeckGUI::getLegalCardImage(Card card) {
 	int index = ((int) card.getSuit())*13 + ((int) card.getRank());
 	return legalDeck[ index ];

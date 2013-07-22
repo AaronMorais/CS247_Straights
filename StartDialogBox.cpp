@@ -9,7 +9,7 @@ StartDialogBox::StartDialogBox( MainWindow & parentWindow, string title) : Dialo
 	window_ = &parentWindow;
 	Gtk::VBox* contentArea = this->get_vbox();
 	
-	// Set up a group of radio buttons, one per card in human player's hand plus the top card of the kitty.
+	// Set up checkbuttons, one for each player to indicate human
 	for ( int i = 0; i < 4; i++ ) {
 		std::ostringstream oss;
 		oss << "Player " << (i+1);
@@ -24,9 +24,9 @@ StartDialogBox::StartDialogBox( MainWindow & parentWindow, string title) : Dialo
 	
 	int result = run();
     switch (result) {
-        case Gtk::RESPONSE_OK:
+        case Gtk::RESPONSE_OK: //If ok is clicked
             for (int i = 0; i < 4; i++) {
-				window_->humanPlayer[i] = button[i].get_active();
+				window_->humanPlayer[i] = button[i].get_active(); //keep track of which buttons were seleced
 			} 
             break;
     } 

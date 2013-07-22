@@ -19,9 +19,9 @@ SeedDialogBox::SeedDialogBox( MainWindow & parentWindow, string title) : Dialog(
 	
 	int result = run();
     switch (result) {
-        case Gtk::RESPONSE_OK:
-	        std::string seedString = seedEntry.get_text();
-			window_->seed = atoi(seedString.c_str());
+        case Gtk::RESPONSE_OK: //If Ok is clicked
+	        std::string seedString = seedEntry.get_text(); //get the inputed text
+			window_->seed = atoi(seedString.c_str()); //convert the input into an integer and save it to the window
             break;
     } 
 } 

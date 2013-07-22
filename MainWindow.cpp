@@ -4,6 +4,7 @@
 #include <string>
 #include "limits.h"
 
+//sets up all the elements on the window
 MainWindow::MainWindow(Game *game) : mainBox(false, 10) {		
 	gameController = game;
 	set_border_width(10);
@@ -81,19 +82,25 @@ MainWindow::MainWindow(Game *game) : mainBox(false, 10) {
 	show_all();
 }
 
+//when the start game button is clicked
 void MainWindow::startGame() {
+	//Dialog box for setting human players
 	StartDialogBox startDialog(*this, "Which players are human?");
+	//Tells the controller to initialize a new game
 	gameController->newGame(humanPlayer, seed);
 	playGame();
 	return;
 }
 
+//End game button is clicked, window closes
 void MainWindow::endGame() {
 	hide();
 	return;
 }
 
+//Seed game button is clicked
 void MainWindow::seedGame() {
+	//Dialog box for user to input new seed
 	SeedDialogBox seedDialog(*this, "Enter a Random Seed");
 	return;
 }
@@ -108,6 +115,7 @@ void MainWindow::rageQuit(int index) {
 	return;
 }
 
+//response for when a card in the hand is clicked
 void MainWindow::selectCard(int index) {
 	bool turnComplete = gameController->humanTurn(PLAY, index);
 	if(turnComplete) {
@@ -117,25 +125,28 @@ void MainWindow::selectCard(int index) {
 	return;
 }
 
+//tells the controller to play the game
 void MainWindow::playGame() {
 	gameController->playGame();
 	updateGame();
 }
 
+//dialog for when the game ends
 void MainWindow::gameOverDialog(std::string gameOverString){
 	updateGame();
 	gameOverString += "Start a new game?";
 
+	//new dialog with the title Game Over, has ok and cancel buttons
 	Gtk::MessageDialog dialog(*this, "Game Over!",
 	          false /* use_markup */, Gtk::MESSAGE_INFO,
 	          Gtk::BUTTONS_OK_CANCEL);
-	dialog.set_secondary_text(gameOverString);
-	int result = dialog.run();
+	dialog.set_secondary_text(gameOverString); //text is set based on the passed in string
+	int result = dialog.run(); //dialog runs
 	switch (result) {
-        case Gtk::RESPONSE_OK:
+        case Gtk::RESPONSE_OK: //if ok, play a new game
         	startGame();
         	break;
-        case Gtk::RESPONSE_CANCEL:
+        case Gtk::RESPONSE_CANCEL: //if cancel, the user doesn't wish to continue playing so close the window
         	endGame();
 			break;
 	}
