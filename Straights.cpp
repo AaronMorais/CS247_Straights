@@ -14,7 +14,7 @@
 // 	createInitialHands();
 // }
 
-Straights::Straights(bool humanPlayer[], seed) {
+Straights::Straights(bool humanPlayer[], int seed) {
 	for(int i=0; i<NUMBER_OF_PLAYERS; i++) {
 		if(humanPlayer[i]) {
 			players_[i] = new HumanPlayer(i);
