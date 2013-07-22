@@ -21,11 +21,13 @@ class Game;
 
 class MainWindow: public Gtk::Window {
 friend class StartDialogBox;
+friend class SeedDialogBox;
 public:
 	MainWindow(Game*);
 	~MainWindow();
 	void startGame();
 	void endGame();
+	void seedGame();
 	void rageQuit(int);
 	void selectCard(int);
 	void updateGame();
@@ -38,6 +40,7 @@ private:
 	Gtk::HBox gameButtonBox;
 	Gtk::Button gameStartButton;
 	Gtk::Button gameEndButton;
+	Gtk::Button gameSeedButton;
 
 	Gtk::Frame tableFrame;
 	Gtk::VBox tableContainerBox;
@@ -63,6 +66,7 @@ private:
 	DeckGUI deck;
 	Straights *straightsGame;
 	bool humanPlayer[4];
+	int seed;
 };
 
 #endif

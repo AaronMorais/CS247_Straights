@@ -15,7 +15,7 @@ public:
 	bool playGame();
 	std::vector<Card> getTable();
 	std::vector<Card> getCurrentHand();
-	void newGame(bool humanPlayer[]);
+	void newGame(bool humanPlayer[], int);
 	int currentPlayer();
 	bool humanTurn(Type, int);
 	int playerRoundScore(int);

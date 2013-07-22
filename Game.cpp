@@ -6,8 +6,8 @@ Game::Game(){
 }
 Game::~Game(){}
 
-void Game::newGame(bool humanPlayer[]){
-	straights_ = new Straights(humanPlayer);
+void Game::newGame(bool humanPlayer[], int seed){
+	straights_ = new Straights(humanPlayer, seed);
 }
 
 bool Game::playGame(){
