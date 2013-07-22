@@ -33,6 +33,11 @@ public:
 	void updateGame();
 	void playGame();
 	void gameOverDialog(std::string);
+	void changeSeed();
+    void updateTable();
+    void updateHand();
+    void updatePlayerInfo();
+    void updateDiscards();
 private:
 	Game *gameController;
 	Gtk::VBox mainBox;
@@ -64,6 +69,8 @@ private:
 	Gtk::Label discardsLabel;
 
 	DeckGUI deck;
+	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf;
+
 	Straights *straightsGame;
 	bool humanPlayer[4];
 	int seed;

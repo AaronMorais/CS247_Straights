@@ -1,6 +1,7 @@
 #include "Game.h"
 
 Game::Game(){
+    srand48(0);
 	mainWindow_ = new MainWindow(this);
 	Gtk::Main::run(*mainWindow_);
 }

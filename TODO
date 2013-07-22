@@ -1,11 +1,18 @@
 TODO
 
+Dialog Box for illegal move
+Fix Seeding
+Bonus documentation
+
+Observer Pattern
+Comments
+
 	Press enter in number dialog
 	Hide/combine player dialog before number dialog
 	BONUS
 		indicator of legal and illegal cards
-		music
 		show all Discards
+		music
 	
 COMPLETED
 Dialog for game over
