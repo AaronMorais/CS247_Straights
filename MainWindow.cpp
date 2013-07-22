@@ -151,6 +151,7 @@ void MainWindow::gameOverDialog(std::string gameOverString){
 	}
 }
 
+//updates various elements on the window
 void MainWindow::updateGame() {
     updateTable();
     updateHand();
@@ -159,13 +160,16 @@ void MainWindow::updateGame() {
     return;
 }
 
+//The table is the cards that have been played
 void MainWindow::updateTable() {
+	//starts will all 52 cards set as null cards
 	for(int j=0; j<52; j++) {
 		int suitInt = j/13;
 		int rankInt = j%13;
 		tableCard[suitInt][rankInt]->set(nullCardPixbuf);
 	}
 
+	//gets information about the table  through the game controller and updates accordingly
 	std::vector<Card> tableVector = gameController->getTable();
 	for(std::vector<Card>::iterator it = tableVector.begin(); it != tableVector.end(); ++it) {
 		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
@@ -174,7 +178,9 @@ void MainWindow::updateTable() {
     return;
 }
 
+//updates the display for the cards in the player's hand
 void MainWindow::updateHand() {
+	//starts with all 13 cards in the hand as null unclickable cards
 	for(int j=0; j<13; j++) {
 		handCard[j]->set(nullCardPixbuf);
 		handButton[j].set_sensitive(false);
@@ -182,16 +188,17 @@ void MainWindow::updateHand() {
 
 	int index = 0;
 
+	//gets information on what to display via the game controller
 	std::vector<Card> handVector = gameController->getCurrentHand();
 	for(std::vector<Card>::iterator it = handVector.begin(); it != handVector.end(); ++it) {
 		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf;
-		if(gameController->isLegalCardInHand(*it)){
+		if(gameController->isLegalCardInHand(*it)){ //if the card is legal then take the legal card image
 			cardTempPixbuf = deck.getLegalCardImage(*it); 
-		} else {
+		} else { //otherwise take the standard card image
 			cardTempPixbuf = deck.getCardImage(*it); 
 		}
 		handCard[index]->set(cardTempPixbuf);
-		handButton[index].set_sensitive(true);
+		handButton[index].set_sensitive(true); //make the button clickable
 		index++;
 	}
     
@@ -202,6 +209,7 @@ void MainWindow::updateHand() {
     return;
 }
 
+//updates the four player status blocks
 void MainWindow::updatePlayerInfo() {
 	int currentPlayer = gameController->currentPlayer();
 
@@ -232,7 +240,7 @@ void MainWindow::updatePlayerInfo() {
 		}
 
 		playerDiscardsLabel[i].set_label(oss.str());
-
+		//only the current player should have an active ragequit button
 		if(currentPlayer == i) {
 			playerRageButton[i].set_sensitive(true);
 		} else {
@@ -242,10 +250,11 @@ void MainWindow::updatePlayerInfo() {
 	return;
 }
 
+//updates the list of discards at the bottom of the window
 void MainWindow::updateDiscards() {
 	std::ostringstream oss;
 	oss.str(std::string());
-	std::vector<Card> discardVector = gameController->getDiscards();
+	std::vector<Card> discardVector = gameController->getDiscards(); //gets the list of discards from the game controller
 	for(std::vector<Card>::iterator it = discardVector.begin(); it != discardVector.end(); ++it) {
 		oss << *it << " ";
 	}
