@@ -22,6 +22,7 @@ public:
 	int playerTotalScore(int);
 	int playerDiscards(int);
 	bool isLegalCardInHand(Card);
+	std::vector<Card> getDiscards();
 private:
 	MainWindow *mainWindow_;
 	Straights *straights_;

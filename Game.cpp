@@ -81,3 +81,13 @@ bool Game::isLegalCardInHand(Card card){
 	}
 	return straights_->table_.isLegalCard(card);
 }
+
+std::vector<Card> Game::getDiscards() {
+	std::vector<Card> discardVector;
+	for(int i=0; i < NUMBER_OF_PLAYERS; i++) {
+		std::vector<Card> playerDiscards = straights_->players_[i]->discards();
+		discardVector.insert(discardVector.end(), playerDiscards.begin(), playerDiscards.end());
+	}
+	std::sort (discardVector.begin(), discardVector.end(), &cardComparison);
+	return discardVector;
+}

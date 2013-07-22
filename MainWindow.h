@@ -57,6 +57,9 @@ private:
 	Gtk::Button handButton[13];
 	Gtk::Image *handCard[13];
 
+	Gtk::Frame discardsFrame;
+	Gtk::Label discardsLabel;
+
 	DeckGUI deck;
 	Straights *straightsGame;
 	bool humanPlayer[4];

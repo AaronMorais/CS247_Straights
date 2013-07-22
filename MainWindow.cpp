@@ -70,6 +70,10 @@ MainWindow::MainWindow(Game *game) : mainBox(false, 10) {
 		handBox.add(handButton[i]);
 	}
 
+	mainBox.add(discardsFrame);
+	discardsFrame.set_label("Discards: ");
+	discardsFrame.add(discardsLabel);
+
 	show_all();
 }
 
@@ -202,6 +206,13 @@ void MainWindow::updateGame() {
 	std::ostringstream oss;
 	oss << "Player " << (currentPlayer+1) << "'s hand";
 	handFrame.set_label(oss.str());
+
+	oss.str(std::string());
+	std::vector<Card> discardVector = gameController->getDiscards();
+	for(std::vector<Card>::iterator it = discardVector.begin(); it != discardVector.end(); ++it) {
+		oss << *it << " ";
+	}
+	discardsLabel.set_label(oss.str());
 
 	return;
 }
