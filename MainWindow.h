@@ -21,6 +21,7 @@ class Game;
 
 class MainWindow: public Gtk::Window {
 friend class StartDialogBox;
+friend class SeedDialogBox;
 public:
 	MainWindow(Game*);
 	~MainWindow();
@@ -31,6 +32,11 @@ public:
 	void updateGame();
 	void playGame();
 	void gameOverDialog(std::string);
+	void changeSeed();
+    void updateTable();
+    void updateHand();
+    void updatePlayerInfo();
+    void updateDiscards();
 private:
 	Game *gameController;
 	Gtk::VBox mainBox;
@@ -38,6 +44,7 @@ private:
 	Gtk::HBox gameButtonBox;
 	Gtk::Button gameStartButton;
 	Gtk::Button gameEndButton;
+	Gtk::Button gameChangeSeedButton;
 
 	Gtk::Frame tableFrame;
 	Gtk::VBox tableContainerBox;
@@ -61,6 +68,8 @@ private:
 	Gtk::Label discardsLabel;
 
 	DeckGUI deck;
+	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf;
+
 	Straights *straightsGame;
 	bool humanPlayer[4];
 };

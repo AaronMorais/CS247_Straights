@@ -20,13 +20,17 @@ MainWindow::MainWindow(Game *game) : mainBox(false, 10) {
 	gameEndButton.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::endGame));
 	gameButtonBox.add(gameEndButton);
 
+	gameChangeSeedButton.set_label("Change Game Seed");
+	gameChangeSeedButton.signal_clicked().connect(sigc::mem_fun(*this,&MainWindow::changeSeed));
+	gameButtonBox.add(gameChangeSeedButton);
+
 	tableFrame.set_label("Cards on the table");
 	mainBox.add(tableFrame);
 	tableFrame.add(tableContainerBox);
 	tableContainerBox.set_homogeneous(true);
 	tableContainerBox.set_spacing(10);
 
-	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
+	nullCardPixbuf = deck.getNullCardImage();
 	for(int i=0; i<4; i++) { //goes through the 4 suits
 		tableContainerBox.add(tableBox[i]);
 		tableBox[i].set_homogeneous(true);
@@ -79,7 +83,6 @@ MainWindow::MainWindow(Game *game) : mainBox(false, 10) {
 
 void MainWindow::startGame() {
 	StartDialogBox startDialog(*this, "Which players are human?");
-	SeedDialogBox seedDialog(*this, "Enter a Random Seed");
 	gameController->newGame(humanPlayer);
 	playGame();
 	return;
@@ -90,11 +93,15 @@ void MainWindow::endGame() {
 	return;
 }
 
+void MainWindow::changeSeed() {
+	SeedDialogBox seedDialog(*this, "Enter a Random Seed");
+	return;
+}
+
 void MainWindow::rageQuit(int index) {
 	//computer does move, table updates, next human player can play
 	
 	gameController->humanTurn(RAGEQUIT, 0);
-
 	playGame();
 
 	return;
@@ -134,7 +141,14 @@ void MainWindow::gameOverDialog(std::string gameOverString){
 }
 
 void MainWindow::updateGame() {
-	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf = deck.getNullCardImage();
+    updateTable();
+    updateHand();
+    updatePlayerInfo();
+    updateDiscards();
+    return;
+}
+
+void MainWindow::updateTable() {
 	for(int j=0; j<52; j++) {
 		int suitInt = j/13;
 		int rankInt = j%13;
@@ -146,6 +160,10 @@ void MainWindow::updateGame() {
 		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf = deck.getCardImage(*it); 
 		tableCard[it->getSuit()][it->getRank()]->set(cardTempPixbuf);
 	}
+    return;
+}
+
+void MainWindow::updateHand() {
 	for(int j=0; j<13; j++) {
 		handCard[j]->set(nullCardPixbuf);
 		handButton[j].set_sensitive(false);
@@ -165,7 +183,15 @@ void MainWindow::updateGame() {
 		handButton[index].set_sensitive(true);
 		index++;
 	}
+    
+    std::ostringstream oss;
+	int currentPlayer = gameController->currentPlayer();
+	oss << "Player " << (currentPlayer+1) << "'s hand";
+	handFrame.set_label(oss.str());
+    return;
+}
 
+void MainWindow::updatePlayerInfo() {
 	int currentPlayer = gameController->currentPlayer();
 
 	for(int i=0; i<4; i++) { //goes through the 4 players
@@ -202,19 +228,18 @@ void MainWindow::updateGame() {
 			playerRageButton[i].set_sensitive(false);
 		}
 	}
+	return;
+}
 
+void MainWindow::updateDiscards() {
 	std::ostringstream oss;
-	oss << "Player " << (currentPlayer+1) << "'s hand";
-	handFrame.set_label(oss.str());
-
 	oss.str(std::string());
 	std::vector<Card> discardVector = gameController->getDiscards();
 	for(std::vector<Card>::iterator it = discardVector.begin(); it != discardVector.end(); ++it) {
 		oss << *it << " ";
 	}
 	discardsLabel.set_label(oss.str());
-
-	return;
+    return;
 }
 
 MainWindow::~MainWindow() {
