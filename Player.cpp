@@ -135,9 +135,8 @@ void Player::setLegalPlays(Table& table){
 	legalPlaysInHand_.clear(); //first clear the previous list of legal moves
 	for(std::vector<Card>::iterator it = cards_.begin(); it != cards_.end(); ++it) {
 		if((it->getSuit() == SPADE) && (it->getRank() == SEVEN)) {//if it's the first move this is the only legal move
-			std::vector<Card> firstMoveHand;
-			firstMoveHand.push_back(*it);
-			legalPlaysInHand_ = firstMoveHand;
+			legalPlaysInHand_.clear();
+			legalPlaysInHand_.push_back(*it);
 			break;
 		}
 		if(table.isLegalCard(*it)) {

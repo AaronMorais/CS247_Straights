@@ -76,5 +76,8 @@ int Game::currentPlayer(){
 }
 
 bool Game::isLegalCardInHand(Card card){
-	return straights_->table_->isLegalCard(card);
+	if(straights_->cardsRemaining == CARD_COUNT-1) {
+		return (card.getSuit() == SPADE && card.getRank() == SEVEN);
+	}
+	return straights_->table_.isLegalCard(card);
 }

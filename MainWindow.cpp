@@ -152,7 +152,7 @@ void MainWindow::updateGame() {
 	std::vector<Card> handVector = gameController->getCurrentHand();
 	for(std::vector<Card>::iterator it = handVector.begin(); it != handVector.end(); ++it) {
 		Glib::RefPtr<Gdk::Pixbuf> cardTempPixbuf;
-		if(gameController->islegalCardInHand(*it)){
+		if(gameController->isLegalCardInHand(*it)){
 			cardTempPixbuf = deck.getLegalCardImage(*it); 
 		} else {
 			cardTempPixbuf = deck.getCardImage(*it); 
