@@ -14,5 +14,6 @@ public:
 
 private:
 	vector< Glib::RefPtr< Gdk::Pixbuf > > deck;                   // Contains the pixel buffer images.
+	vector< Glib::RefPtr< Gdk::Pixbuf > > legalDeck;                   // Contains the pixel buffer images.
 }; // DeckGUI
 #endif

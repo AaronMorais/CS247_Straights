@@ -74,3 +74,7 @@ int Game::playerDiscards(int index){
 int Game::currentPlayer(){
 	return straights_->currentPlayer;
 }
+
+bool Game::isLegalCardInHand(Card card){
+	return straights_->table_->isLegalCard(card);
+}

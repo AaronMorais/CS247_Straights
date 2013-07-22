@@ -54,7 +54,6 @@ private:
 
 	Gtk::Frame handFrame;
 	Gtk::HBox handBox;
-	Gtk::EventBox *handCardBox[13];
 	Gtk::Button handButton[13];
 	Gtk::Image *handCard[13];
 

@@ -21,6 +21,7 @@ public:
 	int playerRoundScore(int);
 	int playerTotalScore(int);
 	int playerDiscards(int);
+	bool isLegalCardInHand(int);
 
 private:
 	MainWindow *mainWindow_;
