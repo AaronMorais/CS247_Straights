@@ -12,7 +12,6 @@
 
 #include <set>
 #include "subject.h"
-#include "observer.h"
 
 void Subject::subscribe (Observer *newView) {
     observers_.insert(newView);

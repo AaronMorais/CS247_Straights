@@ -15,7 +15,7 @@
 #include "StartDialogBox.h"
 #include "SeedDialogBox.h"
 #include "Game.h"
-#include "observer.h"
+#include "subject.h"
 
 class Game;
 
