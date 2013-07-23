@@ -29,7 +29,7 @@ std::vector<Card> Game::getTable(){
 //compares two cards and returns the "lower" card
 bool cardComparison(const Card &a, const Card &b) {
 	return ((a.getSuit() < b.getSuit()) ||
-		(a.getSuit() == b.getSuit()) && (a.getRank() < b.getRank()));
+		((a.getSuit() == b.getSuit()) && (a.getRank() < b.getRank())));
 }
 
 //goes into straights to get the hand of the current player, returning a sorted hand
