@@ -14,7 +14,7 @@
 // 	createInitialHands();
 // }
 
-Straights::Straights(bool humanPlayer[], int seed) {
+Straights::Straights(bool humanPlayer[], int seed, MainWindow *window) {
 	for(int i=0; i<NUMBER_OF_PLAYERS; i++) {
 		if(humanPlayer[i]) {
 			players_[i] = new HumanPlayer(i);
@@ -29,6 +29,8 @@ Straights::Straights(bool humanPlayer[], int seed) {
 	srand48(seed);
 	generateDeck(); //generates a deck
 	createInitialHands();
+
+	this->subscribe(window);
 }
 
 //gets input for human and computer players
@@ -104,7 +106,7 @@ void Straights::generateGameOrder(int startingPlayer) {
 	}
 }
 
-//starts the game
+//starts the game, notifies observers to update after game logic (next turn) occurs
 bool Straights::playGame() {
 	bool gameOver = false;
 	while(!gameOver) {
@@ -119,6 +121,7 @@ bool Straights::playGame() {
 				if(nextPlayer > (NUMBER_OF_PLAYERS-1)) {
 					nextPlayer = 0;
 				}
+				notify();
 				return false;
 			} else {
 				players_[currentPlayerIndex]->computerTurn(table_);
@@ -155,6 +158,7 @@ bool Straights::playGame() {
 				}
 			}
 			gameOverMessage_ = oss.str();
+			notify();
 			return true;
 		} else { //new round need to create new hands and a new table
 			createInitialHands();
@@ -165,6 +169,7 @@ bool Straights::playGame() {
 		int currentPlayerIndex = gameOrder[nextPlayer];
 		currentPlayer = currentPlayerIndex;
 	}	
+	notify();
 }
 
 std::string Straights::gameOverMessage(){

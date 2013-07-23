@@ -9,7 +9,7 @@ Game::~Game(){}
 
 //instantiates a new straights game, feeding in the human players and the seed to use
 void Game::newGame(bool humanPlayer[], int seed){
-	straights_ = new Straights(humanPlayer, seed);
+	straights_ = new Straights(humanPlayer, seed, mainWindow_);
 }
 
 //calls the play game method in straights

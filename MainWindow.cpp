@@ -143,7 +143,6 @@ void MainWindow::selectCard(int index) {
 //tells the controller to play the game
 void MainWindow::playGame() {
 	gameController->playGame();
-	updateGame();
 }
 
 //dialog for when the game ends
@@ -165,6 +164,10 @@ void MainWindow::gameOverDialog(std::string gameOverString){
         	endGame();
 			break;
 	}
+}
+
+void MainWindow::update() {	// Observer Pattern: concrete update() method
+	updateGame();
 }
 
 //updates various elements on the window

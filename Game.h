@@ -7,8 +7,9 @@
 #include "Command.h"
 #include "Card.h"
 
-class Game {
+class Straights;
 
+class Game {
 public:
 	Game();
 	~Game();

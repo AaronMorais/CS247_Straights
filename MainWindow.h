@@ -12,14 +12,14 @@
 #include <string>
 #include "Card.h"
 #include "DeckGUI.h"
-#include "Straights.h"
 #include "StartDialogBox.h"
 #include "SeedDialogBox.h"
 #include "Game.h"
+#include "observer.h"
 
 class Game;
 
-class MainWindow: public Gtk::Window {
+class MainWindow: public Gtk::Window, public Observer {
 friend class StartDialogBox;
 friend class SeedDialogBox;
 public:
@@ -30,6 +30,7 @@ public:
 	void seedGame();
 	void rageQuit(int);
 	void selectCard(int);
+	virtual void update();	// Observer Pattern: concrete update() method
 	void updateGame();
 	void playGame();
 	void gameOverDialog(std::string);
@@ -71,7 +72,6 @@ private:
 	DeckGUI deck;
 	Glib::RefPtr<Gdk::Pixbuf> nullCardPixbuf;
 
-	Straights *straightsGame;
 	bool humanPlayer[4];
 	int seed;
 };
