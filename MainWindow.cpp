@@ -116,9 +116,25 @@ void MainWindow::rageQuit(int index) {
 
 //response for when a card in the hand is clicked
 void MainWindow::selectCard(int index) {
+	//if the card clicked by the user is not occupied by a card display an error message
+	std::vector<Card> currentHand = gameController->getCurrentHand();
+	if(currentHand.size() <= index) {
+		Gtk::MessageDialog dialog(*this, "Please select a card to play.",
+          false , Gtk::MESSAGE_INFO,
+          Gtk::BUTTONS_OK);	
+		dialog.run();
+		return;
+	}
+
 	bool turnComplete = gameController->humanTurn(PLAY, index);
 	if(turnComplete) {
 		playGame();
+	} else {
+		//if the card clicked by the user is not a legal play and they have legal plays, display an error message
+		Gtk::MessageDialog dialog(*this, "You have a legal play. You may not discard.",
+          false , Gtk::MESSAGE_INFO,
+          Gtk::BUTTONS_OK);
+		dialog.run();
 	}
 
 	return;
@@ -137,7 +153,7 @@ void MainWindow::gameOverDialog(std::string gameOverString){
 
 	//new dialog with the title Game Over, has ok and cancel buttons
 	Gtk::MessageDialog dialog(*this, "Game Over!",
-	          false /* use_markup */, Gtk::MESSAGE_INFO,
+	          false , Gtk::MESSAGE_INFO,
 	          Gtk::BUTTONS_OK_CANCEL);
 	dialog.set_secondary_text(gameOverString); //text is set based on the passed in string
 	int result = dialog.run(); //dialog runs
@@ -183,7 +199,6 @@ void MainWindow::updateHand() {
 	//starts with all 13 cards in the hand as null unclickable cards
 	for(int j=0; j<13; j++) {
 		handCard[j]->set(nullCardPixbuf);
-		handButton[j].set_sensitive(false);
 	}
 
 	int index = 0;
@@ -198,7 +213,7 @@ void MainWindow::updateHand() {
 			cardTempPixbuf = deck.getCardImage(*it); 
 		}
 		handCard[index]->set(cardTempPixbuf);
-		handButton[index].set_sensitive(true); //make the button clickable
+		handButton[index].set_sensitive(true);
 		index++;
 	}
     
