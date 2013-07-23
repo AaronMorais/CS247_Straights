@@ -170,6 +170,7 @@ bool Straights::playGame() {
 		currentPlayer = currentPlayerIndex;
 	}	
 	notify();
+	return true;
 }
 
 std::string Straights::gameOverMessage(){

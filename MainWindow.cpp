@@ -118,7 +118,7 @@ void MainWindow::rageQuit(int index) {
 void MainWindow::selectCard(int index) {
 	//if the card clicked by the user is not occupied by a card display an error message
 	std::vector<Card> currentHand = gameController->getCurrentHand();
-	if(currentHand.size() <= index) {
+	if(currentHand.size() <= (unsigned)index) {
 		Gtk::MessageDialog dialog(*this, "Please select a card to play.",
           false , Gtk::MESSAGE_INFO,
           Gtk::BUTTONS_OK);	
