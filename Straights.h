@@ -1,6 +1,11 @@
 #ifndef _STRAIGHTS_
 #define _STRAIGHTS_
 
+const int NUMBER_OF_PLAYERS = 4;
+const int CARD_COUNT = 52;
+const int DECK_CARDS_PER_LINE = 13;
+const int GAME_OVER_SCORE = 80;
+
 #include "HumanPlayer.h"
 #include "ComputerPlayer.h"
 #include "Player.h"
@@ -10,19 +15,15 @@
 #include "subject.h"
 #include "MainWindow.h"
 
-const int NUMBER_OF_PLAYERS = 4;
-const int CARD_COUNT = 52;
-const int DECK_CARDS_PER_LINE = 13;
-const int GAME_OVER_SCORE = 80;
-
 class Straights: public Subject {
 	friend class Game;
 public:
 	Straights(bool[], int, MainWindow *);
 	bool playGame();
-	std::string gameOverMessage();
 private:
 	std::string gameOverMessage_;
+	std::string gameOverMessage();
+
 	void invitePlayers();
 	void createInitialHands();
 
@@ -46,7 +47,6 @@ private:
 	int cardsRemaining; //Assuming hands will be evenly divisible
 	int currentPlayer;
 	int nextPlayer;
-
 };
 
 #endif

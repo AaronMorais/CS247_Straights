@@ -14,16 +14,16 @@ public:
 	Game();
 	~Game();
 	bool playGame();
-	std::vector<Card> getTable();
-	std::vector<Card> getCurrentHand();
+	std::vector<Card> getTable() const;
+	std::vector<Card> getCurrentHand() const;
 	void newGame(bool humanPlayer[], int);
-	int currentPlayer();
-	bool humanTurn(Type, int);
-	int playerRoundScore(int);
-	int playerTotalScore(int);
-	int playerDiscards(int);
-	bool isLegalCardInHand(Card);
-	std::vector<Card> getDiscards();
+	int currentPlayer() const;
+	bool humanTurn(Type, int) const;
+	int playerRoundScore(int) const;
+	int playerTotalScore(int) const;
+	int playerDiscards(int) const;
+	bool isLegalCardInHand(Card) const;
+	std::vector<Card> getDiscards() const;
 private:
 	MainWindow *mainWindow_;
 	Straights *straights_;

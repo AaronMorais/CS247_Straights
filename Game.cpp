@@ -22,7 +22,7 @@ bool Game::playGame(){
 }
 
 //gets the cards on the table from straights
-std::vector<Card> Game::getTable(){
+std::vector<Card> Game::getTable() const{
 	return straights_->table_.getTable();
 }
 
@@ -33,7 +33,7 @@ bool cardComparison(const Card &a, const Card &b) {
 }
 
 //goes into straights to get the hand of the current player, returning a sorted hand
-std::vector<Card> Game::getCurrentHand(){
+std::vector<Card> Game::getCurrentHand() const{
 	int currentPlayer = straights_->currentPlayer;
 	std::vector<Card> currentHandVector = straights_->players_[currentPlayer]->currentHand();
 	std::sort (currentHandVector.begin(), currentHandVector.end(), &cardComparison);
@@ -41,7 +41,7 @@ std::vector<Card> Game::getCurrentHand(){
 }
 
 //runs a human turn in the straights class based on the type of command
-bool Game::humanTurn(Type type, int index){
+bool Game::humanTurn(Type type, int index) const{
 	int currentPlayer = straights_->currentPlayer;
 	bool turnComplete = false;
 	switch(type){
@@ -64,27 +64,27 @@ bool Game::humanTurn(Type type, int index){
 }
 
 //gets the player's score for the round
-int Game::playerRoundScore(int index){
+int Game::playerRoundScore(int index) const{
 	return straights_->players_[index]->roundScore();
 }
 
 //gets the player's total score
-int Game::playerTotalScore(int index){
+int Game::playerTotalScore(int index) const{
 	return straights_->players_[index]->totalScore();
 }
 
 //returns the number of discards the player has
-int Game::playerDiscards(int index){
+int Game::playerDiscards(int index) const{
 	return straights_->players_[index]->discards().size();
 }
 
 //gets the current player from straights
-int Game::currentPlayer(){
+int Game::currentPlayer() const{
 	return straights_->currentPlayer;
 }
 
 //uses the straights' table to determine if a card is legal
-bool Game::isLegalCardInHand(Card card){
+bool Game::isLegalCardInHand(Card card) const{
 	if(straights_->cardsRemaining == CARD_COUNT-1) {
 		return (card.getSuit() == SPADE && card.getRank() == SEVEN);
 	}
@@ -92,7 +92,7 @@ bool Game::isLegalCardInHand(Card card){
 }
 
 //gets the list of all discards from straights
-std::vector<Card> Game::getDiscards() {
+std::vector<Card> Game::getDiscards() const{
 	std::vector<Card> discardVector;
 	for(int i=0; i < NUMBER_OF_PLAYERS; i++) {
 		std::vector<Card> playerDiscards = straights_->players_[i]->discards();

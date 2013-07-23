@@ -32,18 +32,18 @@ MainWindow::MainWindow(Game *game) : mainBox(false, 10) {
 	tableContainerBox.set_spacing(10);
 
 	nullCardPixbuf = deck.getNullCardImage();
-	for(int i=0; i<4; i++) { //goes through the 4 suits
+	for(int i=0; i<NUMBER_OF_PLAYERS; i++) { //goes through the 4 suits
 		tableContainerBox.add(tableBox[i]);
 		tableBox[i].set_homogeneous(true);
 		tableBox[i].set_spacing(10);
-		for(int j=0; j<13; j++) { //goes through all ranks
+		for(int j=0; j<CARDS_PER_HAND; j++) { //goes through all ranks
 			tableCard[i][j] = new Gtk::Image(nullCardPixbuf);
 			tableBox[i].add(*tableCard[i][j]);
 		}
 	}
 
 	mainBox.add(playerBox);
-	for(int i=0; i<4; i++) { //goes through the 4 players
+	for(int i=0; i<NUMBER_OF_PLAYERS; i++) { //goes through the 4 players
 		playerRageButton[i].set_label("Rage!");
 		playerRoundPointsLabel[i].set_label("0 round points");
 		playerTotalPointsLabel[i].set_label("0 total points");
@@ -67,7 +67,7 @@ MainWindow::MainWindow(Game *game) : mainBox(false, 10) {
 	mainBox.add(handFrame);
 	handFrame.set_label("Your hand");
 	handFrame.add(handBox);
-	for(int i=0; i<13; i++) {
+	for(int i=0; i<CARDS_PER_HAND; i++) {
 		handCard[i] = new Gtk::Image(nullCardPixbuf);
 		handButton[i].set_image(*handCard[i]);
 		handButton[i].signal_clicked().connect(sigc::bind<int>(sigc::mem_fun(*this,&MainWindow::selectCard), i));
@@ -172,9 +172,9 @@ void MainWindow::updateGame() {
 //The table is the cards that have been played
 void MainWindow::updateTable() {
 	//starts will all 52 cards set as null cards
-	for(int j=0; j<52; j++) {
-		int suitInt = j/13;
-		int rankInt = j%13;
+	for(int j=0; j<CARD_COUNT; j++) {
+		int suitInt = j/CARDS_PER_HAND;
+		int rankInt = j%CARDS_PER_HAND;
 		tableCard[suitInt][rankInt]->set(nullCardPixbuf);
 	}
 
@@ -190,7 +190,7 @@ void MainWindow::updateTable() {
 //updates the display for the cards in the player's hand
 void MainWindow::updateHand() {
 	//starts with all 13 cards in the hand as null unclickable cards
-	for(int j=0; j<13; j++) {
+	for(int j=0; j<CARDS_PER_HAND; j++) {
 		handCard[j]->set(nullCardPixbuf);
 		handButton[j].set_sensitive(false);
 	}
@@ -222,7 +222,7 @@ void MainWindow::updateHand() {
 void MainWindow::updatePlayerInfo() {
 	int currentPlayer = gameController->currentPlayer();
 
-	for(int i=0; i<4; i++) { //goes through the 4 players
+	for(int i=0; i<NUMBER_OF_PLAYERS; i++) { //goes through the 4 players
 		std::ostringstream oss;
 
 		int roundScore = gameController->playerRoundScore(i);
