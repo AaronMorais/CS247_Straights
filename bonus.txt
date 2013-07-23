@@ -1,0 +1,6 @@
+Visual Indication of Legal Cards
+	- If a card is legal to play in a hand, it will be outlined in green
+Sorting
+	- Cards in hand will be sorted by suit and rank
+Visual Record of Discarded Cards
+	- All cards discarded during the round are displayed at the bottom of the program
